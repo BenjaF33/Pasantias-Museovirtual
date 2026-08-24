@@ -1,0 +1,16 @@
+.site-footer {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 1.3rem max(7vw, 1.4rem);
+	color: #c5d3cb;
+	background: #173b43;
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 0.7rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+@media (max-width: 520px) {
+	.site-footer { flex-direction: column; gap: 0.4rem; }
+}

@@ -1,0 +1,62 @@
+<main>
+
+    <section class="presentacion">
+        <h1>La historia de Cipolletti</h1>
+        <p>
+            Un recorrido por los principales acontecimientos
+            de la historia de nuestra ciudad.
+        </p>
+    </section>
+
+    <section class="historia">
+        <h2>Línea del tiempo</h2>
+
+        @for (h of hechos; track $index) {
+        <div class="hecho">
+
+            <!-- PUNTO -->
+            <button class="punto" [class.punto-activo]="hechoSeleccionado === h" (click)="mostrarHecho(h)">
+            </button>
+
+            @if (hechoSeleccionado === h) {
+
+            <!-- CARD -->
+            <div class="tarjeta">
+                <button class="cerrar" (click)="cerrarCard()">×</button>
+                <img [src]="h.img" [alt]="h.titulo" class="imagen-hecho">
+                <span class="anio">{{ h.anio }}</span>
+                <h3>{{ h.titulo }}</h3>
+                <p>{{ h.descripcion }}</p>
+
+                <button type="button" (click)="mostrarInfo(h)">Más información</button>
+            </div>
+            
+            } @else {
+
+            <!-- INFORMACIÓN NORMAL -->
+            <div class="info-hecho">
+                <span class="anio">{{ h.anio }}</span>
+                <h3>{{ h.titulo }}</h3>
+            </div>
+            }
+        </div>
+
+        }
+
+        @if (hechoAmpliado) {
+                <div class="fondo-modal" role="presentation" (click)="cerrarInfo()">
+            <article class="modal" role="dialog" aria-modal="true" [attr.aria-labelledby]="'modal-titulo-' + hechoAmpliado.anio" (click)="$event.stopPropagation()">
+                <button type="button" class="cerrar-modal" aria-label="Cerrar información" (click)="cerrarInfo()">×</button>
+                <img [src]="hechoAmpliado.img" [alt]="hechoAmpliado.titulo" class="imagen-modal">
+                <div class="contenido-modal">
+                    <span class="anio">{{ hechoAmpliado.anio }}</span>
+                    <h2 [id]="'modal-titulo-' + hechoAmpliado.anio">{{ hechoAmpliado.titulo }}</h2>
+                    <p class="descripcion-modal">{{ hechoAmpliado.descripcion }}</p>
+                    <p>{{ hechoAmpliado.info }}</p>
+                </div>
+            </article>
+        </div>
+        }
+    </section>
+
+</main>
