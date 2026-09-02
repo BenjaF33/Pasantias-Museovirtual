@@ -15,6 +15,13 @@
 .navegacion a {
 	color: inherit;
 	text-decoration: none;
+	transition: color 160ms ease, opacity 160ms ease, transform 160ms ease, background-color 160ms ease;
+}
+
+.logo:hover,
+.logo:focus-visible {
+	opacity: 0.8;
+	transform: translateY(-1px);
 }
 
 .logo {
@@ -31,6 +38,19 @@
 	color: #fffaf0;
 	cursor: pointer;
 	font-size: 1.35rem;
+	transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.boton-menu:hover,
+.boton-menu:focus-visible {
+	border-color: #fffaf0;
+	background: #2f6254;
+	outline: none;
+	transform: scale(1.04);
+}
+
+.boton-menu:active {
+	transform: scale(0.94);
 }
 
 .navegacion {
@@ -55,6 +75,10 @@
 .navegacion a:hover,
 .navegacion a.activo {
 	background: #2f6254;
+}
+
+.navegacion a:active {
+	transform: scale(0.98);
 }
 
 @media (min-width: 701px) {
