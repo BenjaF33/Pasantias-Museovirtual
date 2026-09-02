@@ -1,0 +1,79 @@
+.barra-navegacion {
+	display: flex;
+	position: relative;
+	z-index: 5;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 0.9rem 1rem;
+	background: #173b32;
+	color: #fffaf0;
+	font-family: Arial, sans-serif;
+}
+
+.logo,
+.navegacion a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.logo {
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 1.15rem;
+}
+
+.boton-menu {
+	width: 2.75rem;
+	height: 2.75rem;
+	border: 1px solid #a4c5ae;
+	border-radius: 0.4rem;
+	background: transparent;
+	color: #fffaf0;
+	cursor: pointer;
+	font-size: 1.35rem;
+}
+
+.navegacion {
+	display: none;
+	position: absolute;
+	top: 100%;
+	right: 0;
+	left: 0;
+	flex-direction: column;
+	background: #173b32;
+}
+
+.navegacion-abierta {
+	display: flex;
+}
+
+.navegacion a {
+	min-height: 2.75rem;
+	padding: 0.8rem 1rem;
+}
+
+.navegacion a:hover,
+.navegacion a.activo {
+	background: #2f6254;
+}
+
+@media (min-width: 701px) {
+	.barra-navegacion {
+		padding: 1rem 7vw;
+	}
+
+	.boton-menu {
+		display: none;
+	}
+
+	.navegacion {
+		display: flex;
+		position: static;
+		flex-direction: row;
+		gap: 1.5rem;
+	}
+
+	.navegacion a {
+		padding: 0.5rem 0;
+	}
+}

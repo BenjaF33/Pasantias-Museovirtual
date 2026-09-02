@@ -1,3 +1,21 @@
 
+<header class="barra-navegacion">
+	<a class="logo" routerLink="/inicio" (click)="cerrarMenu()">Museo Virtual</a>
+
+	<button
+		class="boton-menu"
+		type="button"
+		aria-label="Abrir menú de navegación"
+		[attr.aria-expanded]="menuAbierto()"
+		(click)="alternarMenu()">
+		<span aria-hidden="true">&#9776;</span>
+	</button>
+
+	<nav class="navegacion" [class.navegacion-abierta]="menuAbierto()" aria-label="Navegación principal">
+		<a routerLink="/inicio" routerLinkActive="activo" (click)="cerrarMenu()">Inicio</a>
+		<a routerLink="/nosotros" routerLinkActive="activo" (click)="cerrarMenu()">Nosotros</a>
+	</nav>
+</header>
+
 <router-outlet></router-outlet>
 <app-footer></app-footer>

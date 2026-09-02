@@ -11,6 +11,7 @@
     <section class="historia">
         <h2>Línea del tiempo</h2>
 
+        <div class="linea">
         @for (h of hechos; track $index) {
         <div class="hecho">
 
@@ -42,9 +43,10 @@
         </div>
 
         }
+        </div>
 
         @if (hechoAmpliado) {
-                <div class="fondo-modal" role="presentation" (click)="cerrarInfo()">
+                <div class="fondo-modal" (click)="cerrarInfo()">
             <article class="modal" role="dialog" aria-modal="true" [attr.aria-labelledby]="'modal-titulo-' + hechoAmpliado.anio" (click)="$event.stopPropagation()">
                 <button type="button" class="cerrar-modal" aria-label="Cerrar información" (click)="cerrarInfo()">×</button>
                 <img [src]="hechoAmpliado.img" [alt]="hechoAmpliado.titulo" class="imagen-modal">
