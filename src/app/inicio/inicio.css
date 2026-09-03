@@ -6,24 +6,44 @@
 }
 
 .presentacion {
-	padding: clamp(3rem, 9vw, 7rem) 0 clamp(2.5rem, 7vw, 5rem);
+	display: flex;
+	position: relative;
+	width: 100%;
+	min-height: calc(100svh - 8rem);
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: clamp(3rem, 9vw, 7rem) 1rem clamp(2.5rem, 7vw, 5rem);
+	background-image: linear-gradient(rgb(248 246 236 / 82%), rgb(248 246 236 / 72%)), url("/assets/puente ferroviario.jpg");
+	background-position: center;
+	background-size: cover;
 	text-align: center;
 }
 
 .presentacion h1 {
 	margin: 0;
 	max-width: 100%;
-	color: #173b32;
+	color: #253342;
 	font-family: Georgia, "Times New Roman", serif;
 	font-size: clamp(2.1rem, 5vw, 4.5rem);
 	line-height: 1.05;
 	overflow-wrap: anywhere;
 }
 
+.presentacion h1::after {
+	display: block;
+	width: 4rem;
+	height: 0.25rem;
+	margin: 1.4rem auto 0;
+	border-radius: 999px;
+	background: #c96f42;
+	content: "";
+}
+
 .presentacion p {
 	max-width: 38rem;
 	margin: 1.2rem auto 0;
-	color: #42534b;
+	color: #253342;
 	font-family: Arial, sans-serif;
 	font-size: clamp(1rem, 2vw, 1.25rem);
 	line-height: 1.6;
@@ -31,12 +51,14 @@
 }
 
 .historia {
-	padding-bottom: 5rem;
+	width: 100%;
+	padding: clamp(3rem, 6vw, 5rem) 1rem 5rem;
+	background: linear-gradient(180deg, #f8f6ec 0%, #fffaf0 48%, #ffffff 100%);
 }
 
 .historia > h2 {
 	margin: 0 0 3.5rem;
-	color: #173b32;
+	color: #253342;
 	font-family: Georgia, "Times New Roman", serif;
 	font-size: clamp(1.8rem, 3vw, 2.7rem);
 	text-align: center;
@@ -61,7 +83,7 @@
 	left: 50%;
 	width: 0.16rem;
 	height: auto;
-	background: #bfc8bd;
+	background: #253342;
 	transform: translateX(-50%);
 }
 
@@ -86,8 +108,8 @@
 	flex: 0 0 auto;
 	border: 0.3rem solid #f8f6ec;
 	border-radius: 50%;
-	background: #2f6254;
-	box-shadow: 0 0 0 0.14rem #2f6254, 0 0.2rem 0.5rem rgb(23 59 50 / 18%);
+	background: #253342;
+	box-shadow: 0 0 0 0.14rem #253342, 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
 	cursor: pointer;
 	transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
 }
@@ -95,9 +117,24 @@
 .punto:hover,
 .punto:focus-visible {
 	background: #c96f42;
-	box-shadow: 0 0 0 0.14rem #c96f42, 0 0.2rem 0.5rem rgb(23 59 50 / 22%);
+	box-shadow: 0 0 0 0.14rem #c96f42, 0 0.2rem 0.5rem rgb(37 51 66 / 22%);
 	outline: none;
 	transform: scale(1.08);
+}
+
+.punto:not(.punto-activo):focus-visible {
+	background: #253342;
+	box-shadow: 0 0 0 0.14rem #253342, 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
+	transform: none;
+}
+
+.punto-cerrando,
+.punto-cerrando:hover,
+.punto-cerrando:focus-visible,
+.punto-cerrando:active {
+	background: #253342;
+	box-shadow: 0 0 0 0.14rem #253342, 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
+	transform: none;
 }
 
 .punto:active {
@@ -127,7 +164,15 @@
 	max-width: 31rem;
 	padding: 0;
 	grid-area: info;
+	animation: aparecer-info-hecho 220ms ease-out;
+	transition: opacity 160ms ease, visibility 160ms ease;
+	justify-self: end;
 	text-align: right;
+}
+
+.info-hecho-oculto {
+	opacity: 0;
+	visibility: hidden;
 }
 
 .hecho:nth-child(even) .info-hecho {
@@ -148,7 +193,7 @@
 .info-hecho h3,
 .tarjeta h3 {
 	margin: 0.5rem 0 0;
-	color: #173b32;
+	color: #253342;
 	font-family: Georgia, "Times New Roman", serif;
 	font-size: 1.05rem;
 	line-height: 1.25;
@@ -161,15 +206,21 @@
 .tarjeta {
 	grid-area: info;
 	position: absolute;
-	top: 4.5rem;
+	top: 2.5rem;
 	left: 0;
 	z-index: 2;
 	width: min(100%, 31rem);
 	margin-top: 0;
 	padding: 0 1rem 1rem;
+	border-radius: 0.45rem;
 	background: #fffaf0;
-	box-shadow: 0 0.4rem 1.5rem rgb(23 59 50 / 14%);
+	box-shadow: 0 0.4rem 1.5rem rgb(37 51 66 / 14%);
 	animation: aparecer-tarjeta 220ms ease-out;
+}
+
+.tarjeta-cerrando {
+	animation: desaparecer-tarjeta 220ms ease-in forwards;
+	pointer-events: none;
 }
 
 .hecho:nth-child(even) .tarjeta {
@@ -190,7 +241,7 @@
 
 .tarjeta p,
 .contenido-modal p {
-	color: #42534b;
+	color: #253342;
 	font-family: Arial, sans-serif;
 	line-height: 1.55;
 }
@@ -198,7 +249,8 @@
 .tarjeta button:not(.cerrar) {
 	padding: 0.65rem 0.8rem;
 	border: 0;
-	background: #173b32;
+	border-radius: 0.35rem;
+	background: #253342;
 	color: #fffaf0;
 	cursor: pointer;
 	transition: background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
@@ -206,8 +258,8 @@
 
 .tarjeta button:not(.cerrar):hover,
 .tarjeta button:not(.cerrar):focus-visible {
-	background: #2f6254;
-	box-shadow: 0 0.25rem 0.6rem rgb(23 59 50 / 18%);
+	background: #253342;
+	box-shadow: 0 0.25rem 0.6rem rgb(37 51 66 / 18%);
 	outline: none;
 	transform: translateY(-2px);
 }
@@ -218,19 +270,27 @@
 
 .cerrar,
 .cerrar-modal {
+	display: grid;
+	width: 2rem;
+	height: 2rem;
+	place-items: center;
 	border: 0;
-	background: transparent;
-	color: #173b32;
+	border-radius: 0.35rem;
+	background: rgb(201 111 66 / 14%);
+	color: #253342;
 	cursor: pointer;
 	font-size: 1.5rem;
+	font-weight: 700;
+	line-height: 1;
 	transform-origin: center;
-	transition: color 160ms ease, transform 160ms ease;
+	transition: color 160ms ease, background-color 160ms ease, transform 160ms ease;
 }
 
 .cerrar:hover,
 .cerrar:focus-visible,
 .cerrar-modal:hover,
 .cerrar-modal:focus-visible {
+	background: rgb(201 111 66 / 28%);
 	color: #c96f42;
 	outline: none;
 	transform: rotate(8deg) scale(1.12);
@@ -266,8 +326,13 @@
 	inset: 0;
 	place-items: center;
 	padding: 1rem;
-	background: rgb(23 59 50 / 70%);
+	background: rgb(37 51 66 / 70%);
 	animation: aparecer-fondo 180ms ease-out;
+}
+
+.fondo-modal-cerrando {
+	animation: desaparecer-fondo 220ms ease-in forwards;
+	pointer-events: none;
 }
 
 .modal {
@@ -277,8 +342,13 @@
 	width: min(48rem, 100%);
 	max-height: min(90vh, 40rem);
 	overflow: auto;
+	border-radius: 0.45rem;
 	background: #fffaf0;
 	animation: aparecer-modal 220ms ease-out;
+}
+
+.modal-cerrando {
+	animation: desaparecer-modal 220ms ease-in forwards;
 }
 
 @keyframes aparecer-tarjeta {
@@ -292,9 +362,36 @@
 	}
 }
 
+@keyframes desaparecer-tarjeta {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-0.4rem);
+	}
+}
+
+@keyframes aparecer-info-hecho {
+	from {
+		opacity: 0;
+		transform: translateY(0.35rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
 @keyframes aparecer-fondo {
 	from { opacity: 0; }
 	to { opacity: 1; }
+}
+
+@keyframes desaparecer-fondo {
+	from { opacity: 1; }
+	to { opacity: 0; }
 }
 
 @keyframes aparecer-modal {
@@ -305,6 +402,17 @@
 	to {
 		opacity: 1;
 		transform: translateY(0) scale(1);
+	}
+}
+
+@keyframes desaparecer-modal {
+	from {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(0.5rem) scale(0.98);
 	}
 }
 
@@ -321,7 +429,7 @@
 
 .contenido-modal h2 {
 	margin: 0.6rem 0 1rem;
-	color: #173b32;
+	color: #253342;
 	font-family: Georgia, "Times New Roman", serif;
 	font-size: clamp(1.5rem, 3vw, 2.2rem);
 }
@@ -401,13 +509,13 @@
 
 	.tarjeta,
 	.hecho:nth-child(even) .tarjeta {
-		position: relative;
-		top: auto;
+		position: absolute;
+		top: 2.75rem;
 		right: auto;
-		left: auto;
-		grid-area: info;
-		width: 100%;
-		margin-top: -0.25rem;
+		left: 3.1rem;
+		grid-area: auto;
+		width: auto;
+		margin-top: 0;
 	}
 
 	.modal {

@@ -6,7 +6,7 @@
 	justify-content: space-between;
 	gap: 1rem;
 	padding: 0.9rem 1rem;
-	background: #173b32;
+	background: #253342;
 	color: #fffaf0;
 	font-family: Arial, sans-serif;
 }
@@ -20,11 +20,14 @@
 
 .logo:hover,
 .logo:focus-visible {
+	background: rgb(255 250 240 / 10%);
 	opacity: 0.8;
 	transform: translateY(-1px);
 }
 
 .logo {
+	padding: 0.35rem 0.6rem;
+	border-radius: 0.65rem;
 	font-family: Georgia, "Times New Roman", serif;
 	font-size: 1.15rem;
 }
@@ -32,7 +35,7 @@
 .boton-menu {
 	width: 2.75rem;
 	height: 2.75rem;
-	border: 1px solid #a4c5ae;
+	border: 1px solid #253342;
 	border-radius: 0.4rem;
 	background: transparent;
 	color: #fffaf0;
@@ -44,7 +47,7 @@
 .boton-menu:hover,
 .boton-menu:focus-visible {
 	border-color: #fffaf0;
-	background: #2f6254;
+	background: #253342;
 	outline: none;
 	transform: scale(1.04);
 }
@@ -60,7 +63,7 @@
 	right: 0;
 	left: 0;
 	flex-direction: column;
-	background: #173b32;
+	background: #253342;
 }
 
 .navegacion-abierta {
@@ -68,13 +71,22 @@
 }
 
 .navegacion a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	min-height: 2.75rem;
 	padding: 0.8rem 1rem;
+	border-bottom: 0.15rem solid transparent;
+	border-radius: 0.65rem;
 }
 
-.navegacion a:hover,
+.navegacion a:hover {
+	background: rgb(255 250 240 / 8%);
+}
+
 .navegacion a.activo {
-	background: #2f6254;
+	border-bottom-color: rgb(255 250 240 / 60%);
+	background: rgb(255 250 240 / 10%);
 }
 
 .navegacion a:active {
@@ -98,6 +110,6 @@
 	}
 
 	.navegacion a {
-		padding: 0.5rem 0;
+		padding: 0.5rem 0.75rem;
 	}
 }

@@ -16,13 +16,19 @@
         <div class="hecho">
 
             <!-- PUNTO -->
-            <button class="punto" [class.punto-activo]="hechoSeleccionado === h" (click)="mostrarHecho(h)">
+            <button class="punto" [class.punto-activo]="hechoSeleccionado === h && !cerrandoCard" [class.punto-cerrando]="hechoSeleccionado === h && cerrandoCard" (click)="mostrarHecho(h)">
             </button>
+
+            <!-- INFORMACIÓN NORMAL -->
+            <div class="info-hecho" [class.info-hecho-oculto]="hechoSeleccionado === h && !cerrandoCard">
+                <span class="anio">{{ h.anio }}</span>
+                <h3>{{ h.titulo }}</h3>
+            </div>
 
             @if (hechoSeleccionado === h) {
 
             <!-- CARD -->
-            <div class="tarjeta">
+            <div class="tarjeta" [class.tarjeta-cerrando]="cerrandoCard">
                 <button class="cerrar" (click)="cerrarCard()">×</button>
                 <img [src]="h.img" [alt]="h.titulo" class="imagen-hecho">
                 <span class="anio">{{ h.anio }}</span>
@@ -31,14 +37,6 @@
 
                 <button type="button" (click)="mostrarInfo(h)">Más información</button>
             </div>
-            
-            } @else {
-
-            <!-- INFORMACIÓN NORMAL -->
-            <div class="info-hecho">
-                <span class="anio">{{ h.anio }}</span>
-                <h3>{{ h.titulo }}</h3>
-            </div>
             }
         </div>
 
@@ -46,8 +44,8 @@
         </div>
 
         @if (hechoAmpliado) {
-                <div class="fondo-modal" (click)="cerrarInfo()">
-            <article class="modal" role="dialog" aria-modal="true" [attr.aria-labelledby]="'modal-titulo-' + hechoAmpliado.anio" (click)="$event.stopPropagation()">
+                <div class="fondo-modal" [class.fondo-modal-cerrando]="cerrandoInfo" (click)="cerrarInfo()">
+            <article class="modal" [class.modal-cerrando]="cerrandoInfo" role="dialog" aria-modal="true" [attr.aria-labelledby]="'modal-titulo-' + hechoAmpliado.anio" (click)="$event.stopPropagation()">
                 <button type="button" class="cerrar-modal" aria-label="Cerrar información" (click)="cerrarInfo()">×</button>
                 <img [src]="hechoAmpliado.img" [alt]="hechoAmpliado.titulo" class="imagen-modal">
                 <div class="contenido-modal">
