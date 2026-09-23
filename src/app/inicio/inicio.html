@@ -12,72 +12,73 @@
         <h2>Línea del tiempo</h2>
 
         <div class="linea">
-        @for (h of hechos; track $index) {
-        <div class="hecho">
-
-            <!-- PUNTO -->
-            <button class="punto" [class.punto-activo]="hechoSeleccionado === h && !cerrandoCard" [class.punto-cerrando]="hechoSeleccionado === h && cerrandoCard" (click)="mostrarHecho(h)">
-            </button>
-
-            <!-- INFORMACIÓN NORMAL -->
-            <div class="info-hecho" [class.info-hecho-oculto]="hechoSeleccionado === h && !cerrandoCard">
-                <span class="anio">{{ h.anio }}</span>
-                <h3>{{ h.titulo }}</h3>
-            </div>
-
-            @if (hechoSeleccionado === h) {
-
-            <!-- CARD -->
-            <div class="tarjeta" [class.tarjeta-cerrando]="cerrandoCard">
-                <button class="cerrar" (click)="cerrarCard()">×</button>
-                <img [src]="h.img[0]" [alt]="h.titulo" class="imagen-hecho">
-                <span class="anio">{{ h.anio }}</span>
-                <h3>{{ h.titulo }}</h3>
-                <p>{{ h.descripcion }}</p>
-
-                <button type="button" (click)="mostrarInfo(h)">Más información</button>
-            </div>
+            <!-- Capa transparente para cerrar la tarjeta al hacer clic en cualquier lugar fuera -->
+            @if (hechoSeleccionado) {
+                <div class="capa-cierre-tarjeta" (click)="cerrarCard()"></div>
             }
-        </div>
 
-        }
+            @for (h of hechos; track $index) {
+            <div class="hecho">
+
+                <!-- PUNTO -->
+                <button class="punto" [class.punto-activo]="hechoSeleccionado === h && !cerrandoCard" [class.punto-cerrando]="hechoSeleccionado === h && cerrandoCard" (click)="mostrarHecho(h)">
+                </button>
+
+                <!-- INFORMACIÓN NORMAL -->
+                <div class="info-hecho" [class.info-hecho-oculto]="hechoSeleccionado === h && !cerrandoCard">
+                    <span class="anio">{{ h.anio }}</span>
+                    <h3>{{ h.titulo }}</h3>
+                </div>
+
+                @if (hechoSeleccionado === h) {
+
+                <!-- CARD -->
+                <div class="tarjeta" [class.tarjeta-cerrando]="cerrandoCard">
+                    <button class="cerrar" (click)="cerrarCard()">×</button>
+                    <div class="contenedor-imagen-tarjeta">
+                        <img [src]="h.img[0]" [alt]="h.titulo" class="imagen-hecho">
+                    </div>
+                    <div class="contenido-tarjeta">
+                        <span class="anio">{{ h.anio }}</span>
+                        <h3>{{ h.titulo }}</h3>
+                        <p>{{ h.descripcion }}</p>
+
+                        <button type="button" (click)="mostrarInfo(h)">Más información</button>
+                    </div>
+                </div>
+                }
+            </div>
+
+            }
         </div>
 
         <!-- Solo se muestra el modal cuando existe un hecho ampliado seleccionado. -->
         @if (hechoAmpliado) {
-                <!-- Fondo oscuro del modal: al hacer clic fuera del contenido se cierra. -->
-                <div class="fondo-modal" [class.fondo-modal-cerrando]="cerrandoInfo" (click)="cerrarInfo()">
+            <!-- Fondo oscuro del modal: al hacer clic fuera del contenido se cierra. -->
+            <div class="fondo-modal" [class.fondo-modal-cerrando]="cerrandoInfo" (click)="cerrarInfo()">
             <!-- Detiene el clic dentro de la card para que no active el cierre del fondo. -->
             <article class="modal" [class.modal-cerrando]="cerrandoInfo" role="dialog" aria-modal="true" [attr.aria-labelledby]="'modal-titulo-' + hechoAmpliado.anio" (click)="$event.stopPropagation()">
                 <!-- Botón para cerrar la información ampliada mediante la animación de salida. -->
                 <button type="button" class="cerrar-modal" aria-label="Cerrar información" (click)="cerrarInfo()">×</button>
 
-                <!-- Carrusel Bootstrap: la navegación la controla Angular, no el JavaScript de Bootstrap. -->
-                <div id="carouselHecho" class="carousel slide carrusel-modal" aria-label="Galería de imágenes">
-                    <!-- Indicadores inferiores: cada botón selecciona una imagen concreta. -->
-                    <div class="carousel-indicators">
-                        @for (imagen of imagenesCarrusel; track imagen; let indice = $index) {
-                        <button type="button" [class.active]="imagenActiva === indice" [attr.aria-current]="imagenActiva === indice ? 'true' : null" [attr.aria-label]="'Ver imagen ' + (indice + 1)" (click)="seleccionarImagen(indice)"></button>
-                        }
-                    </div>
-
-                    <!-- Contenedor de las diapositivas; solo la imagen activa se muestra. -->
+                <!-- Carrusel con transición fluida (fade) sin los indicadores en bloque -->
+                <div id="carouselHecho" class="carousel slide carousel-fade carrusel-modal" aria-label="Galería de imágenes">
+                    
+                    <!-- Contenedor de las diapositivas -->
                     <div class="carousel-inner">
                         @for (imagen of imagenesCarrusel; track imagen; let indice = $index) {
-                        <!-- La clase active cambia según el índice guardado en imagenActiva. -->
                         <div class="carousel-item" [class.active]="imagenActiva === indice">
-                            <!-- src usa la ruta de cada foto y alt identifica su posición y el hecho. -->
                             <img [src]="imagen" class="d-block w-100 imagen-modal" [alt]="hechoAmpliado.titulo + ' - imagen ' + (indice + 1)">
                         </div>
                         }
                     </div>
 
-                    <!-- Flecha anterior: retrocede y vuelve a la última imagen al llegar al inicio. -->
+                    <!-- Flecha anterior -->
                     <button class="carousel-control-prev" type="button" aria-label="Imagen anterior" (click)="imagenAnterior()">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     </button>
 
-                    <!-- Flecha siguiente: avanza y vuelve a la primera imagen al llegar al final. -->
+                    <!-- Flecha siguiente -->
                     <button class="carousel-control-next" type="button" aria-label="Imagen siguiente" (click)="imagenSiguiente()">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     </button>
@@ -85,13 +86,9 @@
 
                 <!-- Texto histórico asociado al hecho que abrió el modal. -->
                 <div class="contenido-modal">
-                    <!-- Año o período del acontecimiento. -->
                     <span class="anio">{{ hechoAmpliado.anio }}</span>
-                    <!-- Título usado también como referencia accesible del diálogo. -->
                     <h2 [id]="'modal-titulo-' + hechoAmpliado.anio">{{ hechoAmpliado.titulo }}</h2>
-                    <!-- Resumen breve del acontecimiento. -->
                     <p class="descripcion-modal">{{ hechoAmpliado.descripcion }}</p>
-                    <!-- Información histórica ampliada. -->
                     <p>{{ hechoAmpliado.info }}</p>
                 </div>
             </article>

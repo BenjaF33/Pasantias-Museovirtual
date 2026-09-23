@@ -1,573 +1,630 @@
 /* Contenedor principal y portada */
 .presentacion,
 .historia {
-	width: min(1100px, calc(100% - 2rem));
-	margin: 0 auto;
+    width: min(1100px, calc(100% - 2rem));
+    margin: 0 auto;
 }
 
 .presentacion {
-	display: flex;
-	position: relative;
-	width: 100%;
-	min-height: calc(100svh - 8rem);
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	padding: clamp(3rem, 9vw, 7rem) 1rem clamp(2.5rem, 7vw, 5rem);
-	background-image: linear-gradient(rgb(248 246 236 / 82%), rgb(248 246 236 / 72%)), url("/assets/puente ferroviario.jpg");
-	background-position: center;
-	background-size: cover;
-	text-align: center;
+    display: flex;
+    position: relative;
+    width: 100%;
+    min-height: calc(100svh - 8rem);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(3rem, 9vw, 7rem) 1rem clamp(2.5rem, 7vw, 5rem);
+    background-image: linear-gradient(rgb(248 246 236 / 82%), rgb(248 246 236 / 72%)), url("/assets/puente ferroviario.jpg");
+    background-position: center;
+    background-size: cover;
+    text-align: center;
 }
 
 .presentacion h1 {
-	margin: 0;
-	max-width: 100%;
-	color: #253342;
-	font-family: Georgia, "Times New Roman", serif;
-	font-size: clamp(2.1rem, 5vw, 4.5rem);
-	line-height: 1.05;
-	overflow-wrap: anywhere;
+    margin: 0;
+    max-width: 100%;
+    color: #253342;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.1rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    overflow-wrap: anywhere;
 }
 
 .presentacion h1::after {
-	display: block;
-	width: 4rem;
-	height: 0.25rem;
-	margin: 1.4rem auto 0;
-	border-radius: 999px;
-	background: #c96f42;
-	content: "";
+    display: block;
+    width: 4rem;
+    height: 0.25rem;
+    margin: 1.4rem auto 0;
+    border-radius: 999px;
+    background: #c96f42;
+    content: "";
 }
 
 .presentacion p {
-	max-width: 38rem;
-	margin: 1.2rem auto 0;
-	color: #253342;
-	font-family: Arial, sans-serif;
-	font-size: clamp(1rem, 2vw, 1.25rem);
-	line-height: 1.6;
-	overflow-wrap: anywhere;
+    max-width: 38rem;
+    margin: 1.2rem auto 0;
+    color: #253342;
+    font-family: Arial, sans-serif;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.6;
+    overflow-wrap: anywhere;
 }
 
 .historia {
-	width: 100%;
-	padding: clamp(3rem, 6vw, 5rem) 1rem 5rem;
-	background: linear-gradient(180deg, #f8f6ec 0%, #fffaf0 48%, #ffffff 100%);
+    width: 100%;
+    padding: clamp(3rem, 6vw, 5rem) 1rem 5rem;
+    background: linear-gradient(180deg, #f8f6ec 0%, #fffaf0 48%, #ffffff 100%);
 }
 
 .historia > h2 {
-	margin: 0 0 3.5rem;
-	color: #253342;
-	font-family: Georgia, "Times New Roman", serif;
-	font-size: clamp(1.8rem, 3vw, 2.7rem);
-	text-align: center;
+    margin: 0 0 3.5rem;
+    color: #253342;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.8rem, 3vw, 2.7rem);
+    text-align: center;
+}
+
+/* Capa transparente para cerrar la tarjeta al hacer clic en cualquier lugar fuera */
+.capa-cierre-tarjeta {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background: transparent;
 }
 
 /* Línea central y distribución alternada de los acontecimientos */
 .linea {
-	display: flex;
-	position: relative;
-	width: min(100%, 75rem);
-	margin: 0 auto;
-	flex-direction: column;
-	gap: 0;
-	padding: 1.5rem 0;
+    display: flex;
+    position: relative;
+    width: min(100%, 75rem);
+    margin: 0 auto;
+    flex-direction: column;
+    gap: 0;
+    padding: 1.5rem 0;
 }
 
 .linea::before {
-	content: "";
-	position: absolute;
-	top: 1.5rem;
-	bottom: 1.5rem;
-	left: 50%;
-	width: 0.16rem;
-	height: auto;
-	background: #253342;
-	transform: translateX(-50%);
+    content: "";
+    position: absolute;
+    top: 1.5rem;
+    bottom: 1.5rem;
+    left: 50%;
+    width: 0.16rem;
+    height: auto;
+    background: #253342;
+    transform: translateX(-50%);
 }
 
 .hecho {
-	display: grid;
-	position: relative;
-	min-width: 0;
-	grid-template-columns: minmax(0, 1fr) 2.5rem minmax(0, 1fr);
-	grid-template-areas: "info punto espacio";
-	align-items: center;
-	gap: 2rem;
-	height: 8.5rem;
-	min-height: 8.5rem;
+    display: grid;
+    position: relative;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr) 2.5rem minmax(0, 1fr);
+    grid-template-areas: "info punto espacio";
+    align-items: center;
+    gap: 2rem;
+    height: 8.5rem;
+    min-height: 8.5rem;
 }
 
 .punto {
-	grid-area: punto;
-	z-index: 1;
-	width: 2.5rem;
-	height: 2.5rem;
-	margin: 0 auto;
-	flex: 0 0 auto;
-	border: 0.3rem solid #f8f6ec;
-	border-radius: 50%;
-	background: #253342;
-	box-shadow: 0 0 0 0.14rem #253342, 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
-	cursor: pointer;
-	transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+    grid-area: punto;
+    z-index: 2;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0 auto;
+    flex: 0 0 auto;
+    border: 0.3rem solid #f8f6ec;
+    border-radius: 50%;
+    background: #253342;
+    box-shadow: 0 0 0 0.14rem #253342, 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
+    cursor: pointer;
+    transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
 }
 
 .punto:hover,
 .punto:focus-visible {
-	background: #c96f42;
-	box-shadow: 0 0 0 0.14rem #c96f42, 0 0.2rem 0.5rem rgb(37 51 66 / 22%);
-	outline: none;
-	transform: scale(1.08);
+    background: #c96f42;
+    box-shadow: 0 0 0 0.14rem #c96f42, 0 0.2rem 0.5rem rgb(37 51 66 / 22%);
+    outline: none;
+    transform: scale(1.08);
 }
 
 .punto:not(.punto-activo):focus-visible {
-	background: #253342;
-	box-shadow: 0 0 0 0.14rem #253342, 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
-	transform: none;
+    background: #253342;
+    box-shadow: 0 0 0 0.14rem #253342, 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
+    transform: none;
 }
 
 .punto-cerrando,
 .punto-cerrando:hover,
 .punto-cerrando:focus-visible,
 .punto-cerrando:active {
-	background: #253342;
-	box-shadow: 0 0 0 0.14rem #253342, 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
-	transform: none;
+    background: #253342;
+    box-shadow: 0 0 0 0.14rem #253342, 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
+    transform: none;
 }
 
 .punto:active {
-	transform: scale(0.9);
+    transform: scale(0.9);
 }
 
 .punto-activo {
-	background: #c96f42;
-	box-shadow: 0 0 0 0.14rem #c96f42, 0 0 0 0.35rem rgb(201 111 66 / 18%);
-	animation: pulso-punto 420ms ease-out;
+    background: #c96f42;
+    box-shadow: 0 0 0 0.14rem #c96f42, 0 0 0 0.35rem rgb(201 111 66 / 18%);
+    animation: pulso-punto 420ms ease-out;
 }
 
 @keyframes pulso-punto {
-	0% {
-		transform: scale(0.9);
-	}
-	65% {
-		transform: scale(1.12);
-	}
-	100% {
-		transform: scale(1);
-	}
+    0% {
+        transform: scale(0.9);
+    }
+    65% {
+        transform: scale(1.12);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .info-hecho {
-	width: 100%;
-	max-width: 31rem;
-	padding: 0;
-	grid-area: info;
-	animation: aparecer-info-hecho 220ms ease-out;
-	transition: opacity 160ms ease, visibility 160ms ease;
-	justify-self: end;
-	text-align: right;
+    width: 100%;
+    max-width: 31rem;
+    padding: 0;
+    grid-area: info;
+    animation: aparecer-info-hecho 220ms ease-out;
+    transition: opacity 220ms cubic-bezier(0.16, 1, 0.3, 1), transform 220ms cubic-bezier(0.16, 1, 0.3, 1), visibility 220ms ease;
+    justify-self: end;
+    text-align: right;
 }
 
 .info-hecho-oculto {
-	opacity: 0;
-	visibility: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.98);
 }
 
 .hecho:nth-child(even) .info-hecho {
-	grid-area: espacio;
-	justify-self: start;
-	text-align: left;
+    grid-area: espacio;
+    justify-self: start;
+    text-align: left;
 }
 
 .anio {
-	color: #c96f42;
-	font-family: "Trebuchet MS", sans-serif;
-	font-size: 0.78rem;
-	font-weight: 700;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
+    color: #c96f42;
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .info-hecho h3,
 .tarjeta h3 {
-	margin: 0.5rem 0 0;
-	color: #253342;
-	font-family: Georgia, "Times New Roman", serif;
-	font-size: 1.05rem;
-	line-height: 1.25;
+    margin: 0.5rem 0 0;
+    color: #253342;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.05rem;
+    line-height: 1.25;
 }
 
 .info-hecho h3 {
-	max-width: 31rem;
+    max-width: 31rem;
 }
 
+/* Tarjeta desplegable fluida */
 .tarjeta {
-	grid-area: info;
-	position: absolute;
-	top: 2.5rem;
-	left: 0;
-	z-index: 2;
-	width: min(100%, 31rem);
-	margin-top: 0;
-	padding: 0 1rem 1rem;
-	border-radius: 0.45rem;
-	background: #fffaf0;
-	box-shadow: 0 0.4rem 1.5rem rgb(37 51 66 / 14%);
-	animation: aparecer-tarjeta 220ms ease-out;
+    grid-area: info;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    z-index: 3;
+    width: min(100%, 31rem);
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background: #fffaf0;
+    box-shadow: 0 0.6rem 2rem rgb(37 51 66 / 16%);
+    transform: translateY(-50%);
+    animation: aparecer-tarjeta 280ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform, opacity;
+}
+
+.contenido-tarjeta {
+    padding: 0 1.25rem 1.25rem;
 }
 
 .tarjeta-cerrando {
-	animation: desaparecer-tarjeta 220ms ease-in forwards;
-	pointer-events: none;
+    animation: desaparecer-tarjeta 220ms cubic-bezier(0.7, 0, 0.84, 0) forwards;
+    pointer-events: none;
 }
 
 .hecho:nth-child(even) .tarjeta {
-	grid-area: espacio;
-	right: 0;
-	left: auto;
-	justify-self: start;
+    grid-area: espacio;
+    right: 0;
+    left: auto;
+    justify-self: start;
 }
 
-/* Imagen y contenido de la tarjeta seleccionada */
+/* Adaptación suave de imágenes en la tarjeta */
+.contenedor-imagen-tarjeta {
+    width: 100%;
+    max-height: 11rem;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    background-color: #253342;
+}
+
 .imagen-hecho {
-	display: block;
-	width: calc(100% + 2rem);
-	height: 8rem;
-	margin: 0 -1rem 1rem;
-	object-fit: cover;
+    display: block;
+    width: 100%;
+    height: 11rem;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 300ms ease;
 }
 
 .tarjeta p,
 .contenido-modal p {
-	color: #253342;
-	font-family: Arial, sans-serif;
-	line-height: 1.55;
+    color: #253342;
+    font-family: Arial, sans-serif;
+    line-height: 1.55;
 }
 
 .tarjeta button:not(.cerrar) {
-	padding: 0.65rem 0.8rem;
-	border: 0;
-	border-radius: 0.35rem;
-	background: #253342;
-	color: #fffaf0;
-	cursor: pointer;
-	transition: background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+    margin-top: 0.5rem;
+    padding: 0.65rem 0.9rem;
+    border: 0;
+    border-radius: 0.35rem;
+    background: #253342;
+    color: #fffaf0;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
 .tarjeta button:not(.cerrar):hover,
 .tarjeta button:not(.cerrar):focus-visible {
-	background: #253342;
-	box-shadow: 0 0.25rem 0.6rem rgb(37 51 66 / 18%);
-	outline: none;
-	transform: translateY(-2px);
+    background: #253342;
+    box-shadow: 0 0.25rem 0.6rem rgb(37 51 66 / 18%);
+    outline: none;
+    transform: translateY(-2px);
 }
 
 .tarjeta button:not(.cerrar):active {
-	transform: translateY(0) scale(0.97);
+    transform: translateY(0) scale(0.97);
 }
 
 .cerrar,
 .cerrar-modal {
-	display: grid;
-	width: 2rem;
-	height: 2rem;
-	place-items: center;
-	border: 0;
-	border-radius: 0.35rem;
-	background: rgb(201 111 66 / 14%);
-	color: #253342;
-	cursor: pointer;
-	font-size: 1.5rem;
-	font-weight: 700;
-	line-height: 1;
-	transform-origin: center;
-	transition: color 160ms ease, background-color 160ms ease, transform 160ms ease;
+    display: grid;
+    z-index: 5;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 0;
+    border-radius: 0.35rem;
+    background: rgb(201 111 66 / 18%);
+    color: #253342;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    transform-origin: center;
+    transition: color 160ms ease, background-color 160ms ease, transform 160ms ease;
 }
 
 .cerrar:hover,
 .cerrar:focus-visible,
 .cerrar-modal:hover,
 .cerrar-modal:focus-visible {
-	background: rgb(201 111 66 / 28%);
-	color: #c96f42;
-	outline: none;
-	transform: rotate(8deg) scale(1.12);
+    background: rgb(201 111 66 / 32%);
+    color: #c96f42;
+    outline: none;
+    transform: rotate(8deg) scale(1.12);
 }
 
 .cerrar:active,
 .cerrar-modal:active {
-	animation: clic-cierre 180ms ease-out;
+    animation: clic-cierre 180ms ease-out;
 }
 
 @keyframes clic-cierre {
-	0% {
-		transform: scale(1) rotate(8deg);
-	}
-	50% {
-		transform: scale(0.8) rotate(-8deg);
-	}
-	100% {
-		transform: scale(0.95) rotate(0);
-	}
+    0% {
+        transform: scale(1) rotate(8deg);
+    }
+    50% {
+        transform: scale(0.8) rotate(-8deg);
+    }
+    100% {
+        transform: scale(0.95) rotate(0);
+    }
 }
 
 .cerrar {
-	position: absolute;
-	top: 0.35rem;
-	right: 0.35rem;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
 }
 
 /* Superposición que cubre la página mientras se muestra el hecho ampliado. */
 .fondo-modal {
-	display: grid;
-	position: fixed;
-	z-index: 10;
-	inset: 0;
-	place-items: center;
-	padding: 1rem;
-	background: rgb(37 51 66 / 70%);
-	animation: aparecer-fondo 180ms ease-out;
+    display: grid;
+    position: fixed;
+    z-index: 10;
+    inset: 0;
+    place-items: center;
+    padding: 1rem;
+    background: rgb(37 51 66 / 70%);
+    animation: aparecer-fondo 200ms ease-out;
 }
 
 .fondo-modal-cerrando {
-	animation: desaparecer-fondo 220ms ease-in forwards;
-	pointer-events: none;
+    animation: desaparecer-fondo 220ms ease-in forwards;
+    pointer-events: none;
 }
 
 /* Card ampliada: organiza el carrusel y el texto en dos columnas en escritorio. */
 .modal {
-	display: grid;
-	position: relative;
-	grid-template-columns: minmax(10rem, 0.8fr) minmax(0, 1.2fr);
-	grid-template-rows: auto;
-	align-items: stretch;
-	width: min(48rem, 100%);
-	max-height: min(90vh, 40rem);
-	overflow: auto;
-	border-radius: 0.45rem;
-	background: #fffaf0;
-	animation: aparecer-modal 220ms ease-out;
+    display: grid;
+    position: relative;
+    grid-template-columns: minmax(12rem, 0.9fr) minmax(0, 1.1fr);
+    grid-template-rows: auto;
+    align-items: stretch;
+    width: min(50rem, 100%);
+    max-height: min(90vh, 40rem);
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background: #fffaf0;
+    box-shadow: 0 1rem 3rem rgb(0 0 0 / 25%);
+    animation: aparecer-modal 260ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-cerrando {
-	animation: desaparecer-modal 220ms ease-in forwards;
+    animation: desaparecer-modal 220ms ease-in forwards;
 }
 
 @keyframes aparecer-tarjeta {
-	from {
-		opacity: 0;
-		transform: translateY(-0.4rem);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+    from {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-50%) scale(1);
+    }
 }
 
 @keyframes desaparecer-tarjeta {
-	from {
-		opacity: 1;
-		transform: translateY(0);
-	}
-	to {
-		opacity: 0;
-		transform: translateY(-0.4rem);
-	}
+    from {
+        opacity: 1;
+        transform: translateY(-50%) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.95);
+    }
 }
 
 @keyframes aparecer-info-hecho {
-	from {
-		opacity: 0;
-		transform: translateY(0.35rem);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+    from {
+        opacity: 0;
+        transform: translateY(0.35rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes aparecer-fondo {
-	from { opacity: 0; }
-	to { opacity: 1; }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes desaparecer-fondo {
-	from { opacity: 1; }
-	to { opacity: 0; }
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
 
 @keyframes aparecer-modal {
-	from {
-		opacity: 0;
-		transform: translateY(0.5rem) scale(0.98);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0) scale(1);
-	}
+    from {
+        opacity: 0;
+        transform: translateY(0.8rem) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 @keyframes desaparecer-modal {
-	from {
-		opacity: 1;
-		transform: translateY(0) scale(1);
-	}
-	to {
-		opacity: 0;
-		transform: translateY(0.5rem) scale(0.98);
-	}
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(0.8rem) scale(0.97);
+    }
 }
 
-/* La imagen ocupa exactamente el alto que determina el contenido textual. */
+/* La imagen se encuadra sin distorsionarse */
 .imagen-modal {
-	width: 100%;
-	height: 100%;
-	min-height: 100%;
-	object-fit: cover;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
-/* El carrusel se estira junto con la columna de texto, sin crear altura adicional. */
+/* Ocultar indicadores por si acaso persisten por estilos de Bootstrap */
+.carousel-indicators {
+    display: none !important;
+}
+
+/* El carrusel se estira junto con la columna de texto */
 .carrusel-modal {
-	width: 100%;
-	height: 100%;
-	min-height: 100%;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    background-color: #253342;
 }
 
 .carrusel-modal .carousel-inner,
 .carrusel-modal .carousel-item {
-	height: 100%;
+    height: 100%;
 }
 
-/* Mantiene las flechas visibles sobre la fotografía. */
+/* Transición suave desvanecida para las fotos del carrusel */
+.carrusel-modal .carousel-item {
+    transition: opacity 0.4s ease-in-out;
+}
+
+.carrusel-modal .carousel-item:not(.active) {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.carrusel-modal .carousel-item.active {
+    opacity: 1;
+}
+
+/* Mantiene las flechas visibles sobre la fotografía */
 .carrusel-modal .carousel-control-prev,
 .carrusel-modal .carousel-control-next {
-	z-index: 3;
-	width: 18%;
-	opacity: 1;
+    z-index: 3;
+    width: 18%;
+    opacity: 0.85;
+    transition: opacity 160ms ease;
+}
+
+.carrusel-modal .carousel-control-prev:hover,
+.carrusel-modal .carousel-control-next:hover {
+    opacity: 1;
 }
 
 .contenido-modal {
-	padding: clamp(1.5rem, 4vw, 3rem);
+    padding: clamp(1.5rem, 4vw, 3rem);
+    overflow-y: auto;
 }
 
 .contenido-modal h2 {
-	margin: 0.6rem 0 1rem;
-	color: #253342;
-	font-family: Georgia, "Times New Roman", serif;
-	font-size: clamp(1.5rem, 3vw, 2.2rem);
+    margin: 0.6rem 0 1rem;
+    color: #253342;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
 }
 
 .cerrar-modal {
-	position: absolute;
-	top: 0.5rem;
-	right: 0.7rem;
+    position: absolute;
+    top: 0.6rem;
+    right: 0.8rem;
+    background: rgb(255 250 240 / 85%);
 }
 
 @media (prefers-reduced-motion: reduce) {
-	*,
-	*::before,
-	*::after {
-		animation-duration: 0.01ms !important;
-		animation-iteration-count: 1 !important;
-		scroll-behavior: auto !important;
-		transition-duration: 0.01ms !important;
-	}
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 
 /* En pantallas pequeñas, la línea pasa al lateral para facilitar la lectura */
 @media (max-width: 700px) {
-	.presentacion,
-	.historia {
-		width: calc(100% - 1.5rem);
-		max-width: 34rem;
-	}
+    .presentacion,
+    .historia {
+        width: calc(100% - 1.5rem);
+        max-width: 34rem;
+    }
 
-	.presentacion {
-		padding-top: 3.2rem;
-	}
+    .presentacion {
+        padding-top: 3.2rem;
+    }
 
-	.historia > h2 {
-		margin-bottom: 2rem;
-		text-align: left;
-	}
+    .historia > h2 {
+        margin-bottom: 2rem;
+        text-align: left;
+    }
 
-	.linea {
-		width: 100%;
-		padding: 1rem 0 1rem 1.25rem;
-	}
+    .linea {
+        width: 100%;
+        padding: 1rem 0 1rem 1.25rem;
+    }
 
-	.linea::before {
-		left: 0.82rem;
-		width: 0.18rem;
-		transform: none;
-	}
+    .linea::before {
+        left: 0.82rem;
+        width: 0.18rem;
+        transform: none;
+    }
 
-	.hecho {
-		grid-template-columns: 2.1rem minmax(0, 1fr);
-		grid-template-areas: "punto info";
-		gap: 1rem;
-		height: auto;
-		min-height: 0;
-		padding-bottom: 1rem;
-		align-items: center;
-	}
+    .hecho {
+        grid-template-columns: 2.1rem minmax(0, 1fr);
+        grid-template-areas: "punto info";
+        gap: 1rem;
+        height: auto;
+        min-height: 0;
+        padding-bottom: 1rem;
+        align-items: center;
+    }
 
-	.punto {
-		grid-area: punto;
-		width: 2.1rem;
-		height: 2.1rem;
-		margin-top: 0;
-	}
+    .punto {
+        grid-area: punto;
+        width: 2.1rem;
+        height: 2.1rem;
+        margin-top: 0;
+    }
 
-	.info-hecho,
-	.hecho:nth-child(even) .info-hecho {
-		grid-area: info;
-		padding: 0;
-		text-align: left;
-	}
+    .info-hecho,
+    .hecho:nth-child(even) .info-hecho {
+        grid-area: info;
+        padding: 0;
+        text-align: left;
+    }
 
-	.info-hecho h3 {
-		font-size: 1.15rem;
-	}
+    .info-hecho h3 {
+        font-size: 1.15rem;
+    }
 
-	.tarjeta,
-	.hecho:nth-child(even) .tarjeta {
-		position: absolute;
-		top: 2.75rem;
-		right: auto;
-		left: 3.1rem;
-		grid-area: auto;
-		width: auto;
-		margin-top: 0;
-	}
+    .tarjeta,
+    .hecho:nth-child(even) .tarjeta {
+        position: absolute;
+        top: 50%;
+        right: auto;
+        left: 3.1rem;
+        grid-area: auto;
+        width: calc(100% - 3.5rem);
+        margin-top: 0;
+    }
 
-	.modal {
-		display: block;
-		max-height: 92vh;
-	}
+    .modal {
+        display: block;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
 
-	.imagen-modal {
-		height: 10rem;
-	}
-
-	.carrusel-modal {
-		height: 10rem;
-	}
-
-	.carrusel-modal .carousel-item {
-		height: 10rem;
-	}
+    .imagen-modal,
+    .carrusel-modal,
+    .carrusel-modal .carousel-item {
+        height: 12rem;
+        min-height: 12rem;
+    }
 }
 
 @media (max-width: 380px) {
-	.presentacion,
-	.historia {
-		width: calc(100% - 1.25rem);
-	}
+    .presentacion,
+    .historia {
+        width: calc(100% - 1.25rem);
+    }
 
-	.presentacion h1 {
-		font-size: clamp(1.75rem, 9vw, 2rem);
-	}
+    .presentacion h1 {
+        font-size: clamp(1.75rem, 9vw, 2rem);
+    }
 }
