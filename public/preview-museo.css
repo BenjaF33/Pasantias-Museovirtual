@@ -1,0 +1,523 @@
+:root {
+  --marble: #f3eddd;
+  --paper: #fffaf0;
+  --ink: #163a55;
+  --blue: #176c91;
+  --coral: #d65f45;
+  --olive: #737b43;
+  --gold: #d7a64a;
+  --shadow: 0 1rem 2.5rem rgb(22 58 85 / 16%);
+}
+
+html,
+body {
+  background-color: var(--marble) !important;
+  color: var(--ink) !important;
+  font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important;
+  scroll-behavior: smooth;
+}
+
+body::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  background-image: radial-gradient(ellipse at 12% 8%, rgb(215 166 74 / 13%), transparent 34%),
+    radial-gradient(ellipse at 88% 42%, rgb(23 108 145 / 8%), transparent 38%),
+    repeating-linear-gradient(125deg, transparent 0 17px, rgb(22 58 85 / 2%) 18px 19px);
+  content: "";
+  pointer-events: none;
+}
+
+app-root { display: block; }
+
+body app-root .barra-navegacion {
+  position: sticky !important;
+  top: 0;
+  z-index: 20 !important;
+  min-height: 4.8rem;
+  padding: 0.75rem max(6vw, 1.25rem) !important;
+  border-bottom: 3px solid var(--gold);
+  background: var(--ink) !important;
+  color: var(--paper) !important;
+  box-shadow: 0 0.4rem 1.5rem rgb(22 58 85 / 18%);
+  font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important;
+}
+
+body app-root .logo {
+  position: relative;
+  padding: 0.35rem 0.65rem 0.35rem 2.15rem !important;
+  border-radius: 0 !important;
+  color: var(--paper) !important;
+  font-size: 1.22rem !important;
+  font-weight: 700;
+}
+
+body app-root .logo::before {
+  position: absolute;
+  top: 50%;
+  left: 0.25rem;
+  width: 1.2rem;
+  height: 1.45rem;
+  border: 2px solid var(--gold);
+  border-top: 0;
+  border-bottom: 0;
+  content: "";
+  transform: translateY(-50%);
+}
+
+body app-root .navegacion a {
+  min-height: 2.7rem;
+  border-radius: 0 !important;
+  color: var(--paper) !important;
+  font-weight: 700;
+}
+
+body app-root .navegacion a:hover,
+body app-root .navegacion a.activo {
+  background: rgb(255 250 240 / 9%) !important;
+  border-bottom-color: var(--coral) !important;
+}
+
+body app-root .boton-menu {
+  border-color: rgb(255 250 240 / 40%) !important;
+  border-radius: 0.2rem !important;
+}
+
+body app-root .presentacion {
+  display: flex;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: min(76vh, 48rem) !important;
+  padding: clamp(4rem, 11vw, 9rem) 1.25rem !important;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(115deg, rgb(13 48 70 / 82%), rgb(23 108 145 / 30%) 72%, rgb(214 95 69 / 25%)),
+    url("/assets/puente ferroviario.jpg") !important;
+  background-position: center 46% !important;
+  text-align: center;
+  isolation: isolate;
+}
+
+body app-root .presentacion::before {
+  position: absolute;
+  z-index: -1;
+  inset: 1rem;
+  border: 1px solid rgb(255 250 240 / 46%);
+  content: "";
+  pointer-events: none;
+}
+
+body app-root .presentacion h1 {
+  max-width: 16ch;
+  color: var(--paper) !important;
+  font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important;
+  font-size: clamp(2.6rem, 7vw, 6rem) !important;
+  font-weight: 700;
+  line-height: 1.02 !important;
+  text-shadow: 0 0.2rem 1.5rem rgb(0 0 0 / 22%);
+  animation: museo-llegada 750ms cubic-bezier(.2,.75,.25,1) both;
+}
+
+body app-root .presentacion h1::after {
+  width: 5rem !important;
+  height: 0.22rem !important;
+  margin-top: 1.55rem !important;
+  border-radius: 0 !important;
+  background: var(--gold) !important;
+}
+
+body app-root .presentacion p {
+  max-width: 36rem;
+  margin-top: 1.5rem !important;
+  color: var(--paper) !important;
+  font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important;
+  font-size: clamp(1.08rem, 2vw, 1.4rem) !important;
+  line-height: 1.6;
+  text-shadow: 0 0.1rem 0.8rem rgb(0 0 0 / 28%);
+  animation: museo-llegada 900ms 100ms cubic-bezier(.2,.75,.25,1) both;
+}
+
+body app-root .historia {
+  width: 100% !important;
+  max-width: none !important;
+  padding: clamp(4rem, 8vw, 7rem) max(calc((100% - 76rem) / 2), 1.25rem) 6rem !important;
+  background: transparent !important;
+}
+
+body app-root .historia > h2 {
+  position: relative;
+  margin: 0 auto 4.5rem !important;
+  color: var(--ink) !important;
+  font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important;
+  font-size: clamp(2rem, 4vw, 3.3rem) !important;
+}
+
+body app-root .historia > h2::after {
+  display: block;
+  width: 3.5rem;
+  height: 0.2rem;
+  margin: 0.9rem auto 0;
+  background: var(--coral);
+  content: "";
+}
+
+body app-root .linea::before {
+  width: 0.2rem !important;
+  background: linear-gradient(var(--coral), var(--gold) 48%, var(--blue)) !important;
+}
+
+body app-root .hecho {
+  min-height: 9rem;
+}
+
+body app-root .punto {
+  border-color: var(--marble) !important;
+  background: var(--color-punto, #8b6548) !important;
+  box-shadow: 0 0 0 2px var(--color-punto, #8b6548), 0 0 0 7px color-mix(in srgb, var(--color-punto, #8b6548) 20%, transparent) !important;
+  transition: transform 240ms cubic-bezier(.2,.8,.2,1), box-shadow 180ms ease !important;
+}
+
+body app-root .punto:hover,
+body app-root .punto:focus-visible,
+body app-root .punto-activo { animation: museo-punto 520ms cubic-bezier(.16,1,.3,1) both; }
+body app-root .punto:hover,
+body app-root .punto:focus-visible,
+body app-root .punto-activo { box-shadow: 0 0 0 2px var(--color-punto, #8b6548), 0 0 0 8px color-mix(in srgb, var(--color-punto, #8b6548) 28%, transparent) !important; }
+
+body app-root .info-hecho {
+  padding: 0.8rem 0.25rem !important;
+  transition: transform 280ms cubic-bezier(.2,.8,.2,1), opacity 220ms ease !important;
+}
+
+body app-root .anio {
+  color: var(--coral) !important;
+  font-family: "Trebuchet MS", sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.12em !important;
+}
+
+body app-root .info-hecho h3,
+body app-root .tarjeta h3 {
+  color: var(--ink) !important;
+  font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important;
+  font-size: clamp(1.12rem, 1.7vw, 1.42rem) !important;
+  line-height: 1.28 !important;
+}
+
+body app-root .info-hecho h3 { margin-top: 0.55rem !important; }
+
+body app-root .tarjeta {
+  border: 1px solid rgb(215 166 74 / 72%);
+  border-left: 5px solid var(--blue);
+  border-radius: 0.25rem !important;
+  background: linear-gradient(145deg, rgb(215 166 74 / 7%), transparent 42%), var(--paper) !important;
+  box-shadow: 0 1.25rem 3rem rgb(22 58 85 / 22%), 0 0 0 5px rgb(255 250 240 / 70%) !important;
+}
+
+body app-root .hecho:nth-child(odd) .tarjeta {
+  transform-origin: right center;
+  animation: museo-tarjeta-desde-punto 460ms cubic-bezier(.16,1,.3,1) both;
+}
+
+body app-root .hecho:nth-child(even) .tarjeta {
+  transform-origin: left center;
+  animation: museo-tarjeta-desde-punto 460ms cubic-bezier(.16,1,.3,1) both;
+}
+
+body app-root .hecho:nth-child(odd) .tarjeta.tarjeta-cerrando,
+body app-root .hecho:nth-child(even) .tarjeta.tarjeta-cerrando {
+  animation: museo-tarjeta-hacia-punto 220ms cubic-bezier(.7,0,.84,0) forwards;
+  pointer-events: none;
+}
+
+body app-root .contenedor-imagen-tarjeta,
+body app-root .carrusel-modal {
+  background-color: var(--ink) !important;
+}
+
+body app-root .contenedor-imagen-tarjeta {
+  position: relative;
+  max-height: 13rem;
+  margin-bottom: 1.15rem;
+  border-bottom: 3px solid var(--gold);
+}
+
+body app-root .imagen-hecho {
+  height: 13rem;
+  transition: transform 500ms cubic-bezier(.2,.8,.2,1) !important;
+}
+
+body app-root .tarjeta:hover .imagen-hecho { transform: scale(1.035); }
+body app-root .contenido-tarjeta { padding: 0.15rem 1.5rem 1.5rem !important; }
+body app-root .contenido-tarjeta > .anio {
+  display: inline-flex;
+  padding: 0.35rem 0.65rem;
+  border-left: 3px solid var(--gold);
+  background: var(--ink);
+  color: var(--paper) !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.16em !important;
+}
+
+body app-root .contenido-tarjeta h3 {
+  margin: 0.75rem 0 0.6rem !important;
+  font-size: clamp(1.35rem, 2vw, 1.7rem) !important;
+  line-height: 1.18 !important;
+}
+
+body app-root .tarjeta p {
+  margin: 0.4rem 0 0.8rem;
+  color: #344c58 !important;
+  font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+body app-root .contenido-modal p { color: #344c58 !important; font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important; }
+
+body app-root .tarjeta button:not(.cerrar) {
+  display: inline-flex;
+  min-height: 2.85rem;
+  margin-top: 0.35rem;
+  padding: 0.75rem 1.15rem !important;
+  border: 1px solid rgb(255 250 240 / 48%) !important;
+  border-radius: 0.15rem !important;
+  background: var(--blue) !important;
+  color: white !important;
+  box-shadow: 0 0.3rem 0.7rem rgb(22 58 85 / 20%);
+  font-weight: 700;
+  transition: transform 180ms ease, box-shadow 180ms ease !important;
+}
+
+body app-root .tarjeta button:not(.cerrar):hover,
+body app-root .tarjeta button:not(.cerrar):focus-visible {
+  background: var(--blue) !important;
+  box-shadow: 0 0.55rem 1.1rem rgb(22 58 85 / 32%);
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  transform: translateY(-3px);
+}
+
+body app-root .tarjeta button:not(.cerrar):active { transform: translateY(0); }
+
+body app-root .cerrar,
+body app-root .cerrar-modal {
+  border-radius: 0.15rem !important;
+  background: var(--coral) !important;
+  color: white !important;
+}
+body app-root .cerrar { border-radius: 0.15rem !important; }
+body app-root .cerrar:hover,
+body app-root .cerrar-modal:hover { background: #b94c36 !important; color: white !important; }
+body app-root .cerrar:hover { color: white !important; }
+
+body app-root .carousel-control-prev,
+body app-root .carousel-control-next {
+  top: 50%;
+  bottom: auto;
+  width: 2.8rem;
+  height: 2.8rem;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+body app-root .carousel-control-prev { left: 0.75rem; }
+body app-root .carousel-control-next { right: 0.75rem; }
+body app-root .carousel-control-prev:hover,
+body app-root .carousel-control-next:hover { filter: brightness(1.2); transform: translateY(-50%) scale(1.08); }
+
+body app-root .carousel-control-prev-icon,
+body app-root .carousel-control-next-icon {
+  filter: drop-shadow(0 1px 3px rgb(0 0 0 / 70%));
+}
+
+body app-root .fondo-modal {
+  background: rgb(11 32 46 / 78%) !important;
+  backdrop-filter: blur(5px);
+  perspective: 1400px;
+}
+
+body app-root .modal {
+  position: relative;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  border: 1px solid rgb(215 166 74 / 65%);
+  border-radius: 0.25rem !important;
+  background: var(--paper) !important;
+  box-shadow: 0 1.5rem 5rem rgb(0 0 0 / 35%) !important;
+  animation: museo-libro-apertura 760ms cubic-bezier(.18,.78,.2,1) both !important;
+}
+
+body app-root .modal::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0.22rem -0.42rem 0.22rem 0.18rem;
+  border: 1px solid rgb(215 166 74 / 45%);
+  border-right: 4px solid var(--gold);
+  background: repeating-linear-gradient(to bottom, var(--paper) 0 calc(1.55rem - 1px), #e7dcc4 calc(1.55rem - 1px) 1.55rem);
+  box-shadow: 0.35rem 0.5rem 1rem rgb(22 58 85 / 22%);
+  content: "";
+  pointer-events: none;
+}
+
+body app-root .modal::after {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 45%;
+  width: 1.1rem;
+  background: linear-gradient(90deg, transparent, rgb(22 58 85 / 15%) 48%, rgb(255 250 240 / 75%) 58%, transparent);
+  content: "";
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+body app-root .modal > .carrusel-modal,
+body app-root .modal > .contenido-modal {
+  position: relative;
+  z-index: 1;
+}
+
+body app-root .modal > .cerrar-modal { z-index: 5; }
+
+body app-root .modal > .carrusel-modal {
+  transform-origin: right center;
+  backface-visibility: hidden;
+  animation: museo-hoja-izquierda 680ms 100ms cubic-bezier(.2,.75,.25,1) both;
+}
+
+body app-root .modal > .contenido-modal {
+  transform-origin: left center;
+  background-color: transparent;
+  backface-visibility: hidden;
+  animation: museo-hoja-derecha 700ms 220ms cubic-bezier(.2,.75,.25,1) both;
+}
+
+body app-root .modal.modal-cerrando {
+  animation: museo-libro-cierre 260ms ease-in forwards !important;
+}
+
+body app-root .contenido-modal h2 { color: var(--ink) !important; font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important; }
+
+body app-root .contenido-modal p {
+  line-height: 1.55 !important;
+}
+
+body app-root .site-footer {
+  position: relative;
+  padding: 1.5rem max(7vw, 1.4rem) !important;
+  border-top: 3px solid var(--gold);
+  background: var(--ink) !important;
+  color: var(--paper) !important;
+  font-family: "Trebuchet MS", sans-serif !important;
+}
+
+@keyframes museo-llegada {
+  from { opacity: 0; transform: translateY(1rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes museo-punto {
+  0% { transform: scale(1); }
+  42% { transform: scale(1.55); }
+  72% { transform: scale(0.94); }
+  100% { transform: scale(1); }
+}
+
+@keyframes museo-tarjeta-desde-punto {
+  from { opacity: 0; transform: translateY(-50%) scaleX(0.06) scaleY(0.88); }
+  to { opacity: 1; transform: translateY(-50%) scaleX(1) scaleY(1); }
+}
+
+@keyframes museo-tarjeta-hacia-punto {
+  from { opacity: 1; transform: translateY(-50%) scaleX(1) scaleY(1); }
+  to { opacity: 0; transform: translateY(-50%) scaleX(0.06) scaleY(0.88); }
+}
+
+@keyframes museo-libro-apertura {
+  from { opacity: 0; transform: rotateY(-78deg) scale(.94); }
+  to { opacity: 1; transform: rotateY(0) scale(1); }
+}
+
+@keyframes museo-libro-cierre {
+  from { opacity: 1; transform: rotateY(0) scale(1); }
+  to { opacity: 0; transform: rotateY(-42deg) scale(.96); }
+}
+
+@keyframes museo-hoja-izquierda {
+  from { opacity: .55; transform: rotateY(70deg); }
+  to { opacity: 1; transform: rotateY(0); }
+}
+
+@keyframes museo-hoja-derecha {
+  from { opacity: .55; transform: rotateY(-70deg); }
+  to { opacity: 1; transform: rotateY(0); }
+}
+
+@media (max-width: 700px) {
+  body app-root .hecho:nth-child(odd) .tarjeta,
+  body app-root .hecho:nth-child(even) .tarjeta {
+    transform-origin: left center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body app-root .punto-activo,
+  body app-root .hecho .tarjeta {
+    animation-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 700px) {
+  body app-root .presentacion {
+    min-height: 66svh !important;
+    padding: 4rem 1.25rem !important;
+    background-position: 58% center !important;
+  }
+  body app-root .presentacion::before { inset: 0.65rem; }
+  body app-root .historia {
+    max-width: none !important;
+    padding: 3.5rem 1rem 4.5rem !important;
+  }
+  body app-root .historia > h2 { margin-bottom: 2.5rem !important; text-align: center !important; }
+  body app-root .linea { padding-left: 1.35rem !important; }
+  body app-root .linea::before { left: 0.82rem !important; }
+  body app-root .hecho { min-height: 7rem; padding-bottom: 0.6rem; }
+  body app-root .punto { width: 1.9rem !important; height: 1.9rem !important; }
+  body app-root .info-hecho,
+  body app-root .hecho:nth-child(even) .info-hecho { padding: 0.8rem 0.15rem !important; }
+  body app-root .info-hecho h3 { font-size: 1.1rem !important; }
+  body app-root .tarjeta,
+  body app-root .hecho:nth-child(even) .tarjeta { left: 2.8rem !important; width: calc(100% - 3rem) !important; }
+  body app-root .site-footer { text-align: center; }
+  body app-root .modal { transform-origin: center top; }
+  body app-root .modal::after { display: none; }
+  body app-root .modal > .carrusel-modal {
+    transform-origin: center bottom;
+    animation-name: museo-hoja-izquierda-movil;
+  }
+  body app-root .modal > .contenido-modal {
+    transform-origin: center top;
+    animation-name: museo-hoja-derecha-movil;
+  }
+}
+
+@keyframes museo-hoja-izquierda-movil {
+  from { opacity: .55; transform: rotateX(48deg); }
+  to { opacity: 1; transform: rotateX(0); }
+}
+
+@keyframes museo-hoja-derecha-movil {
+  from { opacity: .55; transform: rotateX(-35deg); }
+  to { opacity: 1; transform: rotateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
