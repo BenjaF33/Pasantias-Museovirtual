@@ -3,12 +3,12 @@ import { ChangeDetectorRef, Component, inject } from '@angular/core';
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.html',
-  styleUrl: './inicio.css',
 })
 export class Inicio {
 
 
   private readonly changeDetector = inject(ChangeDetectorRef);
+  readonly coloresPuntos = ['#8b6548', '#96714f', '#a07b55', '#aa865e', '#ae9368', '#a59a70', '#929778', '#788f7e', '#5e8583', '#3f7888', '#176c91'];
 
   // Guarda el acontecimiento que el usuario seleccionó
   hechoSeleccionado: any = null;

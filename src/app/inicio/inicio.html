@@ -17,11 +17,11 @@
                 <div class="capa-cierre-tarjeta" (click)="cerrarCard()"></div>
             }
 
-            @for (h of hechos; track $index) {
-            <div class="hecho">
+            @for (h of hechos; track $index; let esIzquierda = $odd) {
+            <div class="hecho" [class.hecho-lado-izquierdo]="esIzquierda" [class.hecho-lado-derecho]="!esIzquierda">
 
                 <!-- PUNTO -->
-                <button class="punto" [class.punto-activo]="hechoSeleccionado === h && !cerrandoCard" [class.punto-cerrando]="hechoSeleccionado === h && cerrandoCard" (click)="mostrarHecho(h)">
+                <button class="punto" [style.--color-punto]="coloresPuntos[$index]" [attr.aria-label]="'Abrir acontecimiento ' + h.anio + ': ' + h.titulo" [class.punto-activo]="hechoSeleccionado === h && !cerrandoCard" [class.punto-cerrando]="hechoSeleccionado === h && cerrandoCard" (click)="mostrarHecho(h)">
                 </button>
 
                 <!-- INFORMACIÓN NORMAL -->
@@ -43,7 +43,7 @@
                         <h3>{{ h.titulo }}</h3>
                         <p>{{ h.descripcion }}</p>
 
-                        <button type="button" (click)="mostrarInfo(h)">Más información</button>
+                        <button type="button" aria-label="Abrir galería de imágenes y relato completo" (click)="mostrarInfo(h)">Abrir galería y relato completo</button>
                     </div>
                 </div>
                 }
