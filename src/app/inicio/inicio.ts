@@ -16,6 +16,7 @@ export class Inicio {
   hechoAmpliado: any = null;
   // Índice de la foto visible actualmente dentro del carrusel.
   imagenActiva = 0;
+  imagenAgrandada = false;
   // Imágenes válidas del hecho ampliado; se actualiza cada vez que se abre un hecho.
   imagenesCarrusel: string[] = [];
   cerrandoCard = false;
@@ -59,6 +60,7 @@ export class Inicio {
     // Desactiva la animación de cierre y comienza el carrusel desde la primera foto.
     this.cerrandoInfo = false;
     this.imagenActiva = 0;
+    this.imagenAgrandada = false;
     // Toma el arreglo img del hecho y descarta valores nulos o textos vacíos.
     const imagenes = Array.isArray(h.img) ? h.img as unknown[] : [];
     this.imagenesCarrusel = imagenes
@@ -121,5 +123,7 @@ export class Inicio {
     }, 220);
   }
 
-
+  agrandarimg(){
+    this.imagenAgrandada = !this.imagenAgrandada;
+  }
 }

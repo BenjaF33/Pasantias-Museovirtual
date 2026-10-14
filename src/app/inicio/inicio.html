@@ -14,14 +14,17 @@
         <div class="linea">
             <!-- Capa transparente para cerrar la tarjeta al hacer clic en cualquier lugar fuera -->
             @if (hechoSeleccionado) {
-                <div class="capa-cierre-tarjeta" (click)="cerrarCard()"></div>
+            <div class="capa-cierre-tarjeta" (click)="cerrarCard()"></div>
             }
 
             @for (h of hechos; track $index; let esIzquierda = $odd) {
             <div class="hecho" [class.hecho-lado-izquierdo]="esIzquierda" [class.hecho-lado-derecho]="!esIzquierda">
 
                 <!-- PUNTO -->
-                <button class="punto" [style.--color-punto]="coloresPuntos[$index]" [attr.aria-label]="'Abrir acontecimiento ' + h.anio + ': ' + h.titulo" [class.punto-activo]="hechoSeleccionado === h && !cerrandoCard" [class.punto-cerrando]="hechoSeleccionado === h && cerrandoCard" (click)="mostrarHecho(h)">
+                <button class="punto" [style.--color-punto]="coloresPuntos[$index]"
+                    [attr.aria-label]="'Abrir acontecimiento ' + h.anio + ': ' + h.titulo"
+                    [class.punto-activo]="hechoSeleccionado === h && !cerrandoCard"
+                    [class.punto-cerrando]="hechoSeleccionado === h && cerrandoCard" (click)="mostrarHecho(h)">
                 </button>
 
                 <!-- INFORMACIÓN NORMAL -->
@@ -43,7 +46,8 @@
                         <h3>{{ h.titulo }}</h3>
                         <p>{{ h.descripcion }}</p>
 
-                        <button type="button" aria-label="Abrir galería de imágenes y relato completo" (click)="mostrarInfo(h)">Abrir galería y relato completo</button>
+                        <button type="button" aria-label="Abrir galería de imágenes y relato completo"
+                            (click)="mostrarInfo(h)">Abrir galería y relato completo</button>
                     </div>
                 </div>
                 }
@@ -54,35 +58,40 @@
 
         <!-- Solo se muestra el modal cuando existe un hecho ampliado seleccionado. -->
         @if (hechoAmpliado) {
-            <!-- Fondo oscuro del modal: al hacer clic fuera del contenido se cierra. -->
-            <div class="fondo-modal" [class.fondo-modal-cerrando]="cerrandoInfo" (click)="cerrarInfo()">
+        <!-- Fondo oscuro del modal: al hacer clic fuera del contenido se cierra. -->
+        <div class="fondo-modal" [class.fondo-modal-cerrando]="cerrandoInfo" (click)="cerrarInfo()">
             <!-- Detiene el clic dentro de la card para que no active el cierre del fondo. -->
-            <article class="modal" [class.modal-cerrando]="cerrandoInfo" role="dialog" aria-modal="true" [attr.aria-labelledby]="'modal-titulo-' + hechoAmpliado.anio" (click)="$event.stopPropagation()">
+            <article class="modal" [class.modal-cerrando]="cerrandoInfo"
+                [class.modal-imagen-ampliada]="imagenAgrandada" role="dialog" aria-modal="true"
+                [attr.aria-labelledby]="'modal-titulo-' + hechoAmpliado.anio" (click)="$event.stopPropagation()">
                 <!-- Botón para cerrar la información ampliada mediante la animación de salida. -->
-                <button type="button" class="cerrar-modal" aria-label="Cerrar información" (click)="cerrarInfo()">×</button>
+                <button type="button" class="cerrar-modal" aria-label="Cerrar información"
+                    (click)="cerrarInfo()">×</button>
 
                 <!-- Carrusel con transición fluida (fade) sin los indicadores en bloque -->
-                <div id="carouselHecho" class="carousel slide carousel-fade carrusel-modal" aria-label="Galería de imágenes">
-                    
+                <div id="carouselHecho" class="carousel slide carousel-fade carrusel-modal"
+                    aria-label="Galería de imágenes">
+
                     <!-- Contenedor de las diapositivas -->
                     <div class="carousel-inner">
                         @for (imagen of imagenesCarrusel; track imagen; let indice = $index) {
-                        <div class="carousel-item" [class.active]="imagenActiva === indice">
-                            <img [src]="imagen" class="d-block w-100 imagen-modal" [alt]="hechoAmpliado.titulo + ' - imagen ' + (indice + 1)">
-                        </div>
+                            <button type="button" (click)="agrandarimg()" class="carousel-item" [class.active]="imagenActiva === indice"><img [src]="imagen" class="d-block w-100 imagen-modal"
+                                    [alt]="hechoAmpliado.titulo + ' - imagen ' + (indice + 1)"></button>
                         }
                     </div>
 
                     @if (imagenesCarrusel.length > 1) {
-                        <!-- Flecha anterior -->
-                        <button class="carousel-control-prev" type="button" aria-label="Imagen anterior" (click)="imagenAnterior()">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        </button>
+                    <!-- Flecha anterior -->
+                    <button class="carousel-control-prev" type="button" aria-label="Imagen anterior"
+                        (click)="imagenAnterior()">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
 
-                        <!-- Flecha siguiente -->
-                        <button class="carousel-control-next" type="button" aria-label="Imagen siguiente" (click)="imagenSiguiente()">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        </button>
+                    <!-- Flecha siguiente -->
+                    <button class="carousel-control-next" type="button" aria-label="Imagen siguiente"
+                        (click)="imagenSiguiente()">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
                     }
                 </div>
 
