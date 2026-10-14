@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { Inicio } from './inicio/inicio';
 import { Nosotros } from './nosotros/nosotros';
+import { Contacto } from './contacto/contacto';
 
 
 
@@ -10,6 +11,7 @@ export const routes: Routes = [
 
     { path: 'inicio', component: Inicio },
     { path: 'nosotros', component: Nosotros },
+    { path: 'contacto', component: Contacto },
 
 
     { path: '**', redirectTo: 'inicio' },
