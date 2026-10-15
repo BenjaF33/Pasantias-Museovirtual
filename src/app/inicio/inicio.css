@@ -530,9 +530,9 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr);
-  width: 100%;
-  height: calc(100vh - 2rem);
-  max-height: calc(100vh - 2rem);
+  width: min(50rem, 100%);
+  height: min(90vh, 40rem);
+  max-height: min(90vh, 40rem);
   background: #111;
 }
 
@@ -1061,19 +1061,6 @@ body app-root .modal::before {
   box-shadow: 0.35rem 0.5rem 1rem rgb(22 58 85 / 22%);
   content: "";
   pointer-events: none;
-}
-
-body app-root .modal::after {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  bottom: 0;
-  left: 45%;
-  width: 1.1rem;
-  background: linear-gradient(90deg, transparent, rgb(22 58 85 / 15%) 48%, rgb(255 250 240 / 75%) 58%, transparent);
-  content: "";
-  pointer-events: none;
-  transform: translateX(-50%);
 }
 
 body app-root .modal > .carrusel-modal,
