@@ -219,7 +219,7 @@
     top: 50%;
     left: 0;
     z-index: 3;
-    width: min(100%, 31rem);
+    width: min(100%, 34rem);
     overflow: hidden;
     border-radius: 0.5rem;
     background: #fffaf0;
@@ -367,10 +367,10 @@
 .modal {
     display: grid;
     position: relative;
-    grid-template-columns: minmax(12rem, 0.9fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(12rem, 0.85fr) minmax(0, 1.15fr);
     grid-template-rows: auto;
     align-items: stretch;
-    width: min(50rem, 100%);
+  width: min(56rem, 100%);
     max-height: min(90vh, 40rem);
     overflow: hidden;
     border-radius: 0.5rem;
@@ -823,6 +823,7 @@ body app-root .linea::before {
 }
 
 body app-root .hecho {
+  height: auto;
   min-height: 9rem;
 }
 
@@ -858,16 +859,20 @@ body app-root .info-hecho {
 body app-root .anio {
   color: var(--coral) !important;
   font-family: "Trebuchet MS", sans-serif !important;
-  font-size: 0.78rem !important;
+  font-size: 1.2rem !important;
   font-weight: 800 !important;
   letter-spacing: 0.12em !important;
+}
+
+body app-root .info-hecho > .anio {
+  font-size: 2.4rem !important;
 }
 
 body app-root .info-hecho h3,
 body app-root .tarjeta h3 {
   color: var(--ink) !important;
   font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important;
-  font-size: clamp(1.12rem, 1.7vw, 1.42rem) !important;
+  font-size: 1.7rem !important;
   line-height: 1.28 !important;
 }
 
@@ -930,13 +935,13 @@ body app-root .contenido-tarjeta > .anio {
   border-left: 3px solid var(--coral);
   background: var(--ink);
   color: var(--paper) !important;
-  font-size: 0.72rem !important;
+  font-size: 1.5rem !important;
   letter-spacing: 0.16em !important;
 }
 
 body app-root .contenido-tarjeta h3 {
   margin: 0.75rem 0 0.6rem !important;
-  font-size: clamp(1.35rem, 2vw, 1.7rem) !important;
+  font-size: 2.2rem !important;
   line-height: 1.18 !important;
 }
 
@@ -944,13 +949,21 @@ body app-root .tarjeta p {
   margin: 0.4rem 0 0.8rem;
   color: #344c58 !important;
   font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important;
-  font-size: 1rem;
-  line-height: 1.65;
+  font-size: 1.45rem !important;
+  line-height: 1.7;
 }
 
 body app-root .contenido-modal p {
   color: #344c58 !important;
   font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important;
+}
+
+body app-root .contenido-modal {
+  padding: 1.75rem !important;
+}
+
+body app-root .contenido-modal > .anio {
+  font-size: 1.65rem !important;
 }
 
 body app-root .tarjeta button:not(.cerrar) {
@@ -1093,10 +1106,13 @@ body app-root .modal.modal-cerrando {
 body app-root .contenido-modal h2 {
   color: var(--ink) !important;
   font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important;
+  font-size: 2.5rem !important;
+  line-height: 1.2 !important;
 }
 
 body app-root .contenido-modal p {
-  line-height: 1.55 !important;
+  font-size: 1.35rem !important;
+  line-height: 1.65 !important;
 }
 
 body app-root .site-footer {
@@ -1185,7 +1201,13 @@ body app-root .site-footer {
   body app-root .punto { width: 1.9rem !important; height: 1.9rem !important; }
   body app-root .info-hecho,
   body app-root .hecho-lado-derecho .info-hecho { padding: 0.8rem 0.15rem !important; }
-  body app-root .info-hecho h3 { font-size: 1.1rem !important; }
+  body app-root .info-hecho > .anio { font-size: 2rem !important; }
+  body app-root .info-hecho h3 { font-size: 1.4rem !important; }
+  body app-root .contenido-tarjeta h3 { font-size: 1.9rem !important; }
+  body app-root .tarjeta p { font-size: 1.25rem !important; }
+  body app-root .contenido-modal { padding: 1.25rem !important; }
+  body app-root .contenido-modal h2 { font-size: 1.9rem !important; }
+  body app-root .contenido-modal p { font-size: 1.1rem !important; }
   body app-root .tarjeta,
   body app-root .hecho-lado-derecho .tarjeta { left: 2.8rem !important; width: calc(100% - 3rem) !important; }
   body app-root .site-footer { text-align: center; }
