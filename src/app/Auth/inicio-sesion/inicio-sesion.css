@@ -1,0 +1,136 @@
+:host {
+	display: block;
+}
+
+.pagina-inicio-sesion {
+	display: grid;
+	min-height: 100%;
+	place-items: center;
+	padding: clamp(2rem, 6vw, 5rem) 1rem;
+	background: linear-gradient(180deg, #f8f6ec 0%, #fffaf0 55%, #ffffff 100%);
+	color: #253342;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.formulario-inicio-sesion {
+	display: grid;
+	gap: 1.25rem;
+	width: min(100%, 28rem);
+	padding: clamp(1.5rem, 5vw, 3rem);
+	border: 1px solid rgb(37 51 66 / 9%);
+	border-radius: 1rem;
+	background: #fffdfa;
+	box-shadow: 0 0.75rem 2rem rgb(37 51 66 / 10%);
+}
+
+.encabezado-formulario {
+	margin-bottom: 0.5rem;
+	text-align: center;
+}
+
+.encabezado-formulario h1 {
+	margin: 0;
+	padding-bottom: 1rem;
+	background: linear-gradient(#c96f42, #c96f42) center bottom / 3.5rem 0.22rem no-repeat;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: clamp(1.8rem, 5vw, 2.4rem);
+	line-height: 1.2;
+}
+
+.encabezado-formulario p {
+	margin: 1rem 0 0;
+	color: #4b5965;
+	line-height: 1.5;
+}
+
+.campo {
+	display: grid;
+	gap: 0.45rem;
+}
+
+label {
+	font-size: 0.95rem;
+	font-weight: 700;
+}
+
+input {
+	width: 100%;
+	min-width: 0;
+	padding: 0.8rem 0.9rem;
+	border: 1px solid #9ba4ac;
+	border-radius: 0.5rem;
+	background: #ffffff;
+	color: #253342;
+	font: inherit;
+	line-height: 1.5;
+	transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+input::placeholder {
+	color: #68747e;
+	opacity: 1;
+}
+
+input:focus-visible {
+	border-color: #8b4b2e;
+	outline: 3px solid rgb(201 111 66 / 28%);
+	outline-offset: 1px;
+}
+
+button {
+	min-height: 3rem;
+	margin-top: 0.25rem;
+	padding: 0.75rem 1rem;
+	border: 0;
+	border-radius: 0.5rem;
+	background: #8b4b2e;
+	color: #ffffff;
+	cursor: pointer;
+	font: inherit;
+	font-weight: 700;
+	transition: background-color 160ms ease, transform 160ms ease;
+}
+
+button:hover {
+	background: #713b25;
+}
+
+button:focus-visible,
+a:focus-visible {
+	outline: 3px solid rgb(201 111 66 / 55%);
+	outline-offset: 3px;
+}
+
+button:active {
+	transform: scale(0.98);
+}
+
+.enlace-registro {
+	margin: 0;
+	color: #4b5965;
+	line-height: 1.5;
+	text-align: center;
+}
+
+.enlace-registro a {
+	color: #713b25;
+	font-weight: 700;
+	text-underline-offset: 0.2em;
+}
+
+.enlace-registro a:hover {
+	color: #8b4b2e;
+}
+
+@media (max-width: 480px) {
+	.pagina-inicio-sesion {
+		padding: 2rem 0.85rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	input,
+	button {
+		transition: none;
+	}
+}
