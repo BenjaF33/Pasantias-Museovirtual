@@ -5,26 +5,23 @@ import { Injectable } from '@angular/core';
 })
 export class FavoritosService {
 
-   productos: any[] = [];
+   eventos: any[] = [];
 
-  obtenerProductos() {
-    return this.productos;
+  obtenerEventos() {
+    return this.eventos;
   }
   
-  agregarProducto(producto: any) {
-    const productoExistente = this.productos.find(p => p.id === producto.id);
-    if (productoExistente) {
-      productoExistente.cantidad ++;
-
-    } else {
-      this.productos.push(producto);
+  agregarEvento(evento: any) {
+    const eventoExistente = this.eventos.find(p => p.id === evento.id);
+    if (!eventoExistente) {
+      this.eventos.push(evento);
     }
   }
 
-  eliminarProducto(producto: any) {
-    const index = this.productos.findIndex(p => p.id === producto.id);
+  eliminarEvento(evento: any) {
+    const index = this.eventos.findIndex(p => p.id === evento.id);
     if (index !== -1) {
-      this.productos.splice(index, 1);
+      this.eventos.splice(index, 1);
     }
   }
   

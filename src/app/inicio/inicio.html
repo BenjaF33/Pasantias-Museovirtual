@@ -46,8 +46,19 @@
                         <h3>{{ h.titulo }}</h3>
                         <p>{{ h.descripcion }}</p>
 
-                        <button type="button" aria-label="Abrir galería de imágenes y relato completo"
-                            (click)="mostrarInfo(h)">Abrir galería y relato completo</button>
+                        <div class="acciones-tarjeta">
+                            <button type="button" aria-label="Abrir galería de imágenes y relato completo"
+                                (click)="mostrarInfo(h)">Abrir galería y relato completo</button>
+                            <button
+                            type="button"
+                            class="boton-favorito"
+                            [class.favorito-activo]="esFavorito(h)"
+                            (click)="agregarFavorito(h)">
+                            <span aria-hidden="true">
+                                {{ esFavorito(h) ? '♥' : '♡' }}
+                            </span>
+                        </button>
+                        </div>
                     </div>
                 </div>
                 }

@@ -1,1 +1,36 @@
-<p>favoritos works!</p>
+<main class="favoritos-page">
+	<header class="favoritos-encabezado">
+		<p class="favoritos-eyebrow">Museo Virtual de Cipolletti</p>
+		<h1 class="page-title">Mis favoritos</h1>
+		<p class="favoritos-intro">
+			Los acontecimientos que guardaste para volver a descubrirlos.
+		</p>
+	</header>
+
+	@if (eventos.length === 0) {
+		<section class="favoritos-vacio" aria-live="polite">
+			<span class="favoritos-corazon" aria-hidden="true">♥</span>
+			<h2>Todavía no tenés favoritos</h2>
+			<p>Explorá la línea del tiempo y tocá el corazón de un acontecimiento para guardarlo acá.</p>
+		</section>
+	} @else {
+		<section class="favoritos-grid" aria-label="Acontecimientos favoritos">
+			@for (evento of eventos; track evento.id) {
+				<article class="favorito-card">
+					<div class="favorito-imagen">
+						<img [src]="evento.img[0]" [alt]="'Imagen de ' + evento.titulo" />
+					</div>
+					<div class="favorito-contenido">
+						<span class="favorito-anio">{{ evento.anio }}</span>
+						<h2>{{ evento.titulo }}</h2>
+						<p>{{ evento.descripcion }}</p>
+						<button type="button" class="quitar-favorito" (click)="eliminar(evento)">
+							<span aria-hidden="true">♥</span>
+							Quitar de favoritos
+						</button>
+					</div>
+				</article>
+			}
+		</section>
+	}
+</main>
