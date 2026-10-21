@@ -1,0 +1,35 @@
+<main class="productos-page">
+	<header class="productos-encabezado">
+		<p class="productos-eyebrow">Museo Virtual de Cipolletti</p>
+		<h1 class="page-title">Nuestros productos</h1>
+		<p class="productos-intro">
+			Llevate un pedacito de nuestra historia y conocé más sobre Cipolletti.
+		</p>
+	</header>
+
+	<section class="productos-grid" aria-label="Productos disponibles">
+		@for (producto of productos; track producto.id) {
+			<article class="producto-card">
+				<div class="producto-imagen">
+					<img
+						[src]="producto.imagen"
+						[alt]="'Portada de ' + producto.nombre"
+						(error)="manejarErrorImagen($event)"
+					/>
+				</div>
+
+				<div class="producto-contenido">
+					<h2>{{ producto.nombre }}</h2>
+					<p class="producto-descripcion">{{ producto.descripcion }}</p>
+					<p class="producto-precio">
+						<span>Precio</span>
+						<strong>$ {{ producto.precio }}</strong>
+					</p>
+					<button type="button" class="producto-agregar" (click)="agregarCarrito(producto)">
+						Agregar al carrito
+					</button>
+				</div>
+			</article>
+		}
+	</section>
+</main>

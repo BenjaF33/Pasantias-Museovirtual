@@ -5,7 +5,7 @@ import { Nav } from './compartidos/nav/nav';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, Footer, Nav],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, Nav, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
