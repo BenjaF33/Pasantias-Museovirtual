@@ -1,0 +1,54 @@
+<main class="contacto-page">
+	<section class="contacto-card" aria-labelledby="contacto-title">
+		<p class="contacto-eyebrow">Museo Virtual de Cipolletti</p>
+		<h1 id="contacto-title">Contacto</h1>
+		<p class="contacto-intro">
+			¿Tenés una idea para mejorar el museo? Compartí tu sugerencia o contanos qué te gustaría cambiar.
+		</p>
+
+		<form class="contacto-form" aria-describedby="contacto-help">
+			<div class="form-field">
+				<label for="contacto-nombre">Nombre</label>
+				<input
+					id="contacto-nombre"
+					name="nombre"
+					type="text"
+					autocomplete="name"
+					placeholder="Tu nombre"
+					maxlength="80"
+					required
+				/>
+			</div>
+
+			<div class="form-field">
+				<label for="contacto-email">Email</label>
+				<input
+					id="contacto-email"
+					name="email"
+					type="email"
+					autocomplete="email"
+					placeholder="tunombre@correo.com"
+					maxlength="254"
+					required
+				/>
+			</div>
+
+			<div class="form-field">
+				<label for="contacto-mensaje">Sugerencia o cambio</label>
+				<textarea
+					id="contacto-mensaje"
+					name="mensaje"
+					rows="6"
+					maxlength="2000"
+					placeholder="Escribí acá tu sugerencia..."
+					required
+				></textarea>
+			</div>
+
+			<p id="contacto-help" class="contacto-aviso">
+				El envío todavía no está habilitado. Por ahora, el contenido de este formulario no se enviará.
+			</p>
+			<button class="contacto-submit" type="button" disabled>Envío próximamente</button>
+		</form>
+	</section>
+</main>
