@@ -1,28 +1,43 @@
-    
+:host {
+	display: block;
+	flex: 1 0 auto;
+}
+
 .pagina-registro {
 	display: grid;
-	min-height: 100%;
+	min-height: min(76vh, 52rem);
 	place-items: center;
-	padding: clamp(2rem, 6vw, 5rem) 1rem;
-	background: linear-gradient(180deg, #f8f6ec 0%, #fffaf0 55%, #ffffff 100%);
+	padding: clamp(2rem, 5vw, 4rem) 1rem;
+	background:
+		radial-gradient(ellipse at 50% 38%, rgb(255 250 240 / 95%), transparent 68%),
+		linear-gradient(180deg, #f3efe3 0%, #fffaf0 55%, #ffffff 100%);
 	color: #253342;
 	font-family: Arial, Helvetica, sans-serif;
 }
 
 .formulario-registro {
 	display: grid;
-	gap: 1.25rem;
-	width: min(100%, 28rem);
-	padding: clamp(1.5rem, 5vw, 3rem);
+	gap: 1.35rem;
+	width: min(100%, 29rem);
+	padding: clamp(1.5rem, 5vw, 2.75rem);
 	border: 1px solid rgb(37 51 66 / 9%);
-	border-radius: 1rem;
+	border-radius: 1.1rem;
 	background: #fffdfa;
-	box-shadow: 0 0.75rem 2rem rgb(37 51 66 / 10%);
+	box-shadow: 0 1rem 2.75rem rgb(37 51 66 / 12%);
 }
 
 .encabezado-formulario {
-	margin-bottom: 0.5rem;
+	margin-bottom: 0.15rem;
 	text-align: center;
+}
+
+.sobrelinea-formulario {
+	margin: 0 0 0.7rem;
+	color: #8b4b2e;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
 }
 
 .encabezado-formulario h1 {
@@ -42,7 +57,7 @@
 
 .campo {
 	display: grid;
-	gap: 0.45rem;
+	gap: 0.55rem;
 }
 
 label {
@@ -53,7 +68,8 @@ label {
 input {
 	width: 100%;
 	min-width: 0;
-	padding: 0.8rem 0.9rem;
+	min-height: 3.2rem;
+	padding: 0.75rem 0.9rem;
 	border: 1px solid #9ba4ac;
 	border-radius: 0.5rem;
 	background: #ffffff;
@@ -74,31 +90,39 @@ input:focus-visible {
 	outline-offset: 1px;
 }
 
-button {
-	min-height: 3rem;
-	margin-top: 0.25rem;
+.boton-registro {
+	display: grid;
+	place-items: center;
+	width: 100%;
+	min-height: 3.4rem;
+	margin-top: 0.15rem;
 	padding: 0.75rem 1rem;
-	border: 0;
-	border-radius: 0.5rem;
-	background: #8b4b2e;
+	border: 1px solid #713b25;
+	border-radius: 0.6rem;
+	background: linear-gradient(135deg, #985638, #7c4027);
 	color: #ffffff;
 	cursor: pointer;
 	font: inherit;
 	font-weight: 700;
-	transition: background-color 160ms ease, transform 160ms ease;
+	box-shadow: 0 0.2rem 0 #63351f, 0 0.45rem 1rem rgb(99 53 31 / 18%);
+	transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
-button:hover {
-	background: #713b25;
+.boton-registro:hover {
+	background: linear-gradient(135deg, #87492e, #69351f);
+	box-shadow: 0 0.28rem 0 #63351f, 0 0.6rem 1.1rem rgb(99 53 31 / 24%);
+	transform: translateY(-2px);
 }
 
-button:focus-visible {
-	outline: 3px solid rgb(201 111 66 / 45%);
+.boton-registro:focus-visible,
+.enlace-inicio-sesion a:focus-visible {
+	outline: 3px solid rgb(201 111 66 / 55%);
 	outline-offset: 3px;
 }
 
-button:active {
-	transform: scale(0.98);
+.boton-registro:active {
+	box-shadow: 0 0.05rem 0 #63351f;
+	transform: translateY(2px);
 }
 
 .enlace-inicio-sesion {
@@ -125,13 +149,18 @@ button:active {
 
 @media (max-width: 480px) {
 	.pagina-registro {
-		padding: 2rem 0.85rem;
+		min-height: min(78vh, 52rem);
+		padding: 1.5rem 0.85rem;
+	}
+
+	.formulario-registro {
+		gap: 1.15rem;
 	}
 }
 
 @media (prefers-reduced-motion: reduce) {
 	input,
-	button {
+	.boton-registro {
 		transition: none;
 	}
 }

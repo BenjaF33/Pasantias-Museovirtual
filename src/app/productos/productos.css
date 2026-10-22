@@ -63,6 +63,7 @@
 }
 
 .producto-imagen {
+	position: relative;
 	height: clamp(16rem, 34vw, 24rem);
 	overflow: hidden;
 	background: #f1e9dc;

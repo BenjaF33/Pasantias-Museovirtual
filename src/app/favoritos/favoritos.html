@@ -1,36 +1,48 @@
-<main class="favoritos-page">
-	<header class="favoritos-encabezado">
-		<p class="favoritos-eyebrow">Museo Virtual de Cipolletti</p>
-		<h1 class="page-title">Mis favoritos</h1>
-		<p class="favoritos-intro">
-			Los acontecimientos que guardaste para volver a descubrirlos.
-		</p>
+<main class="pagina-favoritos">
+	<header class="encabezado-favoritos">
+		<p class="sobrelinea">Museo Virtual de Cipolletti</p>
+		<h1>Mis favoritos</h1>
+		<p class="subtitulo">Tu colección de historias y lugares guardados</p>
 	</header>
 
-	@if (eventos.length === 0) {
-		<section class="favoritos-vacio" aria-live="polite">
-			<span class="favoritos-corazon" aria-hidden="true">♥</span>
-			<h2>Todavía no tenés favoritos</h2>
-			<p>Explorá la línea del tiempo y tocá el corazón de un acontecimiento para guardarlo acá.</p>
-		</section>
-	} @else {
-		<section class="favoritos-grid" aria-label="Acontecimientos favoritos">
-			@for (evento of eventos; track evento.id) {
-				<article class="favorito-card">
-					<div class="favorito-imagen">
-						<img [src]="evento.img[0]" [alt]="'Imagen de ' + evento.titulo" />
-					</div>
-					<div class="favorito-contenido">
-						<span class="favorito-anio">{{ evento.anio }}</span>
-						<h2>{{ evento.titulo }}</h2>
-						<p>{{ evento.descripcion }}</p>
-						<button type="button" class="quitar-favorito" (click)="eliminar(evento)">
-							<span aria-hidden="true">♥</span>
-							Quitar de favoritos
+	@if (favoritos.length > 0) {
+		<section class="coleccion-favoritos" aria-label="Hechos históricos guardados en favoritos">
+			@for (hecho of favoritos; track hecho.anio + hecho.titulo) {
+				<article class="tarjeta-favorito">
+					<div class="imagen-favorito">
+						<img
+							[src]="hecho.img[0]"
+							[alt]="hecho.titulo"
+							(error)="manejarErrorImagen($event)"
+						/>
+						<button
+							class="quitar-favorito"
+							type="button"
+							[attr.aria-label]="'Quitar ' + hecho.titulo + ' de favoritos'"
+							(click)="quitarFavorito(hecho)">
+							<span aria-hidden="true">&#9829;</span>
 						</button>
+					</div>
+
+					<div class="contenido-favorito">
+						<p class="categoria">Hecho histórico · {{ hecho.anio }}</p>
+						<h2>{{ hecho.titulo }}</h2>
+						<p class="descripcion">{{ hecho.descripcion }}</p>
+						<a class="enlace-hecho" routerLink="/inicio">Ver línea del tiempo <span aria-hidden="true">→</span></a>
 					</div>
 				</article>
 			}
+		</section>
+
+		<p class="contador">
+			{{ favoritos.length }} {{ favoritos.length === 1 ? 'elemento guardado' : 'elementos guardados' }}
+		</p>
+	} @else {
+		<section class="estado-vacio" aria-live="polite">
+			<span class="corazon-vacio" aria-hidden="true">&#9825;</span>
+			<h2>Aún no tienes favoritos</h2>
+			<p>Guarda hechos desde la línea del tiempo y los encontrarás aquí.</p>
+			<a routerLink="/inicio">Explorar la línea del tiempo</a>
 		</section>
 	}
 </main>

@@ -1,22 +1,72 @@
 <header class="barra-navegacion">
-	<a class="logo" routerLink="/inicio" (click)="cerrarMenu()">Museo Virtual</a>
+  <a class="logo" routerLink="/inicio" (click)="cerrarMenu()">
+    <span class="logo-marca" aria-hidden="true">✦</span>
+    Museo Virtual
+  </a>
 
-	<button
-		class="boton-menu"
-		type="button"
-		aria-label="Abrir menú de navegación"
-		[attr.aria-expanded]="menuAbierto()"
-		(click)="alternarMenu()">
-		<span aria-hidden="true">&#9776;</span>
-	</button>
+  <button
+    class="boton-menu"
+    type="button"
+    [attr.aria-label]="menuAbierto() ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'"
+    [attr.aria-expanded]="menuAbierto()"
+    aria-controls="contenido-navegacion"
+    (click)="alternarMenu()">
+    <span aria-hidden="true">&#9776;</span>
+  </button>
 
-	<nav class="navegacion" [class.navegacion-abierta]="menuAbierto()" aria-label="Navegación principal">
-		<a routerLink="/inicio" routerLinkActive="activo" (click)="cerrarMenu()">Inicio</a>
-		<a routerLink="/nosotros" routerLinkActive="activo" (click)="cerrarMenu()">Nosotros</a>
-		<a routerLink="/productos" routerLinkActive="activo" (click)="cerrarMenu()">Productos</a>
-		<a routerLink="/favoritos" routerLinkActive="activo" (click)="cerrarMenu()">Favoritos</a>
-		<a routerLink="/contacto" routerLinkActive="activo" (click)="cerrarMenu()">Contacto</a>
-	</nav>
+  <div
+    id="contenido-navegacion"
+    class="contenido-navegacion"
+    [class.contenido-abierto]="menuAbierto()">
+    <nav class="navegacion" aria-label="Navegación principal">
 
-	<a class="boton-sesion" routerLink="/inicio-sesion" routerLinkActive="activo" (click)="cerrarMenu()">Iniciar sesión</a>
+      <a routerLink="/inicio" routerLinkActive="activo" (click)="cerrarMenu()">
+        Inicio
+      </a>
+      <a routerLink="/productos" routerLinkActive="activo" (click)="cerrarMenu()">
+        Productos
+      </a>
+      <a routerLink="/nosotros" routerLinkActive="activo" (click)="cerrarMenu()">
+        Nosotros
+      </a>
+      <a routerLink="/contacto" routerLinkActive="activo" (click)="cerrarMenu()">
+        Contacto
+      </a>
+    </nav>
+
+    <div class="acciones-navegacion">
+      <a
+        class="enlace-icono"
+        routerLink="/favoritos"
+        routerLinkActive="activo"
+        aria-label="Favoritos"
+        (click)="cerrarMenu()">
+        <span class="icono" aria-hidden="true">&#9825;</span>
+        <span class="texto-icono">Favoritos</span>
+      </a>
+
+      <a
+        class="enlace-icono"
+        routerLink="/carrito"
+        routerLinkActive="activo"
+        aria-label="Carrito"
+        (click)="cerrarMenu()">
+        <span class="icono" aria-hidden="true">&#128722;</span>
+        <span class="texto-icono">Carrito</span>
+      </a>
+
+      <a
+        class="boton-sesion"
+        routerLink="/inicio-sesion"
+        routerLinkActive="activo"
+        aria-label="Iniciar sesión"
+        title="Iniciar sesión"
+        (click)="cerrarMenu()">
+        <svg class="icono-sesion" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="8" r="4" />
+          <path d="M5 21a7 7 0 0 1 14 0" />
+        </svg>
+      </a>
+    </div>
+  </div>
 </header>

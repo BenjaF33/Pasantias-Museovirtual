@@ -7,20 +7,20 @@ import { Producto } from '../models/productos';
 export class ProductosService {
   productos: Producto[] = [{
     id: 1,
-    nombre: 'Libro museo Cipolletti',
-    descripcion: 'Un libro que contiene la historia del museo de Cipolletti',
+    nombre: 'Cipolletti de ayer para el hoy',
+    descripcion: 'Un recorrido por la microhistoria de Cipolletti, de Liliana Graciela Fedeli Ferracuti.',
     precio: 10000,
     stock: 100,
-    imagen: '/assets/Fotos/Cipolletti hoy/CipoHoy.JPG',
+    imagen: '/assets/WhatsApp Image 2026-10-22 at 08.47.45.jpeg',
     cantidad: 0,
   },
   {
     id: 2,
-    nombre: 'Libro Cipolletazo',
-    descripcion: 'Un libro que contiene la historia del Cipolletazo',
+    nombre: 'Gitanos: Una mirada que muchos no ven',
+    descripcion: 'Una mirada a la cultura gitana, de Liliana Graciela Fedeli.',
     precio: 15000,
     stock: 50,
-    imagen: '/assets/Fotos/Cipolletti hoy/CipoHoy.JPG',
+    imagen: '/assets/gitanos.jpeg',
     cantidad: 0
   }
   ];

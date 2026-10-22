@@ -1,24 +1,30 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { Hecho } from '../models/hechos';
 import { FavoritosService } from '../servicios/favoritos';
 
 @Component({
   selector: 'app-favoritos',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './favoritos.html',
   styleUrl: './favoritos.css',
 })
 export class Favoritos {
-  eventos: any[] = [];
+  favoritos: Hecho[] = [];
 
-  constructor(
-  private favoritosService: FavoritosService,
-  ){}
-  
-  ngOnInit(){
-  this.eventos = this.favoritosService.obtenerEventos();
+  constructor(private favoritosService: FavoritosService) {
+    this.favoritos = this.favoritosService.obtenerHechos();
   }
 
-  eliminar(evento: any){
-  this.favoritosService.eliminarEvento(evento);
+  quitarFavorito(hecho: Hecho) {
+    this.favoritosService.eliminarHecho(hecho);
+    this.favoritos = this.favoritosService.obtenerHechos();
+  }
+
+  manejarErrorImagen(event: Event) {
+    const imagen = event.target;
+    if (imagen instanceof HTMLImageElement) {
+      imagen.src = '/assets/puente ferroviario.jpg';
+    }
   }
 }

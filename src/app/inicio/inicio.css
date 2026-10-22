@@ -276,7 +276,7 @@
     line-height: 1.55;
 }
 
-.tarjeta button:not(.cerrar) {
+.tarjeta button:not(.cerrar):not(.boton-favorito-hecho) {
     margin-top: 0.5rem;
     padding: 0.65rem 0.9rem;
     border: 0;
@@ -288,70 +288,50 @@
     transition: background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
-.tarjeta button:not(.cerrar):hover,
-.tarjeta button:not(.cerrar):focus-visible {
+.tarjeta button:not(.cerrar):not(.boton-favorito-hecho):hover,
+.tarjeta button:not(.cerrar):not(.boton-favorito-hecho):focus-visible {
     background: #253342;
     box-shadow: 0 0.25rem 0.6rem rgb(37 51 66 / 18%);
     outline: none;
     transform: translateY(-2px);
 }
 
-.tarjeta button:not(.cerrar):active {
+.tarjeta button:not(.cerrar):not(.boton-favorito-hecho):active {
     transform: translateY(0) scale(0.97);
 }
 
-.tarjeta .boton-favorito {
-    display: inline-grid;
-    width: auto;
-    min-width: 0;
-    height: auto;
-    margin-top: 0.5rem;
-    padding: 0.65rem 0.25rem;
+.tarjeta .boton-favorito-hecho {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    z-index: 2;
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
     place-items: center;
+    margin: 0;
+    padding: 0;
     border: 0;
-    background: transparent;
-    box-shadow: none;
-    color: #dc3545;
+    border-radius: 50%;
+    background: #fffaf0;
+    color: #b8463f;
     cursor: pointer;
-    font-size: 1.8rem;
+    font-size: 1.65rem;
     line-height: 1;
+    box-shadow: 0 0.15rem 0.5rem rgb(0 0 0 / 18%);
+    transition: background-color 160ms ease, transform 160ms ease;
 }
 
-.tarjeta .boton-favorito:hover,
-.tarjeta .boton-favorito:focus-visible {
-    background: transparent;
-    box-shadow: none;
-    color: #b42332;
-    outline: 2px solid rgb(220 53 69 / 45%);
+.tarjeta .boton-favorito-hecho:hover,
+.tarjeta .boton-favorito-hecho:focus-visible {
+    background: #f3e6d9;
+    outline: 3px solid #c6a15b;
     outline-offset: 2px;
     transform: scale(1.08);
 }
 
-.tarjeta .boton-favorito.es-favorito,
-.tarjeta .boton-favorito.es-favorito:hover,
-.tarjeta .boton-favorito.es-favorito:focus-visible {
-    color: #dc3545;
-}
-
-.tarjeta .boton-favorito:active {
-    transform: translateY(0) scale(0.97);
-}
-
-.boton-favorito {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-    color: gray;
-    transition: transform 0.2s, color 0.2s;
-}
-
-.boton-favorito.favorito-activo {
-    color: red;
-}
-
-.boton-favorito:hover {
-    transform: scale(1.15);
+.tarjeta .boton-favorito-hecho:active {
+    transform: scale(0.96);
 }
 
 .cerrar,
@@ -746,59 +726,6 @@ app-root {
   display: block;
 }
 
-body app-root .barra-navegacion {
-  position: sticky !important;
-  top: 0;
-  z-index: 20 !important;
-  min-height: 4.8rem;
-  padding: 0.75rem max(6vw, 1.25rem) !important;
-  border-bottom: 3px solid var(--gold);
-  background: var(--ink) !important;
-  color: var(--paper) !important;
-  box-shadow: 0 0.4rem 1.5rem rgb(22 58 85 / 18%);
-  font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif !important;
-}
-
-body app-root .logo {
-  position: relative;
-  padding: 0.35rem 0.65rem 0.35rem 2.15rem !important;
-  border-radius: 0 !important;
-  color: var(--paper) !important;
-  font-size: 1.22rem !important;
-  font-weight: 700;
-}
-
-body app-root .logo::before {
-  position: absolute;
-  top: 50%;
-  left: 0.25rem;
-  width: 1.2rem;
-  height: 1.45rem;
-  border: 2px solid var(--gold);
-  border-top: 0;
-  border-bottom: 0;
-  content: "";
-  transform: translateY(-50%);
-}
-
-body app-root .navegacion a {
-  min-height: 2.7rem;
-  border-radius: 0 !important;
-  color: var(--paper) !important;
-  font-weight: 700;
-}
-
-body app-root .navegacion a:hover,
-body app-root .navegacion a.activo {
-  background: rgb(255 250 240 / 9%) !important;
-  border-bottom-color: var(--coral) !important;
-}
-
-body app-root .boton-menu {
-  border-color: rgb(255 250 240 / 40%) !important;
-  border-radius: 0.2rem !important;
-}
-
 body app-root .presentacion {
   display: flex;
   width: 100% !important;
@@ -1026,7 +953,7 @@ body app-root .contenido-modal > .anio {
   font-size: 1.65rem !important;
 }
 
-body app-root .tarjeta button:not(.cerrar) {
+body app-root .tarjeta button:not(.cerrar):not(.boton-favorito-hecho) {
   display: inline-flex;
   min-height: 2.85rem;
   margin-top: 0.35rem;
@@ -1040,8 +967,8 @@ body app-root .tarjeta button:not(.cerrar) {
   transition: transform 180ms ease, box-shadow 180ms ease !important;
 }
 
-body app-root .tarjeta button:not(.cerrar):hover,
-body app-root .tarjeta button:not(.cerrar):focus-visible {
+body app-root .tarjeta button:not(.cerrar):not(.boton-favorito-hecho):hover,
+body app-root .tarjeta button:not(.cerrar):not(.boton-favorito-hecho):focus-visible {
   background: var(--blue) !important;
   box-shadow: 0 0.55rem 1.1rem rgb(22 58 85 / 32%);
   outline: 2px solid var(--gold);
@@ -1049,7 +976,7 @@ body app-root .tarjeta button:not(.cerrar):focus-visible {
   transform: translateY(-2px);
 }
 
-body app-root .tarjeta button:not(.cerrar):active {
+body app-root .tarjeta button:not(.cerrar):not(.boton-favorito-hecho):active {
   transform: translateY(0);
 }
 

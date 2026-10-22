@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Hecho } from '../models/hechos';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EventosService {
-   hechos = [
+   hechos: Hecho[] = [
     { anio: '1830', img: ['assets/Fotos/1830 Primer ferrocarril de pasajeros Liverpool–Manchester/dibujo ferrocarril.jpg', 'assets/Fotos/1830 Primer ferrocarril de pasajeros Liverpool–Manchester/Primer ferrocarril de pasajeros.jpg'], titulo: 'Primer ferrocarril de pasajeros Liverpool–Manchester', descripcion: 'Se inauguró en Inglaterra el primer ferrocarril de pasajeros del mundo, un acontecimiento que marcó el inicio de una revolución en los transportes. ', info: 'La posibilidad de trasladar personas y mercancías de forma más rápida impulsó el crecimiento económico y urbano en numerosos países. Este avance tecnológico sería fundamental décadas después para el desarrollo ferroviario argentino y la llegada del tren al Alto Valle.'},
     { anio: '1875', img: ['assets/Fotos/1875 Profiliaxis Social Bs.As/Poster concientizacion.jpg', 'assets/Fotos/1875 Profiliaxis Social Bs.As/prostibulo-upscaled-4x.jpg', 'assets/Fotos/1875 Profiliaxis Social Bs.As/prostibulo2.jpg'], titulo: 'Ordenanza de Profilaxis Social en Buenos Aires', descripcion: 'El Reglamento de la Prostitución aprobado en Buenos Aires el 5 de enero de 1875 legalizó y reglamentó los prostíbulos bajo control médico y policial para frenar las enfermedades venéreas.', info: 'La ordenanza regulaba aspectos sanitarios vinculados al ejercicio de la prostitución en Argentina (legalización de burdeles, controles sanitarios, administración femenina, registro e impuestos). Este antecedente permite comprender las futuras reglamentaciones que se aplicarían en Cipolletti durante las primeras décadas del siglo XX.' },
     { anio: '1879', img: ['assets/Fotos/1879 Fortin Confluencia/Tropas arriban la confluencia.jpg', 'assets/Fotos/1879 Fortin Confluencia/Fortin Confluencia.jpg'], titulo: 'Construcción del Fuerte Confluencia', descripcion: 'El Ejército Argentino construyó el Fuerte Confluencia en la zona donde confluyen los ríos Neuquén y Limay. ', info: 'Este puesto militar formó parte del proceso de ocupación y organización territorial de la Patagonia. Aunque tuvo una existencia relativamente breve, es considerado uno de los antecedentes históricos más importantes para el posterior surgimiento de Cipolletti y otras localidades del Alto Valle.' },
@@ -19,7 +20,7 @@ export class EventosService {
   ];
 
 
-  obtenerEventos(): any[] {
+  obtenerEventos(): Hecho[] {
       return this.hechos;
     }
 }
