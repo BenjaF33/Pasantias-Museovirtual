@@ -13,3 +13,27 @@ body {
 	min-width: 0;
 	overflow-x: hidden;
 }
+
+app-root {
+	display: flex;
+	min-height: 100vh;
+	min-height: 100svh;
+	flex-direction: column;
+}
+
+app-root .app-content {
+	display: flex;
+	flex: 1 0 auto;
+	flex-direction: column;
+}
+
+app-root .app-content > router-outlet + * {
+	display: block;
+	flex: 1 0 auto;
+}
+
+app-root app-footer {
+	display: block;
+	flex-shrink: 0;
+	margin-top: auto;
+}

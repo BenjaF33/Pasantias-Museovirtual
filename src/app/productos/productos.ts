@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Producto } from '../models/productos';
 import { CarritoService } from '../servicios/carrito';
+import { NotificacionesService } from '../servicios/notificaciones';
 import { ProductosService } from '../servicios/productos';
 
 @Component({
@@ -14,7 +15,8 @@ export class Productos {
 
   constructor(
     private carritoService: CarritoService,
-    private productosService: ProductosService
+    private productosService: ProductosService,
+    private notificaciones: NotificacionesService,
   ) { }
 
   ngOnInit() {
@@ -23,7 +25,11 @@ export class Productos {
   }
 
   agregarCarrito(producto: Producto) {
+    const yaAgregado = this.carritoService.obtenerProductos().some(item => item.id === producto.id);
     this.carritoService.agregarProducto(producto);
+    if (!yaAgregado) {
+      this.notificaciones.mostrar('Agregado al carrito', 'success');
+    }
   }
 
   manejarErrorImagen(event: Event) {

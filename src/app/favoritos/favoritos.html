@@ -28,7 +28,12 @@
 						<p class="categoria">Hecho histórico · {{ hecho.anio }}</p>
 						<h2>{{ hecho.titulo }}</h2>
 						<p class="descripcion">{{ hecho.descripcion }}</p>
-						<a class="enlace-hecho" routerLink="/inicio">Ver línea del tiempo <span aria-hidden="true">→</span></a>
+						<a
+							class="enlace-hecho"
+							routerLink="/inicio"
+							[queryParams]="{ anio: hecho.anio, titulo: hecho.titulo }">
+							Ver línea del tiempo <span aria-hidden="true">→</span>
+						</a>
 					</div>
 				</article>
 			}

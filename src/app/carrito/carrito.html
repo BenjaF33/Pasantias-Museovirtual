@@ -1,1 +1,70 @@
-<p>carrito works!</p>
+<main class="pagina-carrito">
+	<header class="encabezado-carrito">
+		<p class="sobrelinea">Museo Virtual de Cipolletti</p>
+		<h1>Mi carrito</h1>
+		<p class="subtitulo">Llevate un pedacito de nuestra historia.</p>
+	</header>
+
+	@if (productos.length > 0) {
+		<div class="contenido-carrito">
+			<section class="lista-carrito" aria-label="Productos en el carrito">
+				@for (producto of productos; track producto.id) {
+					<article class="producto-carrito">
+						<div class="producto-imagen">
+							<img
+								[src]="producto.imagen"
+								[alt]="'Portada de ' + producto.nombre"
+							/>
+						</div>
+
+						<div class="producto-detalle">
+							<p class="producto-etiqueta">Producto del museo</p>
+							<h2>{{ producto.nombre }}</h2>
+							<p class="producto-descripcion">{{ producto.descripcion }}</p>
+							<p class="producto-precio-unitario">$ {{ producto.precio }}</p>
+						</div>
+
+						<div class="producto-acciones">
+							<strong class="subtotal-producto">$ {{ producto.precio }}</strong>
+							<button
+								class="quitar-producto"
+								type="button"
+								[attr.aria-label]="'Quitar ' + producto.nombre + ' del carrito'"
+								(click)="quitarProducto(producto)">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					</article>
+				}
+
+				<a class="seguir-comprando" routerLink="/productos">
+					<span aria-hidden="true">←</span> Seguir explorando productos
+				</a>
+			</section>
+
+			<aside class="resumen-carrito" aria-label="Resumen de compra">
+				<p class="resumen-etiqueta">Tu pedido</p>
+				<h2>Resumen</h2>
+				<div class="resumen-linea">
+					<span>{{ cantidadTotal }} {{ cantidadTotal === 1 ? 'artículo' : 'artículos' }}</span>
+					<strong>$ {{ total }}</strong>
+				</div>
+				<div class="resumen-linea total">
+					<span>Total</span>
+					<strong>$ {{ total }}</strong>
+				</div>
+				<p class="nota-compra">El total corresponde a los productos seleccionados.</p>
+				<button class="finalizar-compra" type="button" (click)="finalizarCompra()">
+					Finalizar compra
+				</button>
+			</aside>
+		</div>
+	} @else {
+		<section class="carrito-vacio" aria-live="polite">
+			<span class="icono-carrito" aria-hidden="true">🛍</span>
+			<h2>Tu carrito está vacío</h2>
+			<p>Descubrí libros y recuerdos para seguir conectándote con la historia de Cipolletti.</p>
+			<a routerLink="/productos">Explorar productos</a>
+		</section>
+	}
+</main>

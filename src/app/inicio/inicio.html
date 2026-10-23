@@ -18,7 +18,7 @@
             }
 
             @for (h of hechos; track $index; let esIzquierda = $odd) {
-            <div class="hecho" [class.hecho-lado-izquierdo]="esIzquierda" [class.hecho-lado-derecho]="!esIzquierda">
+            <div [id]="'evento-' + $index" class="hecho" [class.hecho-lado-izquierdo]="esIzquierda" [class.hecho-lado-derecho]="!esIzquierda">
 
                 <!-- PUNTO -->
                 <button class="punto" [style.--color-punto]="coloresPuntos[$index]"

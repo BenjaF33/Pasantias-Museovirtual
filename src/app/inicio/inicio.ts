@@ -1,7 +1,9 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Hecho } from '../models/hechos';
 import { EventosService } from '../servicios/eventos';
 import { FavoritosService } from '../servicios/favoritos';
+import { NotificacionesService } from '../servicios/notificaciones';
 
 @Component({
   selector: 'app-inicio',
@@ -9,6 +11,8 @@ import { FavoritosService } from '../servicios/favoritos';
 })
 export class Inicio {
   private readonly changeDetector = inject(ChangeDetectorRef);
+  private readonly route = inject(ActivatedRoute);
+  private eventoSolicitadoIndex: number | null = null;
 
   readonly coloresPuntos = [
     '#8b6548', '#96714f', '#a07b55', '#aa865e', '#ae9368', '#a59a70',
@@ -28,18 +32,52 @@ export class Inicio {
   constructor(
     private readonly favoritosService: FavoritosService,
     private readonly eventosService: EventosService,
-  ) {}
+    private readonly notificaciones: NotificacionesService,
+  ) {
+    afterNextRender(() => {
+      if (this.eventoSolicitadoIndex !== null) {
+        document.getElementById(`evento-${this.eventoSolicitadoIndex}`)?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }
+    });
+  }
 
   ngOnInit() {
     this.hechos = this.eventosService.obtenerEventos();
+    const anio = this.route.snapshot.queryParamMap.get('anio');
+    const titulo = this.route.snapshot.queryParamMap.get('titulo');
+
+    if (anio && titulo) {
+      const indice = this.hechos.findIndex(hecho => hecho.anio === anio && hecho.titulo === titulo);
+      if (indice !== -1) {
+        this.hechoSeleccionado = this.hechos[indice];
+        this.eventoSolicitadoIndex = indice;
+      }
+    }
   }
 
   esFavorito(hecho: Hecho): boolean {
     return this.favoritosService.contieneHecho(hecho);
   }
 
-  alternarFavorito(hecho: Hecho) {
+  async alternarFavorito(hecho: Hecho): Promise<void> {
+    const yaEsFavorito = this.favoritosService.contieneHecho(hecho);
+    if (yaEsFavorito) {
+      const confirmar = await this.notificaciones.confirmarEliminacion(
+        '¿Quieres eliminar este favorito?',
+      );
+      if (!confirmar) {
+        return;
+      }
+    }
+
     this.favoritosService.alternarHecho(hecho);
+    this.notificaciones.mostrar(
+      yaEsFavorito ? 'Eliminado de favoritos' : 'Agregado a favoritos',
+      yaEsFavorito ? 'info' : 'success',
+    );
   }
 
   mostrarHecho(hecho: Hecho) {
