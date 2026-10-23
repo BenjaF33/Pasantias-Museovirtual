@@ -23,6 +23,7 @@
 .logo,
 .navegacion a,
 .enlace-icono,
+.boton-tema,
 .boton-sesion {
 	text-decoration: none;
 	transition: color 160ms ease, background-color 160ms ease, transform 160ms ease;
@@ -147,6 +148,42 @@
 	font-size: 1.15rem;
 }
 
+.boton-tema {
+	display: inline-grid;
+	flex: 0 0 auto;
+	width: 2.6rem;
+	height: 2.6rem;
+	place-items: center;
+	padding: 0;
+	border: 1px solid rgb(214 181 109 / 65%);
+	border-radius: 0.4rem;
+	background: transparent;
+	color: #fffaf0;
+	cursor: pointer;
+	font: inherit;
+	transition: color 160ms ease, background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.boton-tema > span:first-child {
+	display: grid;
+	width: 1.35rem;
+	height: 1.35rem;
+	place-items: center;
+	font-family: Arial, sans-serif;
+	font-size: 1.3rem;
+	line-height: 1;
+}
+
+.boton-tema:hover,
+.boton-tema:focus-visible {
+	background: rgb(255 250 240 / 10%);
+	color: #f0d28b;
+}
+
+.boton-tema:hover {
+	transform: translateY(-1px);
+}
+
 .boton-sesion {
 	display: inline-flex;
 	flex: 0 0 auto;
@@ -189,6 +226,7 @@
 }
 
 .boton-sesion:focus-visible,
+.boton-tema:focus-visible,
 .enlace-icono:focus-visible,
 .navegacion a:focus-visible {
 	outline: 2px solid #d6b56d;
@@ -265,6 +303,11 @@
 	}
 
 	.boton-sesion {
+		width: 2.5rem;
+		height: 2.5rem;
+	}
+
+	.boton-tema {
 		width: 2.5rem;
 		height: 2.5rem;
 	}

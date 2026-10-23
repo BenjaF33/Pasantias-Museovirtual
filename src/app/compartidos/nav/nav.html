@@ -55,6 +55,15 @@
         <span class="texto-icono">Carrito</span>
       </a>
 
+      <button
+        class="boton-tema"
+        type="button"
+        [attr.aria-label]="tema.modoOscuro() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+        [attr.aria-pressed]="tema.modoOscuro()"
+        (click)="tema.alternar()">
+        <span aria-hidden="true">{{ tema.modoOscuro() ? '☀' : '☾' }}</span>
+      </button>
+
       <a
         class="boton-sesion"
         routerLink="/inicio-sesion"

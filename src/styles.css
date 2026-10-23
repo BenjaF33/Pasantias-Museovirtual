@@ -37,3 +37,285 @@ app-root app-footer {
 	flex-shrink: 0;
 	margin-top: auto;
 }
+
+html[data-theme="dark"] {
+	color-scheme: dark;
+	--marble: #16232d;
+	--paper: #202f3b;
+	--ink: #f2f1e9;
+	--blue: #4b91ad;
+	--coral: #f09378;
+	--olive: #c2cb8c;
+	--gold: #e5c67b;
+	--theme-bg: #16232d;
+	--theme-surface: #202f3b;
+	--theme-surface-raised: #2b3d49;
+	--theme-text: #f2f1e9;
+	--theme-muted: #c6d0d5;
+	--theme-border: #526571;
+	--theme-accent: #e5c67b;
+}
+
+html[data-theme="dark"] body {
+	background-color: var(--theme-bg) !important;
+	color: var(--theme-text) !important;
+}
+
+html[data-theme="dark"] body app-root
+	:where(.pagina-carrito, .pagina-favoritos, .productos-page, .contacto-page, .nosotros-page, .pagina-registro, .pagina-inicio-sesion) {
+	background: var(--theme-bg) !important;
+	color: var(--theme-text) !important;
+}
+
+html[data-theme="dark"] body app-root
+	:where(.historia, .coleccion-favoritos, .lista-carrito) {
+	background: transparent !important;
+	color: var(--theme-text) !important;
+}
+
+html[data-theme="dark"] body app-root
+	:where(.producto-card, .resumen-carrito, .carrito-vacio, .tarjeta-favorito, .estado-vacio, .contacto-card, .formulario-registro, .formulario-inicio-sesion, .historiadora, .familia-fideli, .mision, .equipo, .equipo-desarrollador, .tarjeta, .modal) {
+	border-color: var(--theme-border) !important;
+	background: var(--theme-surface) !important;
+	color: var(--theme-text) !important;
+	box-shadow: 0 0.65rem 1.8rem rgb(0 0 0 / 28%);
+}
+
+html[data-theme="dark"] body app-root
+	:where(.producto-carrito, .encabezado-carrito, .encabezado-favoritos, .resumen-linea, .enlace-hecho) {
+	border-color: var(--theme-border) !important;
+}
+
+html[data-theme="dark"] body app-root
+	:where(.pagina-carrito, .pagina-favoritos, .productos-page, .contacto-page, .nosotros-page, .pagina-registro, .pagina-inicio-sesion, .historia)
+	:where(h1, h2, h3, p, span, strong, label, li, .page-title, .producto-descripcion, .descripcion, .subtitulo, .nota-compra, .contador, .resumen-linea, .producto-detalle, .sobrelinea, .categoria, .producto-etiqueta, .resumen-etiqueta) {
+	color: var(--theme-text);
+}
+
+html[data-theme="dark"] body app-root
+	:where(.pagina-carrito, .pagina-favoritos, .productos-page, .contacto-page, .nosotros-page, .pagina-registro, .pagina-inicio-sesion, .historia)
+	:where(.subtitulo, .producto-descripcion, .descripcion, .nota-compra, .contador, .contacto-intro, .contacto-aviso, .enlace-registro, .enlace-inicio-sesion, .historiadora-text .descripcion, .descripcion-fideli, .mision p, .equipo p, .equipo-desarrollador p) {
+	color: var(--theme-muted) !important;
+}
+
+html[data-theme="dark"] body app-root
+	:where(.sobrelinea, .resumen-etiqueta, .producto-etiqueta, .productos-eyebrow, .contacto-eyebrow, .sobrelinea-formulario, .categoria, .anio, .lista-desarrolladores strong, .producto-precio strong, .producto-precio-unitario, .resumen-linea.total strong) {
+	color: var(--theme-accent) !important;
+}
+
+html[data-theme="dark"] body app-root
+	:where(.producto-contenido, .contenido-favorito, .resumen-carrito, .estado-vacio, .carrito-vacio, .contacto-card, .formulario-registro, .formulario-inicio-sesion, .contenido-modal, .modal) {
+	color: var(--theme-text);
+}
+
+html[data-theme="dark"] body app-root
+	:where(input, textarea, select) {
+	border-color: var(--theme-border) !important;
+	background-color: #18232c !important;
+	color: var(--theme-text) !important;
+}
+
+html[data-theme="dark"] body app-root
+	:where(input, textarea, select)::placeholder {
+	color: #aeb9c0 !important;
+}
+
+html[data-theme="dark"] body app-root
+	:where(.form-field input, .form-field textarea, .campo input):focus-visible {
+	border-color: var(--theme-accent) !important;
+	outline-color: rgb(227 193 116 / 38%) !important;
+}
+
+html[data-theme="dark"] body app-root
+	:where(.contacto-aviso, .lista-desarrolladores li, .producto-imagen, .imagen-favorito, .icono-carrito, .contacto-card) {
+	border-color: var(--theme-border);
+	background-color: var(--theme-surface-raised);
+}
+
+html[data-theme="dark"] body app-root
+	:where(.contacto-aviso, .lista-desarrolladores li) {
+	color: var(--theme-text) !important;
+}
+
+html[data-theme="dark"] body app-root
+	:where(.enlace-hecho, .seguir-comprando, .enlace-registro a, .enlace-inicio-sesion a) {
+	color: #f0ca82 !important;
+}
+
+html[data-theme="dark"] body app-root
+	:where(.enlace-hecho:hover, .seguir-comprando:hover, .enlace-registro a:hover, .enlace-inicio-sesion a:hover) {
+	color: #ffe0a0 !important;
+}
+
+html[data-theme="dark"] body app-root .site-footer {
+	border-color: var(--theme-accent) !important;
+	background: #101820 !important;
+	color: var(--theme-text) !important;
+}
+
+html[data-theme="dark"] body app-root .producto-agregar,
+html[data-theme="dark"] body app-root .contacto-submit {
+	background: #315d70 !important;
+	color: #ffffff !important;
+}
+
+html[data-theme="dark"] body app-root .producto-agregar:hover,
+html[data-theme="dark"] body app-root .contacto-submit:hover {
+	background: #40788f !important;
+}
+
+html[data-theme="dark"] body app-root .resumen-linea,
+html[data-theme="dark"] body app-root .resumen-linea strong,
+html[data-theme="dark"] body app-root .subtotal-producto {
+	color: var(--theme-text) !important;
+}
+
+html[data-theme="dark"] body app-root .quitar-producto {
+	border-color: #a85d53;
+	background: #4b2c2a;
+	color: #ffd2c9;
+}
+
+html[data-theme="dark"] body app-root .quitar-favorito,
+html[data-theme="dark"] body app-root .tarjeta .boton-favorito-hecho {
+	background: #493331;
+	color: #ffd0c5;
+}
+
+html[data-theme="dark"] body app-root .estado-vacio a,
+html[data-theme="dark"] body app-root .finalizar-compra,
+html[data-theme="dark"] body app-root .tarjeta button:not(.cerrar):not(.boton-favorito-hecho) {
+	border-color: #4a8198 !important;
+	background: #315d70 !important;
+	color: #ffffff !important;
+}
+
+html[data-theme="dark"] body app-root .boton-tema {
+	border-color: var(--theme-accent);
+	background: rgb(255 250 240 / 8%);
+	color: #fffaf0;
+}
+
+html[data-theme="dark"] body app-root .presentacion {
+	background-image: linear-gradient(115deg, rgb(8 20 29 / 88%), rgb(15 46 62 / 64%) 72%, rgb(67 39 35 / 48%)),
+		url("/assets/puente ferroviario.jpg") !important;
+}
+
+html[data-theme="dark"] body app-root .presentacion h1,
+html[data-theme="dark"] body app-root .presentacion p {
+	color: #fffaf0 !important;
+}
+
+html[data-theme="dark"] body app-root .historia {
+	background: transparent !important;
+}
+
+html[data-theme="dark"] body app-root .historia > h2,
+html[data-theme="dark"] body app-root .info-hecho h3,
+html[data-theme="dark"] body app-root .tarjeta h3,
+html[data-theme="dark"] body app-root .contenido-modal h2,
+html[data-theme="dark"] body app-root .tarjeta p,
+html[data-theme="dark"] body app-root .contenido-modal p {
+	color: var(--theme-text) !important;
+}
+
+html[data-theme="dark"] body app-root .tarjeta,
+html[data-theme="dark"] body app-root .modal {
+	border-color: #536574 !important;
+	background: var(--theme-surface) !important;
+}
+
+html[data-theme="dark"] body app-root .contenido-tarjeta > .anio {
+	background: #17232d;
+	color: #ffe0a0 !important;
+}
+
+html[data-theme="dark"] body app-root .linea::before {
+	background: linear-gradient(var(--coral), var(--gold) 48%, var(--blue)) !important;
+}
+
+html[data-theme="dark"] body app-root .punto {
+	border-color: var(--theme-bg) !important;
+	background: color-mix(in srgb, var(--color-punto, #8b6548) 65%, white) !important;
+	box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-punto, #8b6548) 65%, white),
+		0 0 0 7px color-mix(in srgb, var(--color-punto, #8b6548) 28%, transparent) !important;
+}
+
+html[data-theme="dark"] body app-root .punto:hover,
+html[data-theme="dark"] body app-root .punto:focus-visible,
+html[data-theme="dark"] body app-root .punto-activo {
+	background: var(--theme-accent) !important;
+	box-shadow: 0 0 0 2px var(--theme-accent), 0 0 0 7px rgb(229 198 123 / 28%) !important;
+}
+
+html[data-theme="dark"] body app-root .tarjeta p,
+html[data-theme="dark"] body app-root .contenido-modal p {
+	color: var(--theme-text) !important;
+}
+
+html[data-theme="dark"] body app-root .tarjeta {
+	box-shadow: 0 1.25rem 3rem rgb(0 0 0 / 45%), 0 0 0 5px rgb(32 47 59 / 85%) !important;
+}
+
+html[data-theme="dark"] body app-root .modal::before {
+	border-color: rgb(229 198 123 / 45%);
+	background: repeating-linear-gradient(
+		to bottom,
+		var(--theme-surface) 0 calc(1.55rem - 1px),
+		#344652 calc(1.55rem - 1px) 1.55rem
+	);
+	box-shadow: 0.35rem 0.5rem 1rem rgb(0 0 0 / 35%);
+}
+
+html[data-theme="dark"] body app-root .carrusel-modal,
+html[data-theme="dark"] body app-root .contenedor-imagen-tarjeta {
+	background-color: #101820 !important;
+}
+
+html[data-theme="dark"] body app-root .fondo-modal {
+	background: rgb(0 0 0 / 78%);
+}
+
+html[data-theme="dark"] .swal2-popup {
+	border: 1px solid var(--theme-border);
+	background: var(--theme-surface);
+	color: var(--theme-text);
+}
+
+html[data-theme="dark"] .swal2-title,
+html[data-theme="dark"] .swal2-html-container {
+	color: var(--theme-text);
+}
+
+html[data-theme="dark"] body app-root .productos-page .productos-encabezado .page-title,
+html[data-theme="dark"] body app-root .productos-page .producto-contenido h2,
+html[data-theme="dark"] body app-root .pagina-carrito .encabezado-carrito h1,
+html[data-theme="dark"] body app-root .pagina-carrito .producto-detalle h2,
+html[data-theme="dark"] body app-root .pagina-carrito .resumen-carrito h2,
+html[data-theme="dark"] body app-root .pagina-carrito .carrito-vacio h2,
+html[data-theme="dark"] body app-root .pagina-favoritos .encabezado-favoritos h1,
+html[data-theme="dark"] body app-root .pagina-favoritos .contenido-favorito h2,
+html[data-theme="dark"] body app-root .pagina-favoritos .estado-vacio h2,
+html[data-theme="dark"] body app-root .contacto-page .contacto-card h1,
+html[data-theme="dark"] body app-root .nosotros-page .page-title,
+html[data-theme="dark"] body app-root .nosotros-page .historiadora-text .nombre,
+html[data-theme="dark"] body app-root .nosotros-page .subtitulo,
+html[data-theme="dark"] body app-root .nosotros-page :is(.familia-fideli, .equipo-desarrollador, .mision) h3,
+html[data-theme="dark"] body app-root :is(.pagina-inicio-sesion, .pagina-registro) .encabezado-formulario h1 {
+	color: var(--theme-text) !important;
+}
+
+html[data-theme="dark"] body app-root .nosotros-page .historiadora-text .descripcion,
+html[data-theme="dark"] body app-root .nosotros-page .descripcion-fideli,
+html[data-theme="dark"] body app-root .nosotros-page .mision p,
+html[data-theme="dark"] body app-root .nosotros-page .equipo-desarrollador p,
+html[data-theme="dark"] body app-root :is(.pagina-inicio-sesion, .pagina-registro) .encabezado-formulario > p,
+html[data-theme="dark"] body app-root :is(.pagina-inicio-sesion, .pagina-registro) .enlace-registro,
+html[data-theme="dark"] body app-root :is(.pagina-inicio-sesion, .pagina-registro) .enlace-inicio-sesion,
+html[data-theme="dark"] body app-root .contacto-page .contacto-intro {
+	color: var(--theme-muted) !important;
+}
+
+html[data-theme="dark"] body app-root .nosotros-page .lista-desarrolladores strong {
+	color: var(--theme-accent) !important;
+}

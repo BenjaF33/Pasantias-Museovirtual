@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { TemaService } from '../../servicios/tema';
 
 @Component({
   selector: 'app-nav',
@@ -8,6 +9,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './nav.css',
 })
 export class Nav {
+  readonly tema = inject(TemaService);
   protected readonly title = signal('MuseoVirtual');
   protected readonly menuAbierto = signal(false);
 
