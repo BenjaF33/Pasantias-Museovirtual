@@ -26,7 +26,7 @@ export class Inicio {
   hechoSeleccionado: Hecho | null = null;
   hechoAmpliado: Hecho | null = null;
   hechoEnEdicion: Hecho | null = null;
-  borradorEdicion = { titulo: '', anio: '', descripcion: '', img: [] as string[] };
+  borradorEdicion = { titulo: '', anio: '', descripcion: '', info: '', img: [] as string[] };
   imagenesCargando = 0;
   imagenActiva = 0;
   imagenAgrandada = false;
@@ -79,6 +79,7 @@ export class Inicio {
       titulo: hecho.titulo,
       anio: hecho.anio,
       descripcion: hecho.descripcion,
+      info: hecho.info,
       img: [...hecho.img],
     };
   }
@@ -150,11 +151,12 @@ export class Inicio {
     const titulo = this.borradorEdicion.titulo.trim();
     const anio = this.borradorEdicion.anio.trim();
     const descripcion = this.borradorEdicion.descripcion.trim();
-    if (!titulo || !anio || !descripcion) {
+    const info = this.borradorEdicion.info.trim();
+    if (!titulo || !anio || !descripcion || !info) {
       return;
     }
 
-    Object.assign(hecho, { titulo, anio, descripcion, img: [...this.borradorEdicion.img] });
+    Object.assign(hecho, { titulo, anio, descripcion, info, img: [...this.borradorEdicion.img] });
     this.hechoEnEdicion = null;
     this.notificaciones.mostrar(
       'Cambios aplicados en pantalla; todavía no se guardaron en la base de datos.',

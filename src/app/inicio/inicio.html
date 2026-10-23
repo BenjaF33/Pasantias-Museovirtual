@@ -96,6 +96,10 @@
                 <textarea id="edicion-descripcion" name="descripcion" rows="5" required
                     [(ngModel)]="borradorEdicion.descripcion"></textarea>
 
+                <label for="edicion-info">Texto completo</label>
+                <textarea id="edicion-info" name="info" rows="8" required
+                    [(ngModel)]="borradorEdicion.info"></textarea>
+
                 <label for="edicion-imagenes">Añadir imágenes</label>
                 <input id="edicion-imagenes" name="imagenes" type="file" accept="image/*" multiple
                     (change)="agregarImagenes($event)">
