@@ -31,6 +31,10 @@
                 <div class="info-hecho" [class.info-hecho-oculto]="hechoSeleccionado === h && !cerrandoCard">
                     <span class="anio">{{ h.anio }}</span>
                     <h3>{{ h.titulo }}</h3>
+                    @if (puedeEditarEventos) {
+                    <button type="button" class="boton-editar-evento"
+                        [attr.aria-label]="'Editar acontecimiento ' + h.titulo" (click)="iniciarEdicion(h)">Editar</button>
+                    }
                 </div>
 
                 @if (hechoSeleccionado === h) {
@@ -39,7 +43,11 @@
                 <div class="tarjeta" [class.tarjeta-cerrando]="cerrandoCard">
                     <button class="cerrar" (click)="cerrarCard()">×</button>
                     <div class="contenedor-imagen-tarjeta">
+                        @if (h.img.length > 0) {
                         <img [src]="h.img[0]" [alt]="h.titulo" class="imagen-hecho">
+                        } @else {
+                        <div class="sin-imagen-hecho">Sin imágenes</div>
+                        }
                         <button
                             type="button"
                             class="boton-favorito-hecho"
@@ -68,6 +76,52 @@
 
             }
         </div>
+
+        @if (hechoEnEdicion) {
+        <div class="fondo-editor-evento" (click)="cancelarEdicion()">
+            <form class="formulario-editor-evento" role="dialog" aria-modal="true"
+                aria-labelledby="titulo-editor-evento" (ngSubmit)="guardarEdicion()" (click)="$event.stopPropagation()">
+                <h2 id="titulo-editor-evento">Editar acontecimiento</h2>
+                <p class="aviso-edicion-temporal">Los cambios solo se aplican en esta pantalla y se perderán al recargar.</p>
+
+                <label for="edicion-titulo">Título</label>
+                <input id="edicion-titulo" name="titulo" type="text" required
+                    [(ngModel)]="borradorEdicion.titulo">
+
+                <label for="edicion-anio">Año</label>
+                <input id="edicion-anio" name="anio" type="text" required
+                    [(ngModel)]="borradorEdicion.anio">
+
+                <label for="edicion-descripcion">Descripción</label>
+                <textarea id="edicion-descripcion" name="descripcion" rows="5" required
+                    [(ngModel)]="borradorEdicion.descripcion"></textarea>
+
+                <label for="edicion-imagenes">Añadir imágenes</label>
+                <input id="edicion-imagenes" name="imagenes" type="file" accept="image/*" multiple
+                    (change)="agregarImagenes($event)">
+
+                @if (borradorEdicion.img.length > 0) {
+                <p class="titulo-imagenes-editor-evento">Imágenes del acontecimiento</p>
+                <fieldset class="imagenes-editor-evento">
+                    @for (imagen of borradorEdicion.img; track $index; let indice = $index) {
+                    <div class="imagen-editor-evento">
+                        <img [src]="imagen" [alt]="'Imagen ' + (indice + 1) + ' del acontecimiento'">
+                        <button type="button" (click)="quitarImagen(indice)"
+                            [attr.aria-label]="'Quitar imagen ' + (indice + 1)">Quitar imagen</button>
+                    </div>
+                    }
+                </fieldset>
+                }
+
+                <div class="acciones-editor-evento">
+                    <button type="button" (click)="cancelarEdicion()">Cancelar</button>
+                    <button type="submit" [disabled]="imagenesCargando > 0">
+                        {{ imagenesCargando > 0 ? 'Leyendo imagenes...' : 'Aplicar cambios' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+        }
 
         <!-- Solo se muestra el modal cuando existe un hecho ampliado seleccionado. -->
         @if (hechoAmpliado) {

@@ -13,6 +13,7 @@ import { Productos } from './productos/productos';
 import { Carrito } from './carrito/carrito';
 import { Favoritos } from './favoritos/favoritos';
 
+
 export const routes: Routes = [
     { path: '', redirectTo: 'inicio', pathMatch: 'full' },
 
