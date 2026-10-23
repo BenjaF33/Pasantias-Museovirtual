@@ -32,7 +32,7 @@ export class TemaService {
       return false;
     }
 
-    return this.document.defaultView?.matchMedia('(prefers-color-scheme: dark)').matches ?? false;
+    return false;
   }
 
   private aplicarTema(modoOscuro: boolean): void {

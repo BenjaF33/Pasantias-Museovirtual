@@ -319,3 +319,13 @@ html[data-theme="dark"] body app-root .contacto-page .contacto-intro {
 html[data-theme="dark"] body app-root .nosotros-page .lista-desarrolladores strong {
 	color: var(--theme-accent) !important;
 }
+
+html[data-theme="dark"] body app-root .contacto-page .contacto-card .contacto-aviso {
+	border-left-color: var(--coral) !important;
+	background: var(--theme-surface-raised) !important;
+	color: var(--theme-text) !important;
+}
+
+html[data-theme="dark"] body app-root .nosotros-page .galeria-fideli .foto figcaption {
+	color: var(--theme-muted) !important;
+}
