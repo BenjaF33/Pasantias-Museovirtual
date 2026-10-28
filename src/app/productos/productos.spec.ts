@@ -19,7 +19,7 @@ describe('Productos', () => {
     imagen: '',
     cantidad: 0,
   };
-  const auth = { estaLogueado: vi.fn() };
+  const auth = { estaLogueado: vi.fn(), esAdmin: vi.fn() };
   const carrito = {
     obtenerProductos: vi.fn(),
     agregarProducto: vi.fn(),
@@ -29,6 +29,7 @@ describe('Productos', () => {
 
   beforeEach(async () => {
     auth.estaLogueado.mockReturnValue(true);
+    auth.esAdmin.mockReturnValue(true);
     carrito.obtenerProductos.mockReturnValue([]);
 
     await TestBed.configureTestingModule({
@@ -68,5 +69,63 @@ describe('Productos', () => {
     expect(router.navigate).not.toHaveBeenCalled();
     expect(carrito.agregarProducto).toHaveBeenCalledWith(producto);
     expect(notificaciones.mostrar).toHaveBeenCalledWith('Agregado al carrito', 'success');
+  });
+
+  it('creates a product with the next id and its form values', () => {
+    component.iniciarCreacionProducto();
+    component.borradorProducto = {
+      nombre: 'Nuevo libro',
+      descripcion: 'Descripción nueva',
+      precio: 250,
+      stock: 8,
+      imagen: '/assets/libro.jpg',
+    };
+
+    component.guardarProducto();
+
+    expect(component.productos[1]).toEqual({
+      id: 2,
+      nombre: 'Nuevo libro',
+      descripcion: 'Descripción nueva',
+      precio: 250,
+      stock: 8,
+      imagen: '/assets/libro.jpg',
+      cantidad: 0,
+    });
+    expect(component.creandoProducto).toBe(false);
+  });
+
+  it('updates the selected product without changing its id or cart quantity', () => {
+    const seleccionado = { ...producto, cantidad: 2 };
+    component.productos = [seleccionado];
+    component.iniciarEdicionProducto(seleccionado);
+    component.borradorProducto = {
+      nombre: 'Libro actualizado',
+      descripcion: 'Descripción actualizada',
+      precio: 300,
+      stock: 4,
+      imagen: '/assets/actualizado.jpg',
+    };
+
+    component.guardarProducto();
+
+    expect(seleccionado).toEqual({
+      id: 1,
+      nombre: 'Libro actualizado',
+      descripcion: 'Descripción actualizada',
+      precio: 300,
+      stock: 4,
+      imagen: '/assets/actualizado.jpg',
+      cantidad: 2,
+    });
+    expect(component.productoEnEdicion).toBeNull();
+  });
+
+  it('allows removing the current product image', () => {
+    component.iniciarEdicionProducto({ ...producto, imagen: '/assets/libro.jpg' });
+
+    component.quitarImagen();
+
+    expect(component.borradorProducto.imagen).toBe('');
   });
 });

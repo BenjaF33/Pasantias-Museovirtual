@@ -26,6 +26,7 @@ export class Inicio {
   hechoSeleccionado: Hecho | null = null;
   hechoAmpliado: Hecho | null = null;
   hechoEnEdicion: Hecho | null = null;
+  creandoEvento = false;
   borradorEdicion = { titulo: '', anio: '', descripcion: '', info: '', img: [] as string[] };
   imagenesCargando = 0;
   imagenActiva = 0;
@@ -74,6 +75,7 @@ export class Inicio {
       return;
     }
 
+    this.creandoEvento = false;
     this.hechoEnEdicion = hecho;
     this.borradorEdicion = {
       titulo: hecho.titulo,
@@ -84,8 +86,18 @@ export class Inicio {
     };
   }
 
+  iniciarCreacionEvento(): void {
+    if (!this.puedeEditarEventos) {
+      return;
+    }
+
+    this.hechoEnEdicion = null;
+    this.borradorEdicion = { titulo: '', anio: '', descripcion: '', info: '', img: [] };
+    this.creandoEvento = true;
+  }
+
   async agregarImagenes(event: Event): Promise<void> {
-    if (!this.hechoEnEdicion || !this.puedeEditarEventos) {
+    if ((!this.hechoEnEdicion && !this.creandoEvento) || !this.puedeEditarEventos) {
       return;
     }
 
@@ -137,12 +149,14 @@ export class Inicio {
 
   cancelarEdicion(): void {
     this.hechoEnEdicion = null;
+    this.creandoEvento = false;
   }
 
   guardarEdicion(): void {
     const hecho = this.hechoEnEdicion;
-    if (!hecho || !this.puedeEditarEventos || this.imagenesCargando > 0) {
-      if (hecho && this.imagenesCargando > 0) {
+    const formularioAbierto = hecho !== null || this.creandoEvento;
+    if (!formularioAbierto || !this.puedeEditarEventos || this.imagenesCargando > 0) {
+      if (formularioAbierto && this.imagenesCargando > 0) {
         this.notificaciones.mostrar('Espera a que termine la carga de las imágenes.', 'info');
       }
       return;
@@ -156,12 +170,31 @@ export class Inicio {
       return;
     }
 
-    Object.assign(hecho, { titulo, anio, descripcion, info, img: [...this.borradorEdicion.img] });
-    this.hechoEnEdicion = null;
-    this.notificaciones.mostrar(
-      'Cambios aplicados en pantalla; todavía no se guardaron en la base de datos.',
-      'info',
-    );
+    if (this.creandoEvento) {
+      const nuevoHecho: Hecho = { titulo, anio, descripcion, info, img: [...this.borradorEdicion.img] };
+      const indice = this.hechos.findIndex(evento => Number(evento.anio) > Number(anio));
+      if (indice === -1) {
+        this.hechos.push(nuevoHecho);
+      } else {
+        this.hechos.splice(indice, 0, nuevoHecho);
+      }
+
+      this.cancelarEdicion();
+      this.notificaciones.mostrar(
+        'Acontecimiento agregado en pantalla; todavía no se guardó en la base de datos.',
+        'info',
+      );
+      return;
+    }
+
+    if (hecho) {
+      Object.assign(hecho, { titulo, anio, descripcion, info, img: [...this.borradorEdicion.img] });
+      this.cancelarEdicion();
+      this.notificaciones.mostrar(
+        'Cambios aplicados en pantalla; todavía no se guardaron en la base de datos.',
+        'info',
+      );
+    }
   }
 
   esFavorito(hecho: Hecho): boolean {

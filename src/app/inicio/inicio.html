@@ -9,7 +9,15 @@
     </section>
 
     <section class="historia">
-        <h2>Línea del tiempo</h2>
+        <div class="encabezado-linea-tiempo">
+            <h2>Línea del tiempo</h2>
+            @if (puedeEditarEventos) {
+            <button type="button" class="boton-agregar-evento" (click)="iniciarCreacionEvento()">
+                <span aria-hidden="true">+</span>
+                Agregar evento
+            </button>
+            }
+        </div>
 
         <div class="linea">
             <!-- Capa transparente para cerrar la tarjeta al hacer clic en cualquier lugar fuera -->
@@ -77,31 +85,31 @@
             }
         </div>
 
-        @if (hechoEnEdicion) {
+        @if (hechoEnEdicion || creandoEvento) {
         <div class="fondo-editor-evento" (click)="cancelarEdicion()">
             <form class="formulario-editor-evento" role="dialog" aria-modal="true"
                 aria-labelledby="titulo-editor-evento" (ngSubmit)="guardarEdicion()" (click)="$event.stopPropagation()">
-                <h2 id="titulo-editor-evento">Editar acontecimiento</h2>
+                <h2 id="titulo-editor-evento">{{ creandoEvento ? 'Agregar acontecimiento' : 'Editar acontecimiento' }}</h2>
                 <p class="aviso-edicion-temporal">Los cambios solo se aplican en esta pantalla y se perderán al recargar.</p>
 
-                <label for="edicion-titulo">Título</label>
-                <input id="edicion-titulo" name="titulo" type="text" required
+                <label for="evento-titulo">Título</label>
+                <input id="evento-titulo" name="titulo" type="text" required
                     [(ngModel)]="borradorEdicion.titulo">
 
-                <label for="edicion-anio">Año</label>
-                <input id="edicion-anio" name="anio" type="text" required
+                <label for="evento-anio">Año</label>
+                <input id="evento-anio" name="anio" type="text" required
                     [(ngModel)]="borradorEdicion.anio">
 
-                <label for="edicion-descripcion">Descripción</label>
-                <textarea id="edicion-descripcion" name="descripcion" rows="5" required
+                <label for="evento-descripcion">Descripción</label>
+                <textarea id="evento-descripcion" name="descripcion" rows="5" required
                     [(ngModel)]="borradorEdicion.descripcion"></textarea>
 
-                <label for="edicion-info">Texto completo</label>
-                <textarea id="edicion-info" name="info" rows="8" required
+                <label for="evento-info">Texto completo</label>
+                <textarea id="evento-info" name="info" rows="8" required
                     [(ngModel)]="borradorEdicion.info"></textarea>
 
-                <label for="edicion-imagenes">Añadir imágenes</label>
-                <input id="edicion-imagenes" name="imagenes" type="file" accept="image/*" multiple
+                <label for="evento-imagenes">Añadir imágenes</label>
+                <input id="evento-imagenes" name="imagenes" type="file" accept="image/*" multiple
                     (change)="agregarImagenes($event)">
 
                 @if (borradorEdicion.img.length > 0) {
@@ -120,7 +128,7 @@
                 <div class="acciones-editor-evento">
                     <button type="button" (click)="cancelarEdicion()">Cancelar</button>
                     <button type="submit" [disabled]="imagenesCargando > 0">
-                        {{ imagenesCargando > 0 ? 'Leyendo imagenes...' : 'Aplicar cambios' }}
+                        {{ imagenesCargando > 0 ? 'Leyendo imágenes...' : (creandoEvento ? 'Agregar evento' : 'Aplicar cambios') }}
                     </button>
                 </div>
             </form>
