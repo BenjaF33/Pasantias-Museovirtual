@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Producto } from '../models/productos';
+import { AuthService } from '../servicios/auth-service';
 import { CarritoService } from '../servicios/carrito';
 import { NotificacionesService } from '../servicios/notificaciones';
 
@@ -12,13 +13,16 @@ import { NotificacionesService } from '../servicios/notificaciones';
 })
 export class Carrito {
   productos: Producto[];
+  estaLogueado: boolean;
 
   constructor(
     private carritoService: CarritoService,
     private notificaciones: NotificacionesService,
     private changeDetector: ChangeDetectorRef,
+    authService: AuthService,
   ) {
     this.productos = this.carritoService.obtenerProductos();
+    this.estaLogueado = authService.estaLogueado();
   }
 
   get total(): number {

@@ -62,9 +62,15 @@
 	} @else {
 		<section class="carrito-vacio" aria-live="polite">
 			<span class="icono-carrito" aria-hidden="true">🛍</span>
-			<h2>Tu carrito está vacío</h2>
-			<p>Descubrí libros y recuerdos para seguir conectándote con la historia de Cipolletti.</p>
-			<a routerLink="/productos">Explorar productos</a>
+			@if (estaLogueado) {
+				<h2>Tu carrito está vacío</h2>
+				<p>Descubrí libros y recuerdos para seguir conectándote con la historia de Cipolletti.</p>
+				<a routerLink="/productos">Explorar productos</a>
+			} @else {
+				<h2>Inicia sesión</h2>
+				<p>Inicia sesión para poder agregar productos al carrito.</p>
+				<a routerLink="/inicio-sesion">Iniciar sesión</a>
+			}
 		</section>
 	}
 </main>
