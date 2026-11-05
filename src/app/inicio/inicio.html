@@ -1,0 +1,197 @@
+<main>
+
+    <section class="presentacion">
+        <h1>La historia de Cipolletti</h1>
+        <p>
+            Un recorrido por los principales acontecimientos
+            de la historia de nuestra ciudad.
+        </p>
+    </section>
+
+    <section class="historia">
+        <div class="encabezado-linea-tiempo">
+            <div class="nav-busqueda-eventos" aria-label="Buscar acontecimientos por año o nombre">
+                <label class="campo-busqueda" for="filtro-eventos">
+                    <span class="sr-only">Buscar evento</span>
+                    <input id="filtro-eventos" type="text" aria-label="Buscar por año o nombre de evento" placeholder="Buscar por año o evento" />
+                </label>
+            </div>
+
+            <h2>Línea del tiempo</h2>
+            @if (puedeEditarEventos) {
+            <button type="button" class="boton-agregar-evento" (click)="iniciarCreacionEvento()">
+                <span aria-hidden="true">+</span>
+                Agregar evento
+            </button>
+            }
+        </div>
+
+        <div class="linea">
+            <!-- Capa transparente para cerrar la tarjeta al hacer clic en cualquier lugar fuera -->
+            @if (hechoSeleccionado) {
+            <div class="capa-cierre-tarjeta" (click)="cerrarCard()"></div>
+            }
+
+            @for (h of hechos; track $index; let esIzquierda = $odd) {
+            <div [id]="'evento-' + $index" class="hecho" [class.hecho-lado-izquierdo]="esIzquierda" [class.hecho-lado-derecho]="!esIzquierda">
+
+                <!-- PUNTO -->
+                <button class="punto" [style.--color-punto]="coloresPuntos[$index]"
+                    [attr.aria-label]="'Abrir acontecimiento ' + h.anio + ': ' + h.titulo"
+                    [class.punto-activo]="hechoSeleccionado === h && !cerrandoCard"
+                    [class.punto-cerrando]="hechoSeleccionado === h && cerrandoCard" (click)="mostrarHecho(h)">
+                </button>
+
+                <!-- INFORMACIÓN NORMAL -->
+                <div class="info-hecho" [class.info-hecho-oculto]="hechoSeleccionado === h && !cerrandoCard">
+                    <span class="anio">{{ h.anio }}</span>
+                    <h3>{{ h.titulo }}</h3>
+                    @if (puedeEditarEventos) {
+                    <button type="button" class="boton-editar-evento"
+                        [attr.aria-label]="'Editar acontecimiento ' + h.titulo" (click)="iniciarEdicion(h)">Editar</button>
+                    }
+                </div>
+
+                @if (hechoSeleccionado === h) {
+
+                <!-- CARD -->
+                <div class="tarjeta" [class.tarjeta-cerrando]="cerrandoCard">
+                    <button class="cerrar" (click)="cerrarCard()">×</button>
+                    <div class="contenedor-imagen-tarjeta">
+                        @if (h.img.length > 0) {
+                        <img [src]="h.img[0]" [alt]="h.titulo" class="imagen-hecho">
+                        } @else {
+                        <div class="sin-imagen-hecho">Sin imágenes</div>
+                        }
+                        <button
+                            type="button"
+                            class="boton-favorito-hecho"
+                            [class.favorito-guardado]="esFavorito(h)"
+                            [attr.aria-label]="(esFavorito(h) ? 'Quitar ' : 'Agregar ') + h.titulo + (esFavorito(h) ? ' de' : ' a') + ' favoritos'"
+                            [attr.aria-pressed]="esFavorito(h)"
+                            (click)="alternarFavorito(h)">
+                            @if (esFavorito(h)) {
+                                <span aria-hidden="true">&#9829;</span>
+                            } @else {
+                                <span aria-hidden="true">&#9825;</span>
+                            }
+                        </button>
+                    </div>
+                    <div class="contenido-tarjeta">
+                        <span class="anio">{{ h.anio }}</span>
+                        <h3>{{ h.titulo }}</h3>
+                        <p>{{ h.descripcion }}</p>
+
+                        <button type="button" aria-label="Abrir galería de imágenes y relato completo"
+                            (click)="mostrarInfo(h)">Ver mas</button>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+        </div>
+
+        @if (hechoEnEdicion || creandoEvento) {
+        <div class="fondo-editor-evento" (click)="cancelarEdicion()">
+            <form class="formulario-editor-evento" role="dialog" aria-modal="true"
+                aria-labelledby="titulo-editor-evento" (ngSubmit)="guardarEdicion()" (click)="$event.stopPropagation()">
+                <h2 id="titulo-editor-evento">{{ creandoEvento ? 'Agregar acontecimiento' : 'Editar acontecimiento' }}</h2>
+                <p class="aviso-edicion-temporal">Los cambios solo se aplican en esta pantalla y se perderán al recargar.</p>
+
+                <label for="evento-imagenes">Añadir imágenes</label>
+                <input id="evento-imagenes" name="imagenes" type="file" accept="image/*" multiple
+                    (change)="agregarImagenes($event)">
+
+                <label for="evento-titulo">Título</label>
+                <input id="evento-titulo" name="titulo" type="text" required
+                    [(ngModel)]="borradorEdicion.titulo">
+
+                <label for="evento-anio">Año</label>
+                <input id="evento-anio" name="anio" type="text" required
+                    [(ngModel)]="borradorEdicion.anio">
+
+                <label for="evento-descripcion">Descripción</label>
+                <textarea id="evento-descripcion" name="descripcion" rows="5" required
+                    [(ngModel)]="borradorEdicion.descripcion"></textarea>
+
+                <label for="evento-info">Texto completo</label>
+                <textarea id="evento-info" name="info" rows="8" required
+                    [(ngModel)]="borradorEdicion.info"></textarea>
+
+                @if (borradorEdicion.img.length > 0) {
+                <p class="titulo-imagenes-editor-evento">Imágenes del acontecimiento</p>
+                <fieldset class="imagenes-editor-evento">
+                    @for (imagen of borradorEdicion.img; track $index; let indice = $index) {
+                    <div class="imagen-editor-evento">
+                        <img [src]="imagen" [alt]="'Imagen ' + (indice + 1) + ' del acontecimiento'">
+                        <button type="button" (click)="quitarImagen(indice)"
+                            [attr.aria-label]="'Quitar imagen ' + (indice + 1)">Quitar imagen</button>
+                    </div>
+                    }
+                </fieldset>
+                }
+
+                <div class="acciones-editor-evento">
+                    <button type="button" (click)="cancelarEdicion()">Cancelar</button>
+                    <button type="submit" [disabled]="imagenesCargando > 0">
+                        {{ imagenesCargando > 0 ? 'Leyendo imágenes...' : (creandoEvento ? 'Agregar evento' : 'Aplicar cambios') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+        }
+
+        <!-- Solo se muestra el modal cuando existe un hecho ampliado seleccionado. -->
+        @if (hechoAmpliado) {
+        <!-- Fondo oscuro del modal: al hacer clic fuera del contenido se cierra. -->
+        <div class="fondo-modal" [class.fondo-modal-cerrando]="cerrandoInfo" (click)="cerrarInfo()">
+            <!-- Detiene el clic dentro de la card para que no active el cierre del fondo. -->
+            <article class="modal" [class.modal-cerrando]="cerrandoInfo" [class.modal-imagen-ampliada]="imagenAgrandada"
+                role="dialog" aria-modal="true" [attr.aria-labelledby]="'modal-titulo-' + hechoAmpliado.anio"
+                (click)="$event.stopPropagation()">
+                <!-- Botón para cerrar la información ampliada mediante la animación de salida. -->
+                <button type="button" class="cerrar-modal" aria-label="Cerrar información"
+                    (click)="cerrarInfo()">×</button>
+
+                <!-- Carrusel con transición fluida (fade) sin los indicadores en bloque -->
+                <div id="carouselHecho" class="carousel slide carousel-fade carrusel-modal"
+                    aria-label="Galería de imágenes">
+
+                    <!-- Contenedor de las diapositivas -->
+                    <div class="carousel-inner">
+                        @for (imagen of imagenesCarrusel; track imagen; let indice = $index) {
+                        <button type="button" (click)="agrandarimg()" class="carousel-item"
+                            [class.active]="imagenActiva === indice"><img [src]="imagen"
+                                class="d-block w-100 imagen-modal"
+                                [alt]="hechoAmpliado.titulo + ' - imagen ' + (indice + 1)"></button>
+                        }
+                    </div>
+
+                    @if (imagenesCarrusel.length > 1) {
+                    <!-- Flecha anterior -->
+                    <button class="carousel-control-prev" type="button" aria-label="Imagen anterior"
+                        (click)="imagenAnterior()">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <!-- Flecha siguiente -->
+                    <button class="carousel-control-next" type="button" aria-label="Imagen siguiente"
+                        (click)="imagenSiguiente()">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+                    }
+                </div>
+
+                <!-- Texto histórico asociado al hecho que abrió el modal. -->
+                <div class="contenido-modal">
+                    <span class="anio">{{ hechoAmpliado.anio }}</span>
+                    <h2 [id]="'modal-titulo-' + hechoAmpliado.anio">{{ hechoAmpliado.titulo }}</h2>
+                    <p class="descripcion-modal">{{ hechoAmpliado.descripcion }}</p>
+                    <p>{{ hechoAmpliado.info }}</p>
+                </div>
+            </article>
+        </div>
+        }
+    </section>
+
+</main>
