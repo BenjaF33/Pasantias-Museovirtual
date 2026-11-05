@@ -5,7 +5,14 @@
 		<p class="subtitulo">Tu colección de historias y lugares guardados</p>
 	</header>
 
-	@if (favoritos.length > 0) {
+	@if (!estaLogueado) {
+		<section class="estado-vacio" aria-live="polite">
+			<span class="corazon-vacio" aria-hidden="true">&#9825;</span>
+			<h2>Inicia sesión</h2>
+			<p>Inicia sesión para poder agregar hechos a favoritos.</p>
+			<a routerLink="/inicio-sesion">Iniciar sesión</a>
+		</section>
+	} @else if (favoritos.length > 0) {
 		<section class="coleccion-favoritos" aria-label="Hechos históricos guardados en favoritos">
 			@for (hecho of favoritos; track hecho.anio + hecho.titulo) {
 				<article class="tarjeta-favorito">
