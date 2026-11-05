@@ -59,7 +59,6 @@
 .encabezado-linea-tiempo {
     display: grid;
     width: min(100%, 75rem);
-<<<<<<< HEAD
     grid-template-columns: minmax(0, 1.2fr) auto minmax(0, 0.9fr);
     align-items: center;
     gap: 1.25rem;
@@ -120,7 +119,6 @@
 .encabezado-linea-tiempo h2 {
     margin: 0;
     color: #2b3d4f;
-=======
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     margin: 0 auto 3.5rem;
@@ -130,7 +128,7 @@
     grid-column: 2;
     margin: 0;
     color: #253342;
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
     font-family: Georgia, "Times New Roman", serif;
     font-size: clamp(1.8rem, 3vw, 2.7rem);
     text-align: center;
@@ -143,19 +141,17 @@
     justify-self: end;
     gap: 0.6rem;
     padding: 0.7rem 1.15rem;
-<<<<<<< HEAD
     border: 0;
     border-radius: 999px;
     background: #22374d;
     box-shadow: 0 0.3rem 0.7rem rgb(34 54 77 / 15%);
     color: #f8f4ed;
-=======
     border: 1px solid rgb(255 250 240 / 45%);
     border-radius: 999px;
     background: #253342;
     box-shadow: 0 0.45rem 1rem rgb(23 54 74 / 22%);
     color: #fffaf0;
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
     cursor: pointer;
     font: inherit;
     font-weight: 700;
@@ -168,12 +164,10 @@
     height: 1.4rem;
     place-items: center;
     border-radius: 50%;
-<<<<<<< HEAD
     background: #d57b3b;
     color: #1e3550;
-=======
     background: #c96f42;
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
     font-size: 1.25rem;
     line-height: 1;
 }
@@ -240,46 +234,40 @@
     flex: 0 0 auto;
     border: 0.3rem solid #f8f6ec;
     border-radius: 50%;
-<<<<<<< HEAD
     background:
         linear-gradient(135deg, rgb(255 255 255 / 28%), transparent 52%),
         linear-gradient(160deg, var(--color-punto, #8b6548), color-mix(in srgb, var(--color-punto, #8b6548) 78%, #1d2a33 22%));
     box-shadow: 0 0 0 0.14rem var(--color-punto, #8b6548), 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
     cursor: pointer;
     transition: transform 160ms ease, filter 160ms ease, box-shadow 160ms ease;
-=======
     background: #253342;
     box-shadow: 0 0 0 0.14rem #253342, 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
     cursor: pointer;
     transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
 }
 
 .punto:hover,
 .punto:focus-visible {
-<<<<<<< HEAD
     background:
         linear-gradient(135deg, rgb(255 255 255 / 34%), transparent 52%),
         linear-gradient(160deg, var(--color-punto, #8b6548), color-mix(in srgb, var(--color-punto, #8b6548) 70%, #1d2a33 30%));
     box-shadow: 0 0 0 0.14rem var(--color-punto, #8b6548), 0 0.2rem 0.5rem rgb(37 51 66 / 22%);
-=======
     background: #c96f42;
     box-shadow: 0 0 0 0.14rem #c96f42, 0 0.2rem 0.5rem rgb(37 51 66 / 22%);
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
     outline: none;
     transform: scale(1.04);
 }
 
 .punto:not(.punto-activo):focus-visible {
-<<<<<<< HEAD
     background:
         linear-gradient(135deg, rgb(255 255 255 / 24%), transparent 52%),
         linear-gradient(160deg, var(--color-punto, #8b6548), color-mix(in srgb, var(--color-punto, #8b6548) 78%, #1d2a33 22%));
     box-shadow: 0 0 0 0.14rem var(--color-punto, #8b6548), 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
-=======
     background: #253342;
     box-shadow: 0 0 0 0.14rem #253342, 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
     transform: none;
 }
 
@@ -287,15 +275,13 @@
 .punto-cerrando:hover,
 .punto-cerrando:focus-visible,
 .punto-cerrando:active {
-<<<<<<< HEAD
     background:
         linear-gradient(135deg, rgb(255 255 255 / 24%), transparent 52%),
         linear-gradient(160deg, var(--color-punto, #8b6548), color-mix(in srgb, var(--color-punto, #8b6548) 78%, #1d2a33 22%));
     box-shadow: 0 0 0 0.14rem var(--color-punto, #8b6548), 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
-=======
     background: #253342;
     box-shadow: 0 0 0 0.14rem #253342, 0 0.2rem 0.5rem rgb(37 51 66 / 18%);
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
     transform: none;
 }
 
@@ -304,15 +290,13 @@
 }
 
 .punto-activo {
-<<<<<<< HEAD
     background:
         linear-gradient(135deg, rgb(255 255 255 / 38%), transparent 53%),
         linear-gradient(165deg, var(--color-punto, #8b6548), color-mix(in srgb, var(--color-punto, #8b6548) 62%, #1d2a33 38%));
     box-shadow: 0 0 0 0.14rem var(--color-punto, #8b6548), 0 0 0 0.35rem color-mix(in srgb, var(--color-punto, #8b6548) 24%, transparent);
-=======
     background: #c96f42;
     box-shadow: 0 0 0 0.14rem #c96f42, 0 0 0 0.35rem rgb(201 111 66 / 18%);
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
     animation: pulso-punto 360ms ease-out;
 }
 
@@ -774,7 +758,6 @@
 
     .encabezado-linea-tiempo {
         display: flex;
-<<<<<<< HEAD
         flex-direction: column;
         align-items: stretch;
         gap: 1rem;
@@ -790,7 +773,6 @@
     .encabezado-linea-tiempo h2 {
         font-size: clamp(1.5rem, 6vw, 2rem);
         text-align: center;
-=======
         justify-content: space-between;
         gap: 0.75rem;
         margin-bottom: 2rem;
@@ -799,7 +781,7 @@
     .encabezado-linea-tiempo h2 {
         font-size: clamp(1.5rem, 6vw, 2rem);
         text-align: left;
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
     }
 
     .boton-agregar-evento {
@@ -807,10 +789,8 @@
         gap: 0.4rem;
         padding: 0.6rem 0.8rem;
         font-size: 0.9rem;
-<<<<<<< HEAD
         justify-self: stretch;
-=======
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
     }
 
     .linea {

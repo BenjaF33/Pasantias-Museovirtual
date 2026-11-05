@@ -70,8 +70,6 @@
 	line-height: 1.8;
 }
 
-<<<<<<< HEAD
-=======
 .correo-historiadora {
 	margin: 0.9rem 0 0;
 	font-size: 0.95rem;
@@ -83,7 +81,7 @@
 	overflow-wrap: anywhere;
 }
 
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
 .historiadora-image {
 	display: flex;
 	flex: 1 1 360px;
@@ -153,10 +151,8 @@
 .equipo-desarrollador {
 	padding-top: 1.8rem;
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
 .lista-desarrolladores {
 	display: flex;
 	flex-wrap: wrap;
@@ -171,17 +167,15 @@
 	display: flex;
 	flex: 1 1 220px;
 	max-width: 260px;
-<<<<<<< HEAD
 	flex-direction: column;
 	gap: 0.25rem;
 	padding: 1.1rem 1rem;
-=======
 	min-width: 0;
 	flex-direction: column;
 	gap: 0.25rem;
 	padding: 1.1rem 1rem;
 	box-sizing: border-box;
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
 	border: 1px solid rgba(201, 111, 66, 0.3);
 	border-radius: 0.8rem;
 	background: rgba(248, 246, 236, 0.9);
@@ -189,18 +183,16 @@
 	color: #253342;
 	line-height: 1.7;
 	text-align: center;
-<<<<<<< HEAD
 }
 
 .lista-desarrolladores strong {
 	color: #c96f42;
-=======
 	overflow-wrap: anywhere;
 }
 
 .lista-desarrolladores strong {
 	color: #8a3d1e;
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
 	font-family: Georgia, "Times New Roman", serif;
 	font-size: 1.08rem;
 }

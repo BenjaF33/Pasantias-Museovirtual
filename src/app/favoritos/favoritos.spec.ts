@@ -1,24 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-<<<<<<< HEAD
-=======
 import { AuthService } from '../servicios/auth-service';
 import { FavoritosService } from '../servicios/favoritos';
 import { NotificacionesService } from '../servicios/notificaciones';
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
 
 import { Favoritos } from './favoritos';
 
 describe('Favoritos', () => {
   let component: Favoritos;
   let fixture: ComponentFixture<Favoritos>;
-<<<<<<< HEAD
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Favoritos],
       providers: [provideRouter([])],
-=======
   const auth = { estaLogueado: vi.fn() };
   const favoritos = { obtenerHechos: vi.fn(() => []) };
   const notificaciones = { confirmarEliminacion: vi.fn(), mostrar: vi.fn() };
@@ -33,7 +29,7 @@ describe('Favoritos', () => {
         { provide: FavoritosService, useValue: favoritos },
         { provide: NotificacionesService, useValue: notificaciones },
       ],
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
     }).compileComponents();
 
     fixture = TestBed.createComponent(Favoritos);
@@ -44,8 +40,6 @@ describe('Favoritos', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-<<<<<<< HEAD
-=======
 
   it('asks logged-out users to sign in and links to the login page', async () => {
     auth.estaLogueado.mockReturnValue(false);
@@ -62,5 +56,5 @@ describe('Favoritos', () => {
       .toBe('/inicio-sesion');
     expect(fixture.nativeElement.textContent).not.toContain('Aún no tienes favoritos');
   });
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+
 });

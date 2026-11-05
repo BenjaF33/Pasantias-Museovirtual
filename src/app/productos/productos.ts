@@ -1,10 +1,7 @@
-<<<<<<< HEAD
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-=======
-import { Component } from '@angular/core';
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { Producto } from '../models/productos';
 import { AuthService } from '../servicios/auth-service';
 import { CarritoService } from '../servicios/carrito';
@@ -13,16 +10,16 @@ import { ProductosService } from '../servicios/productos';
 
 @Component({
   selector: 'app-productos',
+  standalone: true,
   imports: [FormsModule],
   templateUrl: './productos.html',
   styleUrl: './productos.css',
 })
 export class Productos {
-<<<<<<< HEAD
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
   private readonly changeDetector = inject(ChangeDetectorRef);
 
-=======
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
   productos: Producto[] = [];
   productoEnEdicion: Producto | null = null;
   creandoProducto = false;
@@ -30,14 +27,12 @@ export class Productos {
   borradorProducto = { nombre: '', descripcion: '', precio: 0, stock: 0, imagen: '' };
 
   constructor(
-    private carritoService: CarritoService,
-    private productosService: ProductosService,
-    private notificaciones: NotificacionesService,
-    private authService: AuthService,
-    private router: Router,
-  ) { }
+    private readonly carritoService: CarritoService,
+    private readonly productosService: ProductosService,
+    private readonly notificaciones: NotificacionesService,
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.productos = this.productosService.obtenerProductos();
   }
 
@@ -51,12 +46,9 @@ export class Productos {
     }
 
     this.productoEnEdicion = null;
-    this.borradorProducto = { nombre: '', descripcion: '', precio: 0, stock: 0, imagen: '' };
     this.creandoProducto = true;
-<<<<<<< HEAD
+    this.borradorProducto = { nombre: '', descripcion: '', precio: 0, stock: 0, imagen: '' };
     this.changeDetector.detectChanges();
-=======
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
   }
 
   iniciarEdicionProducto(producto: Producto): void {
@@ -85,9 +77,14 @@ export class Productos {
       return;
     }
 
-    const input = event.target as HTMLInputElement;
+    const input = event.target as HTMLInputElement | null;
+    if (!(input instanceof HTMLInputElement)) {
+      return;
+    }
+
     const archivo = input.files?.[0];
     input.value = '';
+
     if (!archivo) {
       return;
     }
@@ -102,21 +99,10 @@ export class Productos {
       return;
     }
 
-    const borrador = this.borradorProducto;
     this.imagenCargando = true;
     try {
       const imagen = await this.leerImagen(archivo);
-      if (this.borradorProducto === borrador && !borrador.imagen) {
-<<<<<<< HEAD
-        this.borradorProducto = {
-          ...this.borradorProducto,
-          imagen,
-        };
-        this.changeDetector.detectChanges();
-=======
-        borrador.imagen = imagen;
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
-      }
+      this.borradorProducto = { ...this.borradorProducto, imagen };
     } catch {
       this.notificaciones.mostrar('No se pudo leer la imagen seleccionada.', 'error');
     } finally {
@@ -134,21 +120,18 @@ export class Productos {
       reader.onload = () => {
         if (typeof reader.result === 'string') {
           resolve(reader.result);
-        } else {
-          reject(new Error('El archivo no produjo una imagen válida.'));
+          return;
         }
+        reject(new Error('El archivo no produjo una imagen válida.'));
       };
       reader.onerror = () => reject(reader.error ?? new Error('No se pudo leer el archivo.'));
+      reader.onabort = () => reject(new Error('La lectura de la imagen fue cancelada.'));
       reader.readAsDataURL(archivo);
     });
   }
 
   guardarProducto(): void {
-<<<<<<< HEAD
-    if ((!this.productoEnEdicion && !this.creandoProducto) || !this.puedeEditarProductos) {
-=======
     if ((!this.productoEnEdicion && !this.creandoProducto) || !this.puedeEditarProductos || this.imagenCargando) {
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
       return;
     }
 
@@ -157,6 +140,7 @@ export class Productos {
     const imagen = this.borradorProducto.imagen.trim();
     const precio = Number(this.borradorProducto.precio);
     const stock = Number(this.borradorProducto.stock);
+
     if (!nombre || !descripcion || !Number.isFinite(precio) || precio < 0 ||
       !Number.isInteger(stock) || stock < 0) {
       this.notificaciones.mostrar('Revisa los datos del producto e inténtalo de nuevo.', 'warning');
@@ -167,10 +151,7 @@ export class Productos {
       const id = this.productos.reduce((mayorId, producto) => Math.max(mayorId, producto.id), 0) + 1;
       this.productos.push({ id, nombre, descripcion, precio, stock, imagen, cantidad: 0 });
       this.cancelarEdicionProducto();
-<<<<<<< HEAD
       this.changeDetector.detectChanges();
-=======
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
       this.notificaciones.mostrar('Producto agregado en pantalla; todavía no se guardó en la base de datos.', 'info');
       return;
     }
@@ -178,15 +159,12 @@ export class Productos {
     if (this.productoEnEdicion) {
       Object.assign(this.productoEnEdicion, { nombre, descripcion, precio, stock, imagen });
       this.cancelarEdicionProducto();
-<<<<<<< HEAD
       this.changeDetector.detectChanges();
-=======
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
       this.notificaciones.mostrar('Cambios aplicados en pantalla; todavía no se guardaron en la base de datos.', 'info');
     }
   }
 
-  agregarCarrito(producto: Producto) {
+  agregarCarrito(producto: Producto): void {
     if (!this.authService.estaLogueado()) {
       void this.router.navigate(['/inicio-sesion']);
       return;
@@ -199,7 +177,7 @@ export class Productos {
     }
   }
 
-  manejarErrorImagen(event: Event) {
+  manejarErrorImagen(event: Event): void {
     const imagen = event.target;
     if (imagen instanceof HTMLImageElement) {
       imagen.src = '/assets/Fotos/Cipolletti hoy/CipoHoy1.JPG';

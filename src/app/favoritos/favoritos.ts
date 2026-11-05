@@ -1,39 +1,29 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Hecho } from '../models/hechos';
-<<<<<<< HEAD
-=======
 import { AuthService } from '../servicios/auth-service';
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
 import { FavoritosService } from '../servicios/favoritos';
 import { NotificacionesService } from '../servicios/notificaciones';
 
 @Component({
   selector: 'app-favoritos',
+  standalone: true,
   imports: [RouterLink],
   templateUrl: './favoritos.html',
   styleUrl: './favoritos.css',
 })
 export class Favoritos {
   favoritos: Hecho[] = [];
-<<<<<<< HEAD
-=======
-  estaLogueado: boolean;
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+  estaLogueado = false;
 
   constructor(
-    private favoritosService: FavoritosService,
-    private notificaciones: NotificacionesService,
-    private changeDetector: ChangeDetectorRef,
-<<<<<<< HEAD
+    private readonly favoritosService: FavoritosService,
+    private readonly notificaciones: NotificacionesService,
+    private readonly changeDetector: ChangeDetectorRef,
+    private readonly authService: AuthService,
   ) {
     this.favoritos = this.favoritosService.obtenerHechos();
-=======
-    authService: AuthService,
-  ) {
-    this.favoritos = this.favoritosService.obtenerHechos();
-    this.estaLogueado = authService.estaLogueado();
->>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
+    this.estaLogueado = this.authService.estaLogueado();
   }
 
   async quitarFavorito(hecho: Hecho): Promise<void> {
