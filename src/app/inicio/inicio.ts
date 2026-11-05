@@ -1,6 +1,6 @@
 import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Hecho } from '../models/hechos';
 import { AuthService } from '../servicios/auth-service';
 import { EventosService } from '../servicios/eventos';
@@ -16,6 +16,7 @@ export class Inicio {
   private readonly changeDetector = inject(ChangeDetectorRef);
   private readonly route = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   private eventoSolicitadoIndex: number | null = null;
 
   readonly coloresPuntos = [
@@ -203,6 +204,11 @@ export class Inicio {
 
   async alternarFavorito(hecho: Hecho): Promise<void> {
     const yaEsFavorito = this.favoritosService.contieneHecho(hecho);
+    if (!yaEsFavorito && !this.authService.estaLogueado()) {
+      void this.router.navigate(['/inicio-sesion']);
+      return;
+    }
+
     if (yaEsFavorito) {
       const confirmar = await this.notificaciones.confirmarEliminacion(
         '¿Quieres eliminar este favorito?',
