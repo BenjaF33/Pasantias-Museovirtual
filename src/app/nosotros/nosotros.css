@@ -139,7 +139,6 @@
 .equipo-desarrollador {
 	padding-top: 1.8rem;
 }
-
 .lista-desarrolladores {
 	display: flex;
 	flex-wrap: wrap;
@@ -167,7 +166,7 @@
 }
 
 .lista-desarrolladores strong {
-	color: #c96f42;
+	color: #8a3d1e;
 	font-family: Georgia, "Times New Roman", serif;
 	font-size: 1.08rem;
 }
