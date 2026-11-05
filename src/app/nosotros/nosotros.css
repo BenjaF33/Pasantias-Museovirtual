@@ -70,6 +70,17 @@
 	line-height: 1.8;
 }
 
+.correo-historiadora {
+	margin: 0.9rem 0 0;
+	font-size: 0.95rem;
+	line-height: 1.6;
+}
+
+.correo-historiadora span {
+	font-weight: 600;
+	overflow-wrap: anywhere;
+}
+
 .historiadora-image {
 	display: flex;
 	flex: 1 1 360px;
@@ -154,9 +165,11 @@
 	display: flex;
 	flex: 1 1 220px;
 	max-width: 260px;
+	min-width: 0;
 	flex-direction: column;
 	gap: 0.25rem;
 	padding: 1.1rem 1rem;
+	box-sizing: border-box;
 	border: 1px solid rgba(201, 111, 66, 0.3);
 	border-radius: 0.8rem;
 	background: rgba(248, 246, 236, 0.9);
@@ -164,6 +177,7 @@
 	color: #253342;
 	line-height: 1.7;
 	text-align: center;
+	overflow-wrap: anywhere;
 }
 
 .lista-desarrolladores strong {
