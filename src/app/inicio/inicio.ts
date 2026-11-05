@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 import { afterNextRender, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+=======
+import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
 import { Hecho } from '../models/hechos';
 import { AuthService } from '../servicios/auth-service';
 import { EventosService } from '../servicios/eventos';
@@ -13,8 +19,15 @@ import { NotificacionesService } from '../servicios/notificaciones';
   templateUrl: './inicio.html',
 })
 export class Inicio {
+<<<<<<< HEAD
   private readonly route = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
+=======
+  private readonly changeDetector = inject(ChangeDetectorRef);
+  private readonly route = inject(ActivatedRoute);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
   private eventoSolicitadoIndex: number | null = null;
 
   readonly coloresPuntos = [
@@ -100,6 +113,7 @@ export class Inicio {
       return;
     }
 
+<<<<<<< HEAD
     const input = event.target as HTMLInputElement | null;
     if (!(input instanceof HTMLInputElement)) {
       return;
@@ -148,6 +162,33 @@ export class Inicio {
     });
 
     await Promise.allSettled(tareas);
+=======
+    const input = event.target as HTMLInputElement;
+    const archivos = Array.from(input.files ?? []);
+    input.value = '';
+    const borrador = this.borradorEdicion;
+
+    const imagenes = archivos.filter(archivo => archivo.type.startsWith('image/'));
+    if (imagenes.length !== archivos.length) {
+      this.notificaciones.mostrar('Solo se pueden añadir archivos de imagen.', 'warning');
+    }
+
+    if (imagenes.length === 0) {
+      return;
+    }
+
+    this.imagenesCargando++;
+    try {
+      const nuevasImagenes = await Promise.all(imagenes.map(archivo => this.leerImagen(archivo)));
+      if (this.borradorEdicion === borrador) {
+        this.borradorEdicion.img = [...borrador.img, ...nuevasImagenes];
+      }
+    } catch {
+      this.notificaciones.mostrar('No se pudieron leer las imágenes seleccionadas.', 'error');
+    } finally {
+      this.imagenesCargando--;
+    }
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
   }
 
   quitarImagen(indice: number): void {
@@ -160,6 +201,7 @@ export class Inicio {
       reader.onload = () => {
         if (typeof reader.result === 'string') {
           resolve(reader.result);
+<<<<<<< HEAD
           return;
         }
 
@@ -167,6 +209,13 @@ export class Inicio {
       };
       reader.onerror = () => reject(reader.error ?? new Error('No se pudo leer el archivo.'));
       reader.onabort = () => reject(new Error('La lectura de la imagen fue cancelada.'));
+=======
+        } else {
+          reject(new Error('El archivo no produjo una imagen válida.'));
+        }
+      };
+      reader.onerror = () => reject(reader.error ?? new Error('No se pudo leer el archivo.'));
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
       reader.readAsDataURL(archivo);
     });
   }
@@ -174,13 +223,23 @@ export class Inicio {
   cancelarEdicion(): void {
     this.hechoEnEdicion = null;
     this.creandoEvento = false;
+<<<<<<< HEAD
     this.imagenesCargando = 0;
+=======
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
   }
 
   guardarEdicion(): void {
     const hecho = this.hechoEnEdicion;
     const formularioAbierto = hecho !== null || this.creandoEvento;
+<<<<<<< HEAD
     if (!formularioAbierto || !this.puedeEditarEventos) {
+=======
+    if (!formularioAbierto || !this.puedeEditarEventos || this.imagenesCargando > 0) {
+      if (formularioAbierto && this.imagenesCargando > 0) {
+        this.notificaciones.mostrar('Espera a que termine la carga de las imágenes.', 'info');
+      }
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
       return;
     }
 
@@ -225,6 +284,14 @@ export class Inicio {
 
   async alternarFavorito(hecho: Hecho): Promise<void> {
     const yaEsFavorito = this.favoritosService.contieneHecho(hecho);
+<<<<<<< HEAD
+=======
+    if (!yaEsFavorito && !this.authService.estaLogueado()) {
+      void this.router.navigate(['/inicio-sesion']);
+      return;
+    }
+
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
     if (yaEsFavorito) {
       const confirmar = await this.notificaciones.confirmarEliminacion(
         '¿Quieres eliminar este favorito?',
@@ -293,6 +360,10 @@ export class Inicio {
       this.hechoAmpliado = null;
       this.cerrandoInfo = false;
       this.cierreInfoTimeout = undefined;
+<<<<<<< HEAD
+=======
+      this.changeDetector.detectChanges();
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
     }, 220);
   }
 
@@ -306,6 +377,10 @@ export class Inicio {
       this.hechoSeleccionado = null;
       this.cerrandoCard = false;
       this.cierreCardTimeout = undefined;
+<<<<<<< HEAD
+=======
+      this.changeDetector.detectChanges();
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
     }, 220);
   }
 

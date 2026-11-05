@@ -317,6 +317,20 @@ html[data-theme="dark"] body app-root .contacto-page .contacto-intro {
 }
 
 html[data-theme="dark"] body app-root .nosotros-page .lista-desarrolladores strong {
+<<<<<<< HEAD
+=======
+	color: #9c431e !important;
+}
+
+html[data-theme="dark"] body app-root .nosotros-page .lista-desarrolladores li {
+	border-color: #d98b5f !important;
+	background: #f8f2e5 !important;
+	color: #253342 !important;
+	box-shadow: 0 0.35rem 0.9rem rgb(0 0 0 / 20%);
+}
+
+html[data-theme="dark"] body app-root .nosotros-page .correo-historiadora span {
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
 	color: var(--theme-accent) !important;
 }
 

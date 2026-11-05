@@ -10,6 +10,7 @@
 
     <section class="historia">
         <div class="encabezado-linea-tiempo">
+<<<<<<< HEAD
             <div class="nav-busqueda-eventos" aria-label="Buscar acontecimientos por año o nombre">
                 <label class="campo-busqueda" for="filtro-eventos">
                     <span class="sr-only">Buscar evento</span>
@@ -17,6 +18,8 @@
                 </label>
             </div>
 
+=======
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
             <h2>Línea del tiempo</h2>
             @if (puedeEditarEventos) {
             <button type="button" class="boton-agregar-evento" (click)="iniciarCreacionEvento()">
@@ -88,6 +91,10 @@
                 </div>
                 }
             </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
             }
         </div>
 
@@ -98,10 +105,13 @@
                 <h2 id="titulo-editor-evento">{{ creandoEvento ? 'Agregar acontecimiento' : 'Editar acontecimiento' }}</h2>
                 <p class="aviso-edicion-temporal">Los cambios solo se aplican en esta pantalla y se perderán al recargar.</p>
 
+<<<<<<< HEAD
                 <label for="evento-imagenes">Añadir imágenes</label>
                 <input id="evento-imagenes" name="imagenes" type="file" accept="image/*" multiple
                     (change)="agregarImagenes($event)">
 
+=======
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
                 <label for="evento-titulo">Título</label>
                 <input id="evento-titulo" name="titulo" type="text" required
                     [(ngModel)]="borradorEdicion.titulo">
@@ -118,6 +128,13 @@
                 <textarea id="evento-info" name="info" rows="8" required
                     [(ngModel)]="borradorEdicion.info"></textarea>
 
+<<<<<<< HEAD
+=======
+                <label for="evento-imagenes">Añadir imágenes</label>
+                <input id="evento-imagenes" name="imagenes" type="file" accept="image/*" multiple
+                    (change)="agregarImagenes($event)">
+
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
                 @if (borradorEdicion.img.length > 0) {
                 <p class="titulo-imagenes-editor-evento">Imágenes del acontecimiento</p>
                 <fieldset class="imagenes-editor-evento">

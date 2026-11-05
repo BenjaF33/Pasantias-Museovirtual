@@ -1,6 +1,10 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Hecho } from '../models/hechos';
+<<<<<<< HEAD
+=======
+import { AuthService } from '../servicios/auth-service';
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
 import { FavoritosService } from '../servicios/favoritos';
 import { NotificacionesService } from '../servicios/notificaciones';
 
@@ -12,13 +16,24 @@ import { NotificacionesService } from '../servicios/notificaciones';
 })
 export class Favoritos {
   favoritos: Hecho[] = [];
+<<<<<<< HEAD
+=======
+  estaLogueado: boolean;
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
 
   constructor(
     private favoritosService: FavoritosService,
     private notificaciones: NotificacionesService,
     private changeDetector: ChangeDetectorRef,
+<<<<<<< HEAD
   ) {
     this.favoritos = this.favoritosService.obtenerHechos();
+=======
+    authService: AuthService,
+  ) {
+    this.favoritos = this.favoritosService.obtenerHechos();
+    this.estaLogueado = authService.estaLogueado();
+>>>>>>> a2e2020069545eb7bd69a3b2ba237f6f792b9deb
   }
 
   async quitarFavorito(hecho: Hecho): Promise<void> {
