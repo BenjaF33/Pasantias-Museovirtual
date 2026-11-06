@@ -5,28 +5,35 @@ import { Hecho } from '../models/hechos';
   providedIn: 'root',
 })
 export class FavoritosService {
+  private readonly claveStorage = 'favoritos-museo-virtual';
   hechos: Hecho[] = [];
 
-  obtenerHechos() {
+  constructor() {
+    this.hechos = this.leerDesdeStorage();
+  }
+
+  obtenerHechos(): Hecho[] {
+    this.hechos = this.leerDesdeStorage();
     return this.hechos;
   }
-  
-  agregarHecho(hecho: Hecho) {
-    if (!this.contieneHecho(hecho)) {
-      this.hechos.push(hecho);
+
+  agregarHecho(hecho: Hecho): void {
+    if (this.contieneHecho(hecho)) {
+      return;
     }
+
+    this.hechos.push(hecho);
+    this.guardarEnStorage();
   }
 
-  eliminarHecho(hecho: Hecho) {
-    const index = this.hechos.findIndex(
-      guardado => guardado.anio === hecho.anio && guardado.titulo === hecho.titulo,
+  eliminarHecho(hecho: Hecho): void {
+    this.hechos = this.hechos.filter(
+      guardado => !(guardado.anio === hecho.anio && guardado.titulo === hecho.titulo),
     );
-    if (index !== -1) {
-      this.hechos.splice(index, 1);
-    }
+    this.guardarEnStorage();
   }
 
-  alternarHecho(hecho: Hecho) {
+  alternarHecho(hecho: Hecho): void {
     if (this.contieneHecho(hecho)) {
       this.eliminarHecho(hecho);
       return;
@@ -40,5 +47,21 @@ export class FavoritosService {
       guardado => guardado.anio === hecho.anio && guardado.titulo === hecho.titulo,
     );
   }
-  
+
+  private leerDesdeStorage(): Hecho[] {
+    try {
+      const datos = localStorage.getItem(this.claveStorage);
+      return datos ? JSON.parse(datos) as Hecho[] : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private guardarEnStorage(): void {
+    try {
+      localStorage.setItem(this.claveStorage, JSON.stringify(this.hechos));
+    } catch {
+      // Ignorar errores de storage si el navegador no lo permite.
+    }
+  }
 }

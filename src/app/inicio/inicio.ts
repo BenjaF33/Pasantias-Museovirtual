@@ -130,24 +130,25 @@ export class Inicio {
     }
 
     const borradorActual = this.borradorEdicion;
+    const imagenesLeidas: string[] = [];
 
     for (const archivo of imagenesValidas) {
       this.imagenesCargando += 1;
       try {
-        const imagen = await this.leerImagen(archivo);
-        if (this.borradorEdicion !== borradorActual) {
-          return;
-        }
-        this.borradorEdicion = {
-          ...this.borradorEdicion,
-          img: [...this.borradorEdicion.img, imagen],
-        };
+        imagenesLeidas.push(await this.leerImagen(archivo));
       } catch {
         this.notificaciones.mostrar(`No se pudo leer la imagen: ${archivo.name}`, 'error');
       } finally {
         this.imagenesCargando = Math.max(0, this.imagenesCargando - 1);
       }
     }
+
+    if (this.borradorEdicion !== borradorActual) {
+      return;
+    }
+
+    this.borradorEdicion.img = [...this.borradorEdicion.img, ...imagenesLeidas];
+    this.changeDetector.detectChanges();
   }
 
   quitarImagen(indice: number): void {
