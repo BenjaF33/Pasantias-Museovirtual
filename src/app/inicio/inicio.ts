@@ -28,11 +28,12 @@ export class Inicio {
   ];
 
   hechos: Hecho[] = [];
+  busquedaEventos = '';
   hechoSeleccionado: Hecho | null = null;
   hechoAmpliado: Hecho | null = null;
   hechoEnEdicion: Hecho | null = null;
   creandoEvento = false;
-  borradorEdicion = { titulo: '', anio: '', descripcion: '', info: '', img: [] as string[] };
+  borradorEdicion = { titulo: '', anio: '', descripcion: '', descripcion_larga: '', img: [] as string[] };
   imagenesCargando = 0;
   imagenActiva = 0;
   imagenAgrandada = false;
@@ -76,6 +77,21 @@ export class Inicio {
     return this.authService.esAdmin();
   }
 
+  get eventosFiltrados(): Hecho[] {
+    return this.eventosService.filtrarEventos(this.busquedaEventos, this.hechos);
+  }
+
+  actualizarBusqueda(termino: string): void {
+    this.busquedaEventos = termino;
+
+    if (this.hechoSeleccionado && !this.eventosFiltrados.includes(this.hechoSeleccionado)) {
+      clearTimeout(this.cierreCardTimeout);
+      this.cierreCardTimeout = undefined;
+      this.hechoSeleccionado = null;
+      this.cerrandoCard = false;
+    }
+  }
+
   iniciarEdicion(hecho: Hecho): void {
     if (!this.puedeEditarEventos) {
       return;
@@ -87,7 +103,7 @@ export class Inicio {
       titulo: hecho.titulo,
       anio: hecho.anio,
       descripcion: hecho.descripcion,
-      info: hecho.info,
+      descripcion_larga: hecho.descripcion_larga,
       img: [...hecho.img],
     };
   }
@@ -99,7 +115,7 @@ export class Inicio {
 
     this.hechoEnEdicion = null;
     this.creandoEvento = true;
-    this.borradorEdicion = { titulo: '', anio: '', descripcion: '', info: '', img: [] };
+    this.borradorEdicion = { titulo: '', anio: '', descripcion: '', descripcion_larga: '', img: [] };
   }
 
   async agregarImagenes(event: Event): Promise<void> {
@@ -192,9 +208,9 @@ export class Inicio {
     const titulo = this.borradorEdicion.titulo.trim();
     const anio = this.borradorEdicion.anio.trim();
     const descripcion = this.borradorEdicion.descripcion.trim();
-    const info = this.borradorEdicion.info.trim();
+    const descripcion_larga = this.borradorEdicion.descripcion_larga.trim();
 
-    if (!titulo || !anio || !descripcion || !info) {
+    if (!titulo || !anio || !descripcion || !descripcion_larga) {
       return;
     }
 
@@ -208,7 +224,7 @@ export class Inicio {
         titulo,
         anio,
         descripcion,
-        info,
+        descripcion_larga,
         img: [...this.borradorEdicion.img],
       };
       const indice = this.hechos.findIndex(evento => Number(evento.anio) > Number(anio));
@@ -231,7 +247,7 @@ export class Inicio {
         titulo,
         anio,
         descripcion,
-        info,
+        descripcion_larga,
         img: [...this.borradorEdicion.img],
       });
 

@@ -5,7 +5,7 @@ export class Hecho {
   public img: string[],
   public titulo: string,
   public descripcion: string,
-  public info: string,
+  public descripcion_larga: string,
   ) {}
 }
 
@@ -16,5 +16,5 @@ export interface Hecho {
   img: string[];
   titulo: string;
   descripcion: string;
-  info: string;
+  descripcion_larga: string;
 }

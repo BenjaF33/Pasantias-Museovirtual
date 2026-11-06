@@ -55,7 +55,7 @@ describe('Inicio', () => {
   });
 
   it('redirects unauthenticated users to login without adding an event to favorites', async () => {
-    const hecho = { id_evento: 4, anio: '1881', titulo: 'Tendido telegráfico', img: [], descripcion: '', info: '' };
+    const hecho = { id_evento: 4, anio: '1881', titulo: 'Tendido telegráfico', img: [], descripcion: '', descripcion_larga: '' };
     auth.estaLogueado.mockReturnValue(false);
 
     await component.alternarFavorito(hecho);
@@ -66,7 +66,7 @@ describe('Inicio', () => {
   });
 
   it('adds an event to favorites when the user is authenticated', async () => {
-    const hecho = { id_evento: 4, anio: '1881', titulo: 'Tendido telegráfico', img: [], descripcion: '', info: '' };
+    const hecho = { id_evento: 4, anio: '1881', titulo: 'Tendido telegráfico', img: [], descripcion: '', descripcion_larga: '' };
 
     await component.alternarFavorito(hecho);
 

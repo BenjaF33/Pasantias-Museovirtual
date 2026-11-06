@@ -13,7 +13,9 @@
             <div class="nav-busqueda-eventos" aria-label="Buscar acontecimientos por año o nombre">
                 <label class="campo-busqueda" for="filtro-eventos">
                     <span class="sr-only">Buscar evento</span>
-                    <input id="filtro-eventos" type="text" aria-label="Buscar por año o nombre de evento" placeholder="Buscar por año o evento" />
+                    <input id="filtro-eventos" name="busquedaEventos" type="search"
+                        aria-label="Buscar por año o nombre de evento" placeholder="Buscar por año o evento"
+                        [(ngModel)]="busquedaEventos" (ngModelChange)="actualizarBusqueda($event)" />
                 </label>
             </div>
 
@@ -33,7 +35,7 @@
             <div class="capa-cierre-tarjeta" (click)="cerrarCard()"></div>
             }
 
-            @for (h of hechos; track $index; let esIzquierda = $odd) {
+            @for (h of eventosFiltrados; track h.id_evento; let esIzquierda = $odd) {
             <div [id]="'evento-' + $index" class="hecho" [class.hecho-lado-izquierdo]="esIzquierda" [class.hecho-lado-derecho]="!esIzquierda">
 
                 <!-- PUNTO -->
@@ -92,6 +94,11 @@
 
 
             }
+            @empty {
+            <p class="sin-resultados-eventos" aria-live="polite">
+                No se encontraron eventos para "{{ busquedaEventos }}".
+            </p>
+            }
         </div>
 
         @if (hechoEnEdicion || creandoEvento) {
@@ -114,9 +121,9 @@
                 <textarea id="evento-descripcion" name="descripcion" rows="5" required
                     [(ngModel)]="borradorEdicion.descripcion"></textarea>
 
-                <label for="evento-info">Texto completo</label>
-                <textarea id="evento-info" name="info" rows="8" required
-                    [(ngModel)]="borradorEdicion.info"></textarea>
+                <label for="evento-descripcion-larga">Texto completo</label>
+                <textarea id="evento-descripcion-larga" name="descripcion_larga" rows="8" required
+                    [(ngModel)]="borradorEdicion.descripcion_larga"></textarea>
 
                 <label for="evento-imagenes">Añadir imágenes</label>
                 <input id="evento-imagenes" name="imagenes" type="file" accept="image/*" multiple
@@ -192,7 +199,7 @@
                     <span class="anio">{{ hechoAmpliado.anio }}</span>
                     <h2 [id]="'modal-titulo-' + hechoAmpliado.anio">{{ hechoAmpliado.titulo }}</h2>
                     <p class="descripcion-modal">{{ hechoAmpliado.descripcion }}</p>
-                    <p>{{ hechoAmpliado.info }}</p>
+                    <p>{{ hechoAmpliado.descripcion_larga }}</p>
                 </div>
             </article>
         </div>
