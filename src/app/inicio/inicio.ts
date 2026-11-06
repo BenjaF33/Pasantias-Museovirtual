@@ -198,14 +198,18 @@ export class Inicio {
     }
 
     if (this.creandoEvento) {
+      const id_evento = this.hechos.reduce(
+        (mayorId, evento) => Math.max(mayorId, evento.id_evento),
+        0,
+      ) + 1;
       const nuevoHecho: Hecho = {
+        id_evento,
         titulo,
         anio,
         descripcion,
         info,
         img: [...this.borradorEdicion.img],
       };
-
       const indice = this.hechos.findIndex(evento => Number(evento.anio) > Number(anio));
       if (indice === -1) {
         this.hechos.push(nuevoHecho);

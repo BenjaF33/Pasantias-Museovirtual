@@ -55,7 +55,7 @@ describe('Inicio', () => {
   });
 
   it('redirects unauthenticated users to login without adding an event to favorites', async () => {
-    const hecho = { anio: '1881', titulo: 'Tendido telegráfico', img: [], descripcion: '', info: '' };
+    const hecho = { id_evento: 4, anio: '1881', titulo: 'Tendido telegráfico', img: [], descripcion: '', info: '' };
     auth.estaLogueado.mockReturnValue(false);
 
     await component.alternarFavorito(hecho);
@@ -66,7 +66,7 @@ describe('Inicio', () => {
   });
 
   it('adds an event to favorites when the user is authenticated', async () => {
-    const hecho = { anio: '1881', titulo: 'Tendido telegráfico', img: [], descripcion: '', info: '' };
+    const hecho = { id_evento: 4, anio: '1881', titulo: 'Tendido telegráfico', img: [], descripcion: '', info: '' };
 
     await component.alternarFavorito(hecho);
 
@@ -77,13 +77,13 @@ describe('Inicio', () => {
 
 
   it('shows carousel arrows only when there is more than one image', () => {
-    component.mostrarInfo({ anio: '1881', titulo: 'Tendido telegráfico', img: ['imagen-1.jpg'] });
+    component.mostrarInfo({ id_evento: 4, anio: '1881', titulo: 'Tendido telegráfico', img: ['imagen-1.jpg'] });
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelectorAll('.carousel-control-prev').length).toBe(0);
     expect(fixture.nativeElement.querySelectorAll('.carousel-control-next').length).toBe(0);
 
-    component.mostrarInfo({ anio: '1879', titulo: 'Fuerte Confluencia', img: ['imagen-1.jpg', 'imagen-2.jpg'] });
+    component.mostrarInfo({ id_evento: 3, anio: '1879', titulo: 'Fuerte Confluencia', img: ['imagen-1.jpg', 'imagen-2.jpg'] });
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelectorAll('.carousel-control-prev').length).toBe(1);
