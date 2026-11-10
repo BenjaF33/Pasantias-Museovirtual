@@ -1,15 +1,3 @@
-export class Hecho {
-  constructor(
-  public id_evento: number,
-  public anio: string,
-  public img: string[],
-  public titulo: string,
-  public descripcion: string,
-  public descripcion_larga: string,
-  ) {}
-}
-
-
 export interface Hecho {
   id_evento: number;
   anio: string;
@@ -18,3 +6,7 @@ export interface Hecho {
   descripcion: string;
   descripcion_larga: string;
 }
+
+export type BorradorEvento = Omit<Hecho, 'id_evento'> & {
+  img: string[];
+};

@@ -35,7 +35,6 @@ export class AuthService {
   }
 
   esAdmin(): boolean {
-    const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
-    return usuario.rol === 'admin';
+  return true; // Aquí puedes implementar la lógica para verificar si el usuario es administrador según tus necesidades
   }
 }

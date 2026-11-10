@@ -2,7 +2,7 @@ import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Hecho } from '../models/hechos';
+import { type BorradorEvento, type Hecho } from '../models/hechos';
 import { AuthService } from '../servicios/auth-service';
 import { EventosService } from '../servicios/eventos';
 import { FavoritosService } from '../servicios/favoritos';
@@ -33,7 +33,7 @@ export class Inicio {
   hechoAmpliado: Hecho | null = null;
   hechoEnEdicion: Hecho | null = null;
   creandoEvento = false;
-  borradorEdicion = { titulo: '', anio: '', descripcion: '', descripcion_larga: '', img: [] as string[] };
+  borradorEdicion: BorradorEvento = { titulo: '', anio: '', descripcion: '', descripcion_larga: '', img: [] };
   imagenesCargando = 0;
   imagenActiva = 0;
   imagenAgrandada = false;
