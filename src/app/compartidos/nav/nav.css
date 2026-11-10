@@ -189,15 +189,45 @@
 	flex: 0 0 auto;
 	align-items: center;
 	justify-content: center;
-	width: 2.6rem;
-	height: 2.6rem;
-	padding: 0.55rem;
+	min-height: 2.6rem;
+	padding: 0.55rem 0.8rem;
 	border: 1px solid #f4e8ca;
 	border-radius: 0.4rem;
 	background: #f4e8ca;
 	color: #172b3c;
 	text-decoration: none;
 	transition: color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.enlace-sesion,
+.nombre-usuario {
+	color: #fffaf0;
+	font-size: 0.9rem;
+	white-space: nowrap;
+}
+
+.enlace-sesion {
+	padding: 0.55rem 0.35rem;
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.boton-salir {
+	min-height: 2.6rem;
+	padding: 0.55rem 0.8rem;
+	border: 1px solid #d6b56d;
+	border-radius: 0.4rem;
+	background: transparent;
+	color: #fffaf0;
+	cursor: pointer;
+	font: inherit;
+}
+
+.boton-salir:hover,
+.boton-salir:focus-visible {
+	background: rgb(255 250 240 / 10%);
+	outline: 2px solid #d6b56d;
+	outline-offset: 2px;
 }
 
 .icono-sesion {
@@ -303,8 +333,8 @@
 	}
 
 	.boton-sesion {
-		width: 2.5rem;
-		height: 2.5rem;
+		min-height: 2.5rem;
+		padding-inline: 0.6rem;
 	}
 
 	.boton-tema {

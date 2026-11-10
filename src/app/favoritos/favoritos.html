@@ -12,6 +12,10 @@
 			<p>Inicia sesión para poder agregar hechos a favoritos.</p>
 			<a routerLink="/inicio-sesion">Iniciar sesión</a>
 		</section>
+	} @else if (cargando) {
+		<section class="estado-vacio" role="status">Cargando favoritos...</section>
+	} @else if (error) {
+		<section class="estado-vacio" role="alert">{{ error }}</section>
 	} @else if (favoritos.length === 0) {
 		<section class="estado-vacio" aria-live="polite">
 			<span class="corazon-vacio" aria-hidden="true">&#9825;</span>
@@ -21,11 +25,11 @@
 		</section>
 	} @else {
 		<section class="coleccion-favoritos" aria-label="Hechos históricos guardados en favoritos">
-			@for (hecho of favoritos; track hecho.anio + hecho.titulo) {
+			@for (hecho of favoritos; track hecho.id_evento) {
 				<article class="tarjeta-favorito">
 					<div class="imagen-favorito">
 						<img
-							[src]="hecho.img[0]"
+							[src]="hecho.img[0] || '/assets/puente ferroviario.jpg'"
 							[alt]="hecho.titulo"
 							(error)="manejarErrorImagen($event)"
 						/>

@@ -1,9 +1,55 @@
 import { describe, expect, it } from 'vitest';
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
+import { API_BASE_URL } from './api';
 import { EventosService } from './eventos';
 
 describe('EventosService', () => {
-  const service = new EventosService();
+  let service: EventosService;
+  let http: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
+    service = TestBed.inject(EventosService);
+    http = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => http.verify());
+
+  it('loads every API event and sorts the timeline chronologically', () => {
+    service.listar().subscribe(eventos => {
+      expect(eventos.map(evento => evento.id_evento)).toEqual([1, 2]);
+      expect(eventos[0].img).toEqual([`${API_BASE_URL}/uploads/primero.jpg`]);
+      expect(eventos[1].descripcion).toBe('Descripción');
+    });
+
+    http.expectOne(`${API_BASE_URL}/eventos`).flush([
+      {
+        id_evento: '2',
+        anio: 1900,
+        nombre: 'Segundo',
+        imagen_1: 'segundo.jpg',
+        imagen_2: null,
+        imagen_3: null,
+        descripcion_corta: 'Descripción',
+        descripcion_larga: 'Texto',
+      },
+      {
+        id_evento: '1',
+        anio: 1830,
+        titulo: 'Primero',
+        imagen_1: 'primero.jpg',
+        imagen_2: '',
+        imagen_3: null,
+        descripcion_corta: 'Descripción',
+        descripcion_larga: 'Texto',
+      },
+    ]);
+  });
 
   // Verifica coincidencias por año y por título. La búsqueda también debe encontrar
   // "Tendido telegráfico" al escribir "TELEGRAFICO", sin importar mayúsculas ni tildes.

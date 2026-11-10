@@ -1,0 +1,69 @@
+:host {
+  display: block;
+}
+
+.historial-compras {
+  min-height: 70vh;
+  padding: clamp(2rem, 6vw, 5rem) 1rem;
+  background: #f8f6ec;
+  color: #183c54;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.historial-compras > header,
+.historial-compras > section {
+  width: min(100%, 58rem);
+  margin: 0 auto;
+}
+
+.historial-compras h1 {
+  margin: 0;
+  font: 700 clamp(2rem, 5vw, 3.2rem) Georgia, "Times New Roman", serif;
+}
+
+.flujo-eyebrow {
+  color: #9b733d;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.compra-historial {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1.25rem;
+  border: 1px solid #e1d9c8;
+  border-radius: 0.75rem;
+  background: #fffdfa;
+}
+
+.compra-historial h2,
+.compra-historial p {
+  margin: 0;
+}
+
+.compra-historial a {
+  color: #713b25;
+  font-weight: 700;
+}
+
+.sin-compras,
+.flujo-error {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.flujo-error {
+  color: #8b3b2d;
+}
+
+@media (max-width: 560px) {
+  .compra-historial {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

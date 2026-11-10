@@ -28,6 +28,9 @@ export class Inicio {
   ];
 
   hechos: Hecho[] = [];
+  favoritos: Hecho[] = [];
+  cargandoEventos = false;
+  errorEventos = '';
   busquedaEventos = '';
   hechoSeleccionado: Hecho | null = null;
   hechoAmpliado: Hecho | null = null;
@@ -60,7 +63,32 @@ export class Inicio {
   }
 
   ngOnInit(): void {
-    this.hechos = this.eventosService.obtenerEventos();
+    this.cargarEventos();
+    if (this.authService.estaLogueado()) {
+      this.cargarFavoritos();
+    }
+  }
+
+  private cargarEventos(): void {
+    this.cargandoEventos = true;
+    this.eventosService.listar().subscribe({
+      next: eventos => {
+        this.hechos = eventos;
+        this.errorEventos = '';
+        this.cargandoEventos = false;
+        this.seleccionarEventoSolicitado();
+        this.changeDetector.markForCheck();
+      },
+      error: () => {
+        this.hechos = this.eventosService.obtenerEventos();
+        this.errorEventos = 'No se pudo conectar con la API. Se muestran solo los eventos de ejemplo; inicia la API para ver el catálogo completo.';
+        this.cargandoEventos = false;
+        this.changeDetector.markForCheck();
+      },
+    });
+  }
+
+  private seleccionarEventoSolicitado(): void {
     const anio = this.route.snapshot.queryParamMap.get('anio');
     const titulo = this.route.snapshot.queryParamMap.get('titulo');
 
@@ -69,6 +97,11 @@ export class Inicio {
       if (indice !== -1) {
         this.hechoSeleccionado = this.hechos[indice];
         this.eventoSolicitadoIndex = indice;
+        this.changeDetector.detectChanges();
+        document.getElementById(`evento-${indice}`)?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
       }
     }
   }
@@ -260,11 +293,11 @@ export class Inicio {
   }
 
   esFavorito(hecho: Hecho): boolean {
-    return this.favoritosService.contieneHecho(hecho);
+    return this.favoritos.some(favorito => favorito.id_evento === hecho.id_evento);
   }
 
   async alternarFavorito(hecho: Hecho): Promise<void> {
-    const yaEsFavorito = this.favoritosService.contieneHecho(hecho);
+    const yaEsFavorito = this.esFavorito(hecho);
 
     if (!yaEsFavorito && !this.authService.estaLogueado()) {
       void this.router.navigate(['/inicio-sesion']);
@@ -281,11 +314,38 @@ export class Inicio {
       }
     }
 
-    this.favoritosService.alternarHecho(hecho);
-    this.notificaciones.mostrar(
-      yaEsFavorito ? 'Eliminado de favoritos' : 'Agregado a favoritos',
-      yaEsFavorito ? 'info' : 'success',
-    );
+    const solicitud = yaEsFavorito
+      ? this.favoritosService.eliminar(hecho.id_evento)
+      : this.favoritosService.agregar(hecho.id_evento);
+    solicitud.subscribe({
+      next: () => {
+        this.favoritos = yaEsFavorito
+          ? this.favoritos.filter(favorito => favorito.id_evento !== hecho.id_evento)
+          : [...this.favoritos, hecho];
+        this.notificaciones.mostrar(
+          yaEsFavorito ? 'Eliminado de favoritos' : 'Agregado a favoritos',
+          yaEsFavorito ? 'info' : 'success',
+        );
+        this.changeDetector.markForCheck();
+      },
+      error: () => {
+        this.notificaciones.mostrar('No se pudo actualizar favoritos.', 'error');
+        this.changeDetector.markForCheck();
+      },
+    });
+  }
+
+  private cargarFavoritos(): void {
+    this.favoritosService.listar().subscribe({
+      next: favoritos => {
+        this.favoritos = favoritos;
+        this.changeDetector.markForCheck();
+      },
+      error: () => {
+        this.notificaciones.mostrar('No se pudieron cargar tus favoritos.', 'error');
+        this.changeDetector.markForCheck();
+      },
+    });
   }
 
   mostrarHecho(hecho: Hecho): void {

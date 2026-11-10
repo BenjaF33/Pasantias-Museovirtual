@@ -29,6 +29,13 @@
             }
         </div>
 
+        @if (cargandoEventos) {
+        <p role="status">Cargando acontecimientos...</p>
+        }
+        @if (errorEventos) {
+        <p role="alert">{{ errorEventos }}</p>
+        }
+
         <div class="linea">
             <!-- Capa transparente para cerrar la tarjeta al hacer clic en cualquier lugar fuera -->
             @if (hechoSeleccionado) {

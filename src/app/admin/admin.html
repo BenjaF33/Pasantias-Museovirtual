@@ -1,0 +1,94 @@
+<main class="panel-admin">
+  <header class="admin-header">
+    <p>Administración</p>
+    <h1>Panel del museo</h1>
+    <span>El catálogo tiene {{ productos.length }} productos; se recomiendan al menos 9 para completarlo.</span>
+  </header>
+
+  @if (cargando) {
+    <p class="estado-admin" role="status">Actualizando datos...</p>
+  }
+  @if (error) {
+    <p class="estado-admin" role="alert">{{ error }}</p>
+  }
+
+  <section class="admin-seccion">
+    <h2>{{ formulario.id ? 'Editar producto' : 'Agregar producto' }}</h2>
+    <form class="formulario-admin" (ngSubmit)="guardar()">
+      <label for="admin-nombre">Nombre</label>
+      <input id="admin-nombre" name="nombre" required [(ngModel)]="formulario.nombre">
+
+      <label for="admin-descripcion">Descripción</label>
+      <textarea id="admin-descripcion" name="descripcion" rows="4" required
+        [(ngModel)]="formulario.descripcion"></textarea>
+
+      <label for="admin-precio">Precio</label>
+      <input id="admin-precio" name="precio" type="number" min="0" step="0.01" required
+        [(ngModel)]="formulario.precio">
+
+      <label for="admin-imagen">Imagen del producto</label>
+      <input id="admin-imagen" name="imagen" type="file" accept="image/*" (change)="alElegirArchivo($event)">
+      @if (vistaPrevia || formulario.imagen) {
+        <img class="vista-previa-admin" [src]="vistaPrevia || imagenUrl(formulario.imagen ?? '')"
+          alt="Vista previa del producto">
+      }
+
+      <div class="acciones-admin">
+        <button type="submit" [disabled]="guardando">
+          {{ guardando ? 'Guardando...' : (formulario.id ? 'Guardar cambios' : 'Agregar producto') }}
+        </button>
+        @if (formulario.id) {
+          <button type="button" class="boton-secundario" (click)="cancelarEdicion()">Cancelar</button>
+        }
+      </div>
+    </form>
+  </section>
+
+  <section class="admin-seccion">
+    <h2>Productos</h2>
+    <div class="tabla-admin">
+      @for (producto of productos; track producto.id) {
+        <article class="fila-admin">
+          <div>
+            <h3>{{ producto.nombre }}</h3>
+            <p>$ {{ producto.precio }}</p>
+          </div>
+          <div class="acciones-admin">
+            <button type="button" class="boton-secundario" (click)="editar(producto)">Editar</button>
+            <button type="button" class="boton-eliminar" (click)="eliminar(producto.id)">Eliminar</button>
+          </div>
+        </article>
+      } @empty {
+        <p>No hay productos cargados.</p>
+      }
+    </div>
+  </section>
+
+  <section class="admin-seccion">
+    <h2>Usuarios</h2>
+    <div class="tabla-admin">
+      @for (usuario of usuarios; track usuario.id_usuario) {
+        <p class="fila-admin">{{ usuario.nombre }} — {{ usuario.rol }}</p>
+      } @empty {
+        <p>No hay usuarios para mostrar.</p>
+      }
+    </div>
+  </section>
+
+  <section class="admin-seccion">
+    <h2>Ventas</h2>
+    <div class="tabla-admin">
+      @for (venta of ventas; track venta.id_compra) {
+        <article class="fila-admin">
+          <div>
+            <h3>Compra #{{ venta.id_compra }} — {{ venta.nombre }}</h3>
+            <p>{{ venta.email }} · {{ venta.fecha }}</p>
+          </div>
+          <strong>$ {{ venta.total }}</strong>
+        </article>
+      } @empty {
+        <p>No hay ventas para mostrar.</p>
+      }
+    </div>
+  </section>
+</main>

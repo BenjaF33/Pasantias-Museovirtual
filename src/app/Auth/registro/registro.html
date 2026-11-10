@@ -1,10 +1,23 @@
 <main class="pagina-registro">
-  <form class="formulario-registro">
+  <form class="formulario-registro" (ngSubmit)="registrar()">
     <header class="encabezado-formulario">
       <p class="sobrelinea-formulario">Museo Virtual de Cipolletti</p>
       <h1>Crear una cuenta</h1>
       <p>Regístrate para continuar en el Museo Virtual.</p>
     </header>
+
+    <div class="campo">
+      <label for="nombre">Nombre</label>
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        autocomplete="name"
+        placeholder="Tu nombre"
+        required
+        [(ngModel)]="nombre"
+      >
+    </div>
 
     <div class="campo">
       <label for="email">Correo electrónico</label>
@@ -15,6 +28,7 @@
         autocomplete="email"
         placeholder="nombre@ejemplo.com"
         required
+        [(ngModel)]="email"
       >
     </div>
 
@@ -27,10 +41,17 @@
         autocomplete="new-password"
         placeholder="Crea una contraseña"
         required
+        [(ngModel)]="clave"
       >
     </div>
 
-    <button class="boton-registro" type="button">Registrarse</button>
+    @if (error) {
+      <p class="mensaje-error" role="alert">{{ error }}</p>
+    }
+
+    <button class="boton-registro" type="submit" [disabled]="cargando">
+      {{ cargando ? 'Registrando...' : 'Registrarse' }}
+    </button>
 
     <p class="enlace-inicio-sesion">
       ¿Ya tienes una cuenta?

@@ -1,31 +1,32 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter, Router } from '@angular/router';
+import { of } from 'rxjs';
+
+import { Carrito } from './carrito';
+import { ItemCarrito } from '../models/api';
 import { AuthService } from '../servicios/auth-service';
 import { CarritoService } from '../servicios/carrito';
 import { NotificacionesService } from '../servicios/notificaciones';
 
-import { Carrito } from './carrito';
-
 describe('Carrito', () => {
   let component: Carrito;
   let fixture: ComponentFixture<Carrito>;
+  const items: ItemCarrito[] = [
+    { id_producto: 2, nombre: 'Libro', imagen: 'libro.jpg', cantidad: 2, precio_unitario: 100 },
+  ];
+  const carrito = { ver: vi.fn(), actualizar: vi.fn(), eliminar: vi.fn(), vaciar: vi.fn() };
   const auth = { estaLogueado: vi.fn() };
-  const carrito = {
-    obtenerProductos: vi.fn(),
-    obtenerTotal: vi.fn(),
-  };
-  const notificaciones = {
-    confirmarEliminacion: vi.fn(),
-    mostrar: vi.fn(),
-  };
+  const notificaciones = { confirmarEliminacion: vi.fn(), mostrar: vi.fn() };
 
   beforeEach(async () => {
     auth.estaLogueado.mockReturnValue(true);
-    carrito.obtenerProductos.mockReturnValue([]);
-    carrito.obtenerTotal.mockReturnValue(0);
+    carrito.ver.mockReturnValue(of(items));
+    carrito.actualizar.mockReturnValue(of({ mensaje: 'Actualizado' }));
 
     await TestBed.configureTestingModule({
       imports: [Carrito],
       providers: [
+        provideRouter([]),
         { provide: AuthService, useValue: auth },
         { provide: CarritoService, useValue: carrito },
         { provide: NotificacionesService, useValue: notificaciones },
@@ -34,36 +35,29 @@ describe('Carrito', () => {
 
     fixture = TestBed.createComponent(Carrito);
     component = fixture.componentInstance;
+    fixture.detectChanges();
     await fixture.whenStable();
-  });
-
-  afterEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('loads cart items and calculates totals from API prices and quantities', () => {
+    expect(component.productos).toEqual(items);
+    expect(component.total).toBe(200);
+    expect(component.cantidadTotal).toBe(2);
   });
 
-  it('shows the empty cart message and links to products when logged in', () => {
-    fixture.detectChanges();
+  it('updates item quantity through the API', () => {
+    component.cambiarCantidad(items[0], 3);
 
-    expect(fixture.nativeElement.textContent).toContain('Tu carrito está vacío');
-    expect(fixture.nativeElement.querySelector('a').getAttribute('href')).toBe('/productos');
+    expect(carrito.actualizar).toHaveBeenCalledWith(items[0].id_producto, 3);
+    expect(carrito.ver).toHaveBeenCalled();
   });
 
-  it('asks logged-out users to sign in and links to the login page', async () => {
-    auth.estaLogueado.mockReturnValue(false);
+  it('navigates to the purchase summary', () => {
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+    component.finalizarCompra();
 
-    fixture = TestBed.createComponent(Carrito);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    expect(fixture.nativeElement.textContent).toContain(
-      'Inicia sesión para poder agregar productos al carrito.',
-    );
-    expect(fixture.nativeElement.querySelector('a').getAttribute('href')).toBe('/inicio-sesion');
-    expect(fixture.nativeElement.textContent).not.toContain('Tu carrito está vacío');
+    expect(navigateSpy).toHaveBeenCalledWith(['/paginas/compra']);
   });
 });

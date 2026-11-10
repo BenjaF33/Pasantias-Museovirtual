@@ -1,0 +1,39 @@
+<main class="flujo-compra">
+  <header>
+    <p class="flujo-eyebrow">Museo Virtual de Cipolletti</p>
+    <h1>Resumen de tu compra</h1>
+    <p>Revisa los productos antes de confirmar el pedido.</p>
+  </header>
+
+  @if (cargando) {
+    <p role="status">Cargando el carrito...</p>
+  } @else if (error) {
+    <p class="flujo-error" role="alert">{{ error }}</p>
+  }
+
+  @if (!cargando && items.length > 0) {
+    <section class="resumen-compra" aria-label="Productos de la compra">
+      @for (item of items; track item.id_producto) {
+        <article class="linea-compra">
+          <div>
+            <h2>{{ item.nombre }}</h2>
+            <p>{{ item.cantidad }} × ${{ item.precio_unitario }}</p>
+          </div>
+          <strong>$ {{ item.cantidad * item.precio_unitario }}</strong>
+        </article>
+      }
+      <p class="total-compra"><span>Total</span><strong>$ {{ total }}</strong></p>
+      <div class="acciones-compra">
+        <a routerLink="/carrito">Volver al carrito</a>
+        <button type="button" [disabled]="finalizando" (click)="confirmarCompra()">
+          {{ finalizando ? 'Procesando compra...' : 'Confirmar compra' }}
+        </button>
+      </div>
+    </section>
+  } @else if (!cargando && !error) {
+    <section class="compra-vacia">
+      <h2>No hay productos en el carrito.</h2>
+      <a routerLink="/productos">Explorar productos</a>
+    </section>
+  }
+</main>

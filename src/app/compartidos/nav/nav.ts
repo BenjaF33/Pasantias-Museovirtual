@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../servicios/auth-service';
 import { TemaService } from '../../servicios/tema';
 
 @Component({
@@ -10,6 +11,8 @@ import { TemaService } from '../../servicios/tema';
 })
 export class Nav {
   readonly tema = inject(TemaService);
+  readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
   protected readonly title = signal('MuseoVirtual');
   protected readonly menuAbierto = signal(false);
 
@@ -19,5 +22,11 @@ export class Nav {
 
   protected cerrarMenu() {
     this.menuAbierto.set(false);
+  }
+
+  salir(): void {
+    this.auth.logout();
+    this.cerrarMenu();
+    void this.router.navigate(['/inicio-sesion']);
   }
 }

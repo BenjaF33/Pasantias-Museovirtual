@@ -5,27 +5,38 @@
 		<p class="subtitulo">Llevate un pedacito de nuestra historia.</p>
 	</header>
 
-	@if (productos.length > 0) {
+	@if (cargando) {
+		<p class="estado-carrito" role="status">Cargando carrito...</p>
+	} @else if (error) {
+		<p class="estado-carrito" role="alert">{{ error }}</p>
+	} @else if (productos.length > 0) {
 		<div class="contenido-carrito">
 			<section class="lista-carrito" aria-label="Productos en el carrito">
-				@for (producto of productos; track producto.id) {
+				@for (producto of productos; track producto.id_producto) {
 					<article class="producto-carrito">
 						<div class="producto-imagen">
-							<img
-								[src]="producto.imagen"
-								[alt]="'Portada de ' + producto.nombre"
-							/>
+							@if (producto.imagen) {
+								<img [src]="imagenUrl(producto.imagen)" [alt]="'Portada de ' + producto.nombre">
+							} @else {
+								<div class="producto-sin-imagen">Sin imagen</div>
+							}
 						</div>
 
 						<div class="producto-detalle">
 							<p class="producto-etiqueta">Producto del museo</p>
 							<h2>{{ producto.nombre }}</h2>
-							<p class="producto-descripcion">{{ producto.descripcion }}</p>
-							<p class="producto-precio-unitario">$ {{ producto.precio }}</p>
+							<p class="producto-precio-unitario">$ {{ producto.precio_unitario }}</p>
 						</div>
 
 						<div class="producto-acciones">
-							<strong class="subtotal-producto">$ {{ producto.precio }}</strong>
+							<strong class="subtotal-producto">$ {{ producto.precio_unitario * producto.cantidad }}</strong>
+							<div class="control-cantidad" [attr.aria-label]="'Cantidad de ' + producto.nombre">
+								<button type="button" [attr.aria-label]="'Restar una unidad de ' + producto.nombre"
+									(click)="cambiarCantidad(producto, producto.cantidad - 1)">−</button>
+								<span>{{ producto.cantidad }}</span>
+								<button type="button" [attr.aria-label]="'Agregar una unidad de ' + producto.nombre"
+									(click)="cambiarCantidad(producto, producto.cantidad + 1)">+</button>
+							</div>
 							<button
 								class="quitar-producto"
 								type="button"
@@ -54,6 +65,7 @@
 					<strong>$ {{ total }}</strong>
 				</div>
 				<p class="nota-compra">El total corresponde a los productos seleccionados.</p>
+				<button class="vaciar-carrito" type="button" (click)="vaciarCarrito()">Vaciar carrito</button>
 				<button class="finalizar-compra" type="button" (click)="finalizarCompra()">
 					Finalizar compra
 				</button>

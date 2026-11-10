@@ -13,13 +13,29 @@
 		}
 	</header>
 
+	<form class="busqueda-productos" (ngSubmit)="cargarProductos()">
+		<label for="buscar-productos">Buscar por nombre o descripción</label>
+		<div class="busqueda-productos-controles">
+			<input id="buscar-productos" name="busqueda" type="search" [(ngModel)]="busqueda"
+				placeholder="Buscar producto...">
+			<button type="submit">Buscar</button>
+		</div>
+	</form>
+
+	@if (cargando) {
+		<p class="estado-productos" role="status">Cargando productos...</p>
+	}
+	@if (error) {
+		<p class="estado-productos" role="alert">{{ error }}</p>
+	}
+
 	<section class="productos-grid" aria-label="Productos disponibles">
 		@for (producto of productos; track producto.id) {
 			<article class="producto-card">
 				<div class="producto-imagen">
 					@if (producto.imagen) {
 						<img
-							[src]="producto.imagen"
+							[src]="imagenUrl(producto.imagen)"
 							[alt]="'Portada de ' + producto.nombre"
 							(error)="manejarErrorImagen($event)"
 						/>
@@ -43,10 +59,15 @@
 							<button type="button" class="boton-editar-producto"
 								[attr.aria-label]="'Editar producto ' + producto.nombre"
 								(click)="iniciarEdicionProducto(producto)">Editar</button>
+							<button type="button" class="boton-editar-producto"
+								(click)="eliminarProducto(producto)">Eliminar</button>
 						}
 					</div>
 				</div>
 			</article>
+		}
+		@empty {
+			<p class="estado-productos" aria-live="polite">No se encontraron productos.</p>
 		}
 	</section>
 
@@ -55,7 +76,7 @@
 			<form class="formulario-editor-evento" role="dialog" aria-modal="true"
 				aria-labelledby="titulo-editor-producto" (ngSubmit)="guardarProducto()" (click)="$event.stopPropagation()">
 				<h2 id="titulo-editor-producto">{{ creandoProducto ? 'Agregar producto' : 'Editar producto' }}</h2>
-				<p class="aviso-edicion-temporal">Los cambios solo se aplican en esta pantalla y se perderán al recargar.</p>
+				<p class="aviso-edicion-temporal">Los cambios se guardarán en el catálogo del museo.</p>
 
 				<label for="producto-nombre">Nombre</label>
 				<input id="producto-nombre" name="nombre" type="text" required
@@ -69,31 +90,25 @@
 				<input id="producto-precio" name="precio" type="number" min="0" step="0.01" required
 					[(ngModel)]="borradorProducto.precio">
 
-				<label for="producto-stock">Stock</label>
-				<input id="producto-stock" name="stock" type="number" min="0" step="1" required
-					[(ngModel)]="borradorProducto.stock">
-
 				<label for="producto-imagen">Imagen</label>
-				@if (borradorProducto.imagen) {
+				@if (vistaPreviaImagen || borradorProducto.imagen) {
 					<p class="titulo-imagenes-editor-evento">Imagen del producto</p>
 					<fieldset class="imagenes-editor-evento">
 						<div class="imagen-editor-evento">
-							<img [src]="borradorProducto.imagen" alt="Vista previa de la imagen del producto">
+							<img [src]="vistaPreviaImagen || imagenUrl(borradorProducto.imagen ?? '')"
+								alt="Vista previa de la imagen del producto">
 							<button type="button" (click)="quitarImagen()"
 								aria-label="Quitar imagen del producto">Quitar imagen</button>
 						</div>
 					</fieldset>
-				} @else {
-					<input id="producto-imagen" name="imagen" type="file" accept="image/*"
-						[disabled]="imagenCargando" (change)="agregarImagen($event)">
 				}
+				<input id="producto-imagen" name="imagen" type="file" accept="image/*"
+					(change)="agregarImagen($event)">
 
 				<div class="acciones-editor-evento">
 					<button type="button" (click)="cancelarEdicionProducto()">Cancelar</button>
-					<button type="submit" [disabled]="imagenCargando">
-						{{ creandoProducto ? 'Agregar producto' : 'Aplicar cambios' }}
-						{{ imagenCargando ? 'Leyendo imagen...' : (creandoProducto ? 'Agregar producto' : 'Aplicar cambios') }}
-
+					<button type="submit" [disabled]="guardando">
+						{{ guardando ? 'Guardando...' : (creandoProducto ? 'Agregar producto' : 'Guardar cambios') }}
 					</button>
 				</div>
 			</form>

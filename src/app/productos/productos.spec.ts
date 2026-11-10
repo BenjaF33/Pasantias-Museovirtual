@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { of, Subject } from 'rxjs';
 
 import { Productos } from './productos';
+import { Producto } from '../models/productos';
 import { AuthService } from '../servicios/auth-service';
 import { CarritoService } from '../servicios/carrito';
 import { NotificacionesService } from '../servicios/notificaciones';
@@ -10,34 +12,39 @@ import { ProductosService } from '../servicios/productos';
 describe('Productos', () => {
   let component: Productos;
   let fixture: ComponentFixture<Productos>;
-  const producto = {
+  const producto: Producto = {
     id: 1,
     nombre: 'Libro',
     descripcion: 'Descripción',
     precio: 100,
-    stock: 5,
-    imagen: '',
-    cantidad: 0,
+    imagen: 'libro.jpg',
   };
   const auth = { estaLogueado: vi.fn(), esAdmin: vi.fn() };
-  const carrito = {
-    obtenerProductos: vi.fn(),
-    agregarProducto: vi.fn(),
+  const carrito = { agregar: vi.fn() };
+  const productosService = {
+    listar: vi.fn(),
+    imagenUrl: vi.fn((imagen: string) => imagen),
+    crear: vi.fn(),
+    editar: vi.fn(),
+    eliminar: vi.fn(),
+    subirImagen: vi.fn(),
   };
+  const notificaciones = { mostrar: vi.fn(), confirmarEliminacion: vi.fn() };
   const router = { navigate: vi.fn() };
-  const notificaciones = { mostrar: vi.fn() };
 
   beforeEach(async () => {
     auth.estaLogueado.mockReturnValue(true);
     auth.esAdmin.mockReturnValue(true);
-    carrito.obtenerProductos.mockReturnValue([]);
+    productosService.listar.mockReturnValue(of([producto]));
+    productosService.crear.mockReturnValue(of({ mensaje: 'Creado' }));
+    carrito.agregar.mockReturnValue(of({ mensaje: 'Agregado' }));
 
     await TestBed.configureTestingModule({
       imports: [Productos],
       providers: [
         { provide: AuthService, useValue: auth },
         { provide: CarritoService, useValue: carrito },
-        { provide: ProductosService, useValue: { obtenerProductos: () => [producto] } },
+        { provide: ProductosService, useValue: productosService },
         { provide: NotificacionesService, useValue: notificaciones },
         { provide: Router, useValue: router },
       ],
@@ -45,87 +52,57 @@ describe('Productos', () => {
 
     fixture = TestBed.createComponent(Productos);
     component = fixture.componentInstance;
+    fixture.detectChanges();
     await fixture.whenStable();
     vi.clearAllMocks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('loads products from the catalog service', () => {
+    expect(component.productos).toEqual([producto]);
   });
 
-  it('redirects users who are not logged in to the login page without adding the product', () => {
-    auth.estaLogueado.mockReturnValue(false);
+  it('renders the API response without waiting for another user interaction', async () => {
+    const respuesta = new Subject<Producto[]>();
+    productosService.listar.mockReturnValueOnce(respuesta);
+    fixture.autoDetectChanges();
 
-    component.agregarCarrito(producto);
+    component.cargarProductos();
+    respuesta.next([{ ...producto, nombre: 'Producto actualizado desde la API' }]);
+    await fixture.whenStable();
 
-    expect(router.navigate).toHaveBeenCalledWith(['/inicio-sesion']);
-    expect(carrito.agregarProducto).not.toHaveBeenCalled();
-    expect(notificaciones.mostrar).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.textContent).toContain('Producto actualizado desde la API');
   });
 
-  it('adds the product to the cart when the user is logged in', () => {
+  it('filters products through the API service', () => {
+    component.busqueda = 'libro';
+    component.cargarProductos();
+
+    expect(productosService.listar).toHaveBeenCalledWith('libro');
+  });
+
+  it('adds the selected product to the remote cart', () => {
     component.agregarCarrito(producto);
 
-    expect(router.navigate).not.toHaveBeenCalled();
-    expect(carrito.agregarProducto).toHaveBeenCalledWith(producto);
+    expect(carrito.agregar).toHaveBeenCalledWith(producto.id, 1);
     expect(notificaciones.mostrar).toHaveBeenCalledWith('Agregado al carrito', 'success');
   });
 
-  it('creates a product with the next id and its form values', () => {
+  it('creates a product in the API instead of mutating the local catalog', () => {
     component.iniciarCreacionProducto();
     component.borradorProducto = {
       nombre: 'Nuevo libro',
       descripcion: 'Descripción nueva',
       precio: 250,
-      stock: 8,
-      imagen: '/assets/libro.jpg',
+      imagen: '',
     };
 
     component.guardarProducto();
 
-    expect(component.productos[1]).toEqual({
-      id: 2,
+    expect(productosService.crear).toHaveBeenCalledWith({
       nombre: 'Nuevo libro',
       descripcion: 'Descripción nueva',
       precio: 250,
-      stock: 8,
-      imagen: '/assets/libro.jpg',
-      cantidad: 0,
+      imagen: '',
     });
-    expect(component.creandoProducto).toBe(false);
-  });
-
-  it('updates the selected product without changing its id or cart quantity', () => {
-    const seleccionado = { ...producto, cantidad: 2 };
-    component.productos = [seleccionado];
-    component.iniciarEdicionProducto(seleccionado);
-    component.borradorProducto = {
-      nombre: 'Libro actualizado',
-      descripcion: 'Descripción actualizada',
-      precio: 300,
-      stock: 4,
-      imagen: '/assets/actualizado.jpg',
-    };
-
-    component.guardarProducto();
-
-    expect(seleccionado).toEqual({
-      id: 1,
-      nombre: 'Libro actualizado',
-      descripcion: 'Descripción actualizada',
-      precio: 300,
-      stock: 4,
-      imagen: '/assets/actualizado.jpg',
-      cantidad: 2,
-    });
-    expect(component.productoEnEdicion).toBeNull();
-  });
-
-  it('allows removing the current product image', () => {
-    component.iniciarEdicionProducto({ ...producto, imagen: '/assets/libro.jpg' });
-
-    component.quitarImagen();
-
-    expect(component.borradorProducto.imagen).toBe('');
   });
 });

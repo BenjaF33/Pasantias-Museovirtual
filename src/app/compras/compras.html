@@ -1,0 +1,28 @@
+<main class="historial-compras">
+  <header>
+    <p class="flujo-eyebrow">Museo Virtual de Cipolletti</p>
+    <h1>Mis compras</h1>
+    <p>Consulta tus pedidos y descarga cada ticket.</p>
+  </header>
+
+  @if (cargando) {
+    <p role="status">Cargando historial...</p>
+  } @else if (error) {
+    <p class="flujo-error" role="alert">{{ error }}</p>
+  } @else {
+    <section aria-label="Historial de compras">
+      @for (compra of compras; track compra.id_compra) {
+        <article class="compra-historial">
+          <div>
+            <h2>Compra #{{ compra.id_compra }}</h2>
+            <p>{{ compra.fecha }}</p>
+          </div>
+          <strong>$ {{ compra.total }}</strong>
+          <a [routerLink]="['/paginas/ticket', compra.id_compra]">Ver ticket</a>
+        </article>
+      } @empty {
+        <p class="sin-compras">Todavía no hiciste compras.</p>
+      }
+    </section>
+  }
+</main>

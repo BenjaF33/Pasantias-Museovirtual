@@ -1,0 +1,19 @@
+<main class="pagina-ticket">
+  <section class="tarjeta-ticket" aria-live="polite">
+    <p class="flujo-eyebrow">Museo Virtual de Cipolletti</p>
+    @if (cargando) {
+      <h1>Cargando ticket...</h1>
+    } @else if (error) {
+      <h1>No se pudo abrir el ticket</h1>
+      <p class="flujo-error" role="alert">{{ error }}</p>
+    } @else if (ticket) {
+      <h1>Ticket {{ ticket.numero_ticket }}</h1>
+      <p>Compra #{{ ticket.id_compra }}</p>
+      <p>Fecha: {{ ticket.fecha }}</p>
+      <a class="descargar-ticket" [href]="urlPdf" target="_blank" rel="noopener" download>
+        Descargar ticket PDF
+      </a>
+    }
+    <a class="volver-compras" routerLink="/mis-compras">Volver a mis compras</a>
+  </section>
+</main>

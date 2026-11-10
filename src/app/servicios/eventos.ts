@@ -1,10 +1,32 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
+
 import { Hecho } from '../models/hechos';
+import { API_BASE_URL, apiImageUrl } from './api';
+
+interface EventoApi {
+  id_evento: number | string;
+  anio: number | string;
+  titulo?: string;
+  nombre?: string;
+  imagen_1?: string | null;
+  imagen_2?: string | null;
+  imagen_3?: string | null;
+  img?: string[];
+  descripcion?: string;
+  descripcion_corta?: string;
+  descripcion_larga?: string;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class EventosService {
+  private readonly apiUrl = `${API_BASE_URL}/eventos`;
+
+  constructor(private readonly http: HttpClient) {}
+
    hechos: Hecho[] = [
     { id_evento: 1, anio: '1830', img: ['assets/Fotos/1830 Primer ferrocarril de pasajeros Liverpool–Manchester/dibujo ferrocarril.jpg', 'assets/Fotos/1830 Primer ferrocarril de pasajeros Liverpool–Manchester/Primer ferrocarril de pasajeros.jpg'], titulo: 'Primer ferrocarril de pasajeros Liverpool–Manchester', descripcion: 'Se inauguró en Inglaterra el primer ferrocarril de pasajeros del mundo, un acontecimiento que marcó el inicio de una revolución en los transportes. ', descripcion_larga: 'La posibilidad de trasladar personas y mercancías de forma más rápida impulsó el crecimiento económico y urbano en numerosos países. Este avance tecnológico sería fundamental décadas después para el desarrollo ferroviario argentino y la llegada del tren al Alto Valle.'},
     { id_evento: 2, anio: '1875', img: ['assets/Fotos/1875 Profiliaxis Social Bs.As/Poster concientizacion.jpg', 'assets/Fotos/1875 Profiliaxis Social Bs.As/prostibulo-upscaled-4x.jpg', 'assets/Fotos/1875 Profiliaxis Social Bs.As/prostibulo2.jpg'], titulo: 'Ordenanza de Profilaxis Social en Buenos Aires', descripcion: 'El Reglamento de la Prostitución aprobado en Buenos Aires el 5 de enero de 1875 legalizó y reglamentó los prostíbulos bajo control médico y policial para frenar las enfermedades venéreas.', descripcion_larga: 'La ordenanza regulaba aspectos sanitarios vinculados al ejercicio de la prostitución en Argentina (legalización de burdeles, controles sanitarios, administración femenina, registro e impuestos). Este antecedente permite comprender las futuras reglamentaciones que se aplicarían en Cipolletti durante las primeras décadas del siglo XX.' },
@@ -19,6 +41,14 @@ export class EventosService {
     { id_evento: 11, anio: '1899', img: ['assets/Fotos/1899 César Cipolletti estudios de irrigación/irrigación.jpg', 'assets/Fotos/1899 César Cipolletti estudios de irrigación/estudios de irrigación.jpg', 'public/assets/Fotos/1899 César Cipolletti estudios de irrigación/César Cipolletti.jpg'], titulo: 'César Cipolletti entrega el estudio de irrigación', descripcion: 'El ingeniero italiano César Cipolletti presentó los estudios para la irrigación de los ríos Negro y Colorado.Allí señalaba: “En cuanto al agua, la hay suficiente para regar más de un millón de hectáreas, es decir, más de la mitad de todo Egipto con el Nilo”.', descripcion_larga: 'El sueño de Cipolletti era ejecutar obras de riego en el valle superior del río Negro y posibilitar el asentamiento de colonias agrícolas. Como sugerencia imperativa, pedía la instalación de una estación meteorológica para caracterizar el clima y obtener registros diarios de los ríos Neuquén, Limay y Negro. ' }
   ];
 
+
+  listar(): Observable<Hecho[]> {
+    return this.http.get<EventoApi[]>(this.apiUrl).pipe(
+      map(eventos => eventos
+        .map(evento => this.normalizar(evento))
+        .sort((a, b) => Number(a.anio) - Number(b.anio) || a.id_evento - b.id_evento)),
+    );
+  }
 
   obtenerEventos(): Hecho[] {
       return this.hechos;
@@ -42,5 +72,20 @@ export class EventosService {
   private normalizarTexto(texto: string): string {
     // Descompone las letras acentuadas y elimina sus marcas para comparar texto sin tildes.
     return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  }
+
+  private normalizar(evento: EventoApi): Hecho {
+    const imagenes = evento.img ?? [evento.imagen_1, evento.imagen_2, evento.imagen_3]
+      .filter((imagen): imagen is string => Boolean(imagen?.trim()))
+      .map(imagen => apiImageUrl(imagen.startsWith('assets/') ? `/${imagen}` : imagen));
+
+    return {
+      id_evento: Number(evento.id_evento),
+      anio: String(evento.anio),
+      img: imagenes,
+      titulo: evento.titulo ?? evento.nombre ?? '',
+      descripcion: evento.descripcion ?? evento.descripcion_corta ?? '',
+      descripcion_larga: evento.descripcion_larga ?? '',
+    };
   }
 }

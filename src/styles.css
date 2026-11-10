@@ -2,6 +2,11 @@
 
 @import "./app/inicio/inicio.css";
 
+.mensaje-error {
+	color: #8b3b2d;
+	font-weight: 700;
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -339,4 +344,8 @@ html[data-theme="dark"] body app-root .contacto-page .contacto-card .contacto-av
 
 html[data-theme="dark"] body app-root .nosotros-page .galeria-fideli .foto figcaption {
 	color: var(--theme-muted) !important;
+}
+ .mensaje-error {
+	color: #8b3b2d;
+	font-weight: 700;
 }

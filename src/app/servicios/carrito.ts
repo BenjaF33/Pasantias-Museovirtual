@@ -1,39 +1,36 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Producto } from '../models/productos';
+import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+import { ItemCarrito, RespuestaApi } from '../models/api';
+import { API_BASE_URL } from './api';
+
+@Injectable({ providedIn: 'root' })
 export class CarritoService {
-  productos: Producto[] = [];
+  private readonly apiUrl = `${API_BASE_URL}/carrito`;
 
-  obtenerProductos(): Producto[] {
-    return this.productos;
+  constructor(private readonly http: HttpClient) {}
+
+  ver(): Observable<ItemCarrito[]> {
+    return this.http.get<ItemCarrito[]>(this.apiUrl);
   }
 
-  agregarProducto(producto: Producto): void {
-    const productoExistente = this.productos.find(p => p.id === producto.id);
-    if (productoExistente) {
-      return;
-    }
-
-    producto.cantidad = 1;
-    this.productos.push(producto);
+  agregar(idProducto: number, cantidad: number): Observable<RespuestaApi> {
+    return this.http.post<RespuestaApi>(`${this.apiUrl}/agregar`, {
+      id_producto: idProducto,
+      cantidad,
+    });
   }
 
-  eliminarProducto(producto: Producto): void {
-    const index = this.productos.findIndex(p => p.id === producto.id);
-    if (index !== -1) {
-      this.productos.splice(index, 1);
-    }
+  actualizar(idProducto: number, cantidad: number): Observable<RespuestaApi> {
+    return this.http.put<RespuestaApi>(`${this.apiUrl}/actualizar/${idProducto}`, { cantidad });
   }
 
-  obtenerTotal(): number {
-    return this.productos.reduce((total, producto) => total + producto.precio, 0);
+  eliminar(idProducto: number): Observable<RespuestaApi> {
+    return this.http.delete<RespuestaApi>(`${this.apiUrl}/eliminar/${idProducto}`);
   }
 
-  finalizarCompra(): void {
-    alert('Compra finalizada. Total: $' + this.obtenerTotal().toFixed(2));
-    this.productos = [];
+  vaciar(): Observable<RespuestaApi> {
+    return this.http.delete<RespuestaApi>(`${this.apiUrl}/vaciar`);
   }
 }

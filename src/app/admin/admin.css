@@ -1,0 +1,124 @@
+:host {
+  display: block;
+}
+
+.panel-admin {
+  min-height: 70vh;
+  padding: clamp(2rem, 5vw, 4rem) 1rem;
+  background: #f8f6ec;
+  color: #183c54;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.admin-header,
+.admin-seccion {
+  width: min(100%, 70rem);
+  margin: 0 auto 1.5rem;
+}
+
+.admin-header > p {
+  color: #9b733d;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.admin-header h1 {
+  margin: 0 0 0.75rem;
+  font: 700 clamp(2rem, 5vw, 3.2rem) Georgia, "Times New Roman", serif;
+}
+
+.admin-seccion {
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px solid #e1d9c8;
+  border-radius: 0.85rem;
+  background: #fffdfa;
+}
+
+.admin-seccion h2 {
+  margin-top: 0;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.formulario-admin {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.formulario-admin input:not([type="file"]),
+.formulario-admin textarea {
+  width: 100%;
+  min-height: 2.8rem;
+  padding: 0.7rem;
+  border: 1px solid #9ba4ac;
+  border-radius: 0.45rem;
+  background: #fff;
+  color: #253342;
+  font: inherit;
+}
+
+.vista-previa-admin {
+  width: min(100%, 16rem);
+  height: 12rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.fila-admin,
+.acciones-admin {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.fila-admin {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #e1d9c8;
+}
+
+.fila-admin h3,
+.fila-admin p {
+  margin: 0.2rem 0;
+}
+
+.acciones-admin {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.acciones-admin button {
+  min-height: 2.7rem;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid #253342;
+  border-radius: 0.45rem;
+  background: #253342;
+  color: #fffaf0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.acciones-admin .boton-secundario {
+  background: transparent;
+  color: #253342;
+}
+
+.acciones-admin .boton-eliminar {
+  border-color: #8b3b2d;
+  background: #8b3b2d;
+}
+
+.estado-admin {
+  width: min(100%, 70rem);
+  margin: 1rem auto;
+  color: #8b3b2d;
+}
+
+@media (max-width: 560px) {
+  .fila-admin {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

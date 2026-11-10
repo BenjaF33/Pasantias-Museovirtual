@@ -1,5 +1,5 @@
 <main class="pagina-inicio-sesion">
-	<form class="formulario-inicio-sesion">
+	<form class="formulario-inicio-sesion" (ngSubmit)="ingresar()">
 		<header class="encabezado-formulario">
 			<p class="sobrelinea-formulario">Museo Virtual de Cipolletti</p>
 			<h1>Iniciar sesión</h1>
@@ -15,6 +15,7 @@
 				autocomplete="email"
 				placeholder="nombre@ejemplo.com"
 				required
+				[(ngModel)]="email"
 			>
 		</div>
 
@@ -27,10 +28,17 @@
 				autocomplete="current-password"
 				placeholder="Ingresa tu contraseña"
 				required
+				[(ngModel)]="clave"
 			>
 		</div>
 
-		<button class="boton-inicio-sesion" type="button">Iniciar sesión</button>
+		@if (error) {
+			<p class="mensaje-error" role="alert">{{ error }}</p>
+		}
+
+		<button class="boton-inicio-sesion" type="submit" [disabled]="cargando">
+			{{ cargando ? 'Ingresando...' : 'Iniciar sesión' }}
+		</button>
 
 		<p class="enlace-registro">
 			¿Todavía no tienes una cuenta?

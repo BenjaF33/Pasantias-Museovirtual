@@ -1,67 +1,56 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
+
+import { RespuestaApi } from '../models/api';
 import { Hecho } from '../models/hechos';
+import { API_BASE_URL, apiImageUrl } from './api';
 
-@Injectable({
-  providedIn: 'root',
-})
+interface FavoritoApi {
+  id_evento: number;
+  titulo?: string;
+  nombre?: string;
+  anio: string | number;
+  imagen_1?: string | null;
+  imagen_2?: string | null;
+  imagen_3?: string | null;
+  descripcion?: string;
+  descripcion_corta?: string;
+  descripcion_larga?: string;
+}
+
+@Injectable({ providedIn: 'root' })
 export class FavoritosService {
-  private readonly claveStorage = 'favoritos-museo-virtual';
-  hechos: Hecho[] = [];
+  private readonly apiUrl = `${API_BASE_URL}/favoritos`;
 
-  constructor() {
-    this.hechos = this.leerDesdeStorage();
-  }
+  constructor(private readonly http: HttpClient) {}
 
-  obtenerHechos(): Hecho[] {
-    this.hechos = this.leerDesdeStorage();
-    return this.hechos;
-  }
-
-  agregarHecho(hecho: Hecho): void {
-    if (this.contieneHecho(hecho)) {
-      return;
-    }
-
-    this.hechos.push(hecho);
-    this.guardarEnStorage();
-  }
-
-  eliminarHecho(hecho: Hecho): void {
-    this.hechos = this.hechos.filter(
-      guardado => !(guardado.anio === hecho.anio && guardado.titulo === hecho.titulo),
-    );
-    this.guardarEnStorage();
-  }
-
-  alternarHecho(hecho: Hecho): void {
-    if (this.contieneHecho(hecho)) {
-      this.eliminarHecho(hecho);
-      return;
-    }
-
-    this.agregarHecho(hecho);
-  }
-
-  contieneHecho(hecho: Hecho): boolean {
-    return this.hechos.some(
-      guardado => guardado.anio === hecho.anio && guardado.titulo === hecho.titulo,
+  listar(): Observable<Hecho[]> {
+    return this.http.get<FavoritoApi[]>(this.apiUrl).pipe(
+      map(favoritos => favoritos.map(favorito => this.normalizar(favorito))),
     );
   }
 
-  private leerDesdeStorage(): Hecho[] {
-    try {
-      const datos = localStorage.getItem(this.claveStorage);
-      return datos ? JSON.parse(datos) as Hecho[] : [];
-    } catch {
-      return [];
-    }
+  agregar(idEvento: number): Observable<RespuestaApi> {
+    return this.http.post<RespuestaApi>(`${this.apiUrl}/agregar`, { id_evento: idEvento });
   }
 
-  private guardarEnStorage(): void {
-    try {
-      localStorage.setItem(this.claveStorage, JSON.stringify(this.hechos));
-    } catch {
-      // Ignorar errores de storage si el navegador no lo permite.
-    }
+  eliminar(idEvento: number): Observable<RespuestaApi> {
+    return this.http.delete<RespuestaApi>(`${this.apiUrl}/eliminar/${idEvento}`);
+  }
+
+  private normalizar(favorito: FavoritoApi): Hecho {
+    const imagenes = [favorito.imagen_1, favorito.imagen_2, favorito.imagen_3]
+      .filter((imagen): imagen is string => Boolean(imagen))
+      .map(imagen => apiImageUrl(imagen));
+
+    return {
+      id_evento: Number(favorito.id_evento),
+      anio: String(favorito.anio),
+      img: imagenes,
+      titulo: favorito.titulo ?? favorito.nombre ?? '',
+      descripcion: favorito.descripcion ?? favorito.descripcion_corta ?? '',
+      descripcion_larga: favorito.descripcion_larga ?? '',
+    };
   }
 }

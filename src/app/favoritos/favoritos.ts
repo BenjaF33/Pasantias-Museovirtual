@@ -1,5 +1,6 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+
 import { Hecho } from '../models/hechos';
 import { AuthService } from '../servicios/auth-service';
 import { FavoritosService } from '../servicios/favoritos';
@@ -7,31 +8,50 @@ import { NotificacionesService } from '../servicios/notificaciones';
 
 @Component({
   selector: 'app-favoritos',
-  standalone: true,
   imports: [RouterLink],
   templateUrl: './favoritos.html',
   styleUrl: './favoritos.css',
 })
-export class Favoritos {
+export class Favoritos implements OnInit {
   favoritos: Hecho[] = [];
   estaLogueado = false;
+  cargando = false;
+  error = '';
 
   constructor(
     private readonly favoritosService: FavoritosService,
     private readonly notificaciones: NotificacionesService,
+    authService: AuthService,
     private readonly changeDetector: ChangeDetectorRef,
-    private readonly authService: AuthService,
   ) {
-    this.favoritos = this.favoritosService.obtenerHechos();
-    this.estaLogueado = this.authService.estaLogueado();
+    this.estaLogueado = authService.estaLogueado();
+  }
+
+  ngOnInit(): void {
+    if (this.estaLogueado) {
+      this.cargarFavoritos();
+    }
+  }
+
+  cargarFavoritos(): void {
+    this.cargando = true;
+    this.error = '';
+    this.favoritosService.listar().subscribe({
+      next: favoritos => {
+        this.favoritos = favoritos;
+        this.cargando = false;
+        this.changeDetector.markForCheck();
+      },
+      error: () => {
+        this.error = 'No se pudieron cargar tus favoritos. Inténtalo nuevamente.';
+        this.cargando = false;
+        this.notificaciones.mostrar(this.error, 'error');
+        this.changeDetector.markForCheck();
+      },
+    });
   }
 
   async quitarFavorito(hecho: Hecho): Promise<void> {
-    const eraFavorito = this.favoritosService.contieneHecho(hecho);
-    if (!eraFavorito) {
-      return;
-    }
-
     const confirmar = await this.notificaciones.confirmarEliminacion(
       '¿Quieres eliminar este favorito?',
     );
@@ -39,13 +59,20 @@ export class Favoritos {
       return;
     }
 
-    this.favoritosService.eliminarHecho(hecho);
-    this.favoritos = this.favoritosService.obtenerHechos();
-    this.changeDetector.detectChanges();
-    this.notificaciones.mostrar('Eliminado de favoritos', 'info');
+    this.favoritosService.eliminar(hecho.id_evento).subscribe({
+      next: () => {
+        this.notificaciones.mostrar('Eliminado de favoritos', 'info');
+        this.cargarFavoritos();
+        this.changeDetector.markForCheck();
+      },
+      error: () => {
+        this.notificaciones.mostrar('No se pudo quitar el favorito.', 'error');
+        this.changeDetector.markForCheck();
+      },
+    });
   }
 
-  manejarErrorImagen(event: Event) {
+  manejarErrorImagen(event: Event): void {
     const imagen = event.target;
     if (imagen instanceof HTMLImageElement) {
       imagen.src = '/assets/puente ferroviario.jpg';

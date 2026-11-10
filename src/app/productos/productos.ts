@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -10,34 +10,57 @@ import { ProductosService } from '../servicios/productos';
 
 @Component({
   selector: 'app-productos',
-  standalone: true,
   imports: [FormsModule],
   templateUrl: './productos.html',
   styleUrl: './productos.css',
 })
-export class Productos {
+export class Productos implements OnInit {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  private readonly carritoService = inject(CarritoService);
+  private readonly productosService = inject(ProductosService);
+  private readonly notificaciones = inject(NotificacionesService);
   private readonly changeDetector = inject(ChangeDetectorRef);
 
   productos: Producto[] = [];
   productoEnEdicion: Producto | null = null;
   creandoProducto = false;
-  imagenCargando = false;
-  borradorProducto = { nombre: '', descripcion: '', precio: 0, stock: 0, imagen: '' };
-
-  constructor(
-    private readonly carritoService: CarritoService,
-    private readonly productosService: ProductosService,
-    private readonly notificaciones: NotificacionesService,
-  ) {}
+  cargando = false;
+  guardando = false;
+  busqueda = '';
+  error = '';
+  archivoImagen: File | null = null;
+  vistaPreviaImagen = '';
+  borradorProducto: Partial<Producto> = this.nuevoBorrador();
 
   ngOnInit(): void {
-    this.productos = this.productosService.obtenerProductos();
+    this.cargarProductos();
   }
 
   get puedeEditarProductos(): boolean {
     return this.authService.esAdmin();
+  }
+
+  cargarProductos(): void {
+    this.cargando = true;
+    this.error = '';
+    this.productosService.listar(this.busqueda).subscribe({
+      next: productos => {
+        this.productos = productos;
+        this.cargando = false;
+        this.changeDetector.markForCheck();
+      },
+      error: () => {
+        this.error = 'No se pudieron cargar los productos. Inténtalo nuevamente.';
+        this.cargando = false;
+        this.notificaciones.mostrar(this.error, 'error');
+        this.changeDetector.markForCheck();
+      },
+    });
+  }
+
+  imagenUrl(imagen: string): string {
+    return this.productosService.imagenUrl(imagen);
   }
 
   iniciarCreacionProducto(): void {
@@ -47,8 +70,7 @@ export class Productos {
 
     this.productoEnEdicion = null;
     this.creandoProducto = true;
-    this.borradorProducto = { nombre: '', descripcion: '', precio: 0, stock: 0, imagen: '' };
-    this.changeDetector.detectChanges();
+    this.reiniciarBorrador();
   }
 
   iniciarEdicionProducto(producto: Producto): void {
@@ -58,39 +80,29 @@ export class Productos {
 
     this.creandoProducto = false;
     this.productoEnEdicion = producto;
-    this.borradorProducto = {
-      nombre: producto.nombre,
-      descripcion: producto.descripcion,
-      precio: producto.precio,
-      stock: producto.stock,
-      imagen: producto.imagen,
-    };
+    this.borradorProducto = { ...producto };
+    this.archivoImagen = null;
+    this.vistaPreviaImagen = '';
   }
 
   cancelarEdicionProducto(): void {
+    if (this.vistaPreviaImagen.startsWith('blob:')) {
+      URL.revokeObjectURL(this.vistaPreviaImagen);
+    }
     this.productoEnEdicion = null;
     this.creandoProducto = false;
+    this.reiniciarBorrador();
   }
 
-  async agregarImagen(event: Event): Promise<void> {
-    if ((!this.productoEnEdicion && !this.creandoProducto) || !this.puedeEditarProductos) {
-      return;
-    }
-
-    const input = event.target as HTMLInputElement | null;
+  agregarImagen(event: Event): void {
+    const input = event.target;
     if (!(input instanceof HTMLInputElement)) {
       return;
     }
 
-    const archivo = input.files?.[0];
+    const archivo = input.files?.[0] ?? null;
     input.value = '';
-
     if (!archivo) {
-      return;
-    }
-
-    if (this.borradorProducto.imagen) {
-      this.notificaciones.mostrar('Quita la imagen actual antes de añadir otra.', 'warning');
       return;
     }
 
@@ -99,69 +111,102 @@ export class Productos {
       return;
     }
 
-    this.imagenCargando = true;
-    try {
-      const imagen = await this.leerImagen(archivo);
-      this.borradorProducto = { ...this.borradorProducto, imagen };
-    } catch {
-      this.notificaciones.mostrar('No se pudo leer la imagen seleccionada.', 'error');
-    } finally {
-      this.imagenCargando = false;
+    if (this.vistaPreviaImagen.startsWith('blob:')) {
+      URL.revokeObjectURL(this.vistaPreviaImagen);
     }
+    this.archivoImagen = archivo;
+    this.vistaPreviaImagen = URL.createObjectURL(archivo);
   }
 
   quitarImagen(): void {
+    if (this.vistaPreviaImagen.startsWith('blob:')) {
+      URL.revokeObjectURL(this.vistaPreviaImagen);
+    }
+    this.archivoImagen = null;
+    this.vistaPreviaImagen = '';
     this.borradorProducto.imagen = '';
   }
 
-  private leerImagen(archivo: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          resolve(reader.result);
-          return;
-        }
-        reject(new Error('El archivo no produjo una imagen válida.'));
-      };
-      reader.onerror = () => reject(reader.error ?? new Error('No se pudo leer el archivo.'));
-      reader.onabort = () => reject(new Error('La lectura de la imagen fue cancelada.'));
-      reader.readAsDataURL(archivo);
-    });
-  }
-
   guardarProducto(): void {
-    if ((!this.productoEnEdicion && !this.creandoProducto) || !this.puedeEditarProductos || this.imagenCargando) {
+    if ((!this.productoEnEdicion && !this.creandoProducto) || !this.puedeEditarProductos || this.guardando) {
       return;
     }
 
-    const nombre = this.borradorProducto.nombre.trim();
-    const descripcion = this.borradorProducto.descripcion.trim();
-    const imagen = this.borradorProducto.imagen.trim();
+    const nombre = this.borradorProducto.nombre?.trim() ?? '';
+    const descripcion = this.borradorProducto.descripcion?.trim() ?? '';
     const precio = Number(this.borradorProducto.precio);
-    const stock = Number(this.borradorProducto.stock);
-
-    if (!nombre || !descripcion || !Number.isFinite(precio) || precio < 0 ||
-      !Number.isInteger(stock) || stock < 0) {
+    if (!nombre || !descripcion || !Number.isFinite(precio) || precio < 0) {
       this.notificaciones.mostrar('Revisa los datos del producto e inténtalo de nuevo.', 'warning');
       return;
     }
 
-    if (this.creandoProducto) {
-      const id = this.productos.reduce((mayorId, producto) => Math.max(mayorId, producto.id), 0) + 1;
-      this.productos.push({ id, nombre, descripcion, precio, stock, imagen, cantidad: 0 });
-      this.cancelarEdicionProducto();
-      this.changeDetector.detectChanges();
-      this.notificaciones.mostrar('Producto agregado en pantalla; todavía no se guardó en la base de datos.', 'info');
+    this.guardando = true;
+    const guardar = (imagen: string): void => {
+      const datos = { nombre, descripcion, precio, imagen };
+      const solicitud = this.creandoProducto
+        ? this.productosService.crear(datos)
+        : this.productoEnEdicion
+          ? this.productosService.editar(this.productoEnEdicion.id, datos)
+          : null;
+
+      if (!solicitud) {
+        this.guardando = false;
+        return;
+      }
+
+      solicitud.subscribe({
+        next: () => {
+          this.guardando = false;
+          this.cancelarEdicionProducto();
+          this.notificaciones.mostrar('Producto guardado correctamente.', 'success');
+          this.cargarProductos();
+          this.changeDetector.markForCheck();
+        },
+        error: () => {
+          this.guardando = false;
+          this.notificaciones.mostrar('No se pudo guardar el producto.', 'error');
+          this.changeDetector.markForCheck();
+        },
+      });
+    };
+
+    if (this.archivoImagen) {
+      this.productosService.subirImagen(this.archivoImagen).subscribe({
+        next: respuesta => guardar(respuesta.imagen),
+        error: () => {
+          this.guardando = false;
+          this.notificaciones.mostrar('No se pudo subir la imagen del producto.', 'error');
+          this.changeDetector.markForCheck();
+        },
+      });
       return;
     }
 
-    if (this.productoEnEdicion) {
-      Object.assign(this.productoEnEdicion, { nombre, descripcion, precio, stock, imagen });
-      this.cancelarEdicionProducto();
-      this.changeDetector.detectChanges();
-      this.notificaciones.mostrar('Cambios aplicados en pantalla; todavía no se guardaron en la base de datos.', 'info');
+    guardar(this.borradorProducto.imagen ?? '');
+  }
+
+  eliminarProducto(producto: Producto): void {
+    if (!this.puedeEditarProductos) {
+      return;
     }
+
+    void this.notificaciones.confirmarEliminacion(`¿Quieres eliminar "${producto.nombre}"?`).then(confirmado => {
+      if (!confirmado) {
+        return;
+      }
+
+      this.productosService.eliminar(producto.id).subscribe({
+        next: () => {
+          this.notificaciones.mostrar('Producto eliminado.', 'success');
+          this.cargarProductos();
+          this.changeDetector.markForCheck();
+        },
+        error: () => {
+          this.notificaciones.mostrar('No se pudo eliminar el producto.', 'error');
+          this.changeDetector.markForCheck();
+        },
+      });
+    });
   }
 
   agregarCarrito(producto: Producto): void {
@@ -170,11 +215,10 @@ export class Productos {
       return;
     }
 
-    const yaAgregado = this.carritoService.obtenerProductos().some(item => item.id === producto.id);
-    this.carritoService.agregarProducto(producto);
-    if (!yaAgregado) {
-      this.notificaciones.mostrar('Agregado al carrito', 'success');
-    }
+    this.carritoService.agregar(producto.id, 1).subscribe({
+      next: () => this.notificaciones.mostrar('Agregado al carrito', 'success'),
+      error: () => this.notificaciones.mostrar('No se pudo agregar al carrito.', 'error'),
+    });
   }
 
   manejarErrorImagen(event: Event): void {
@@ -182,5 +226,15 @@ export class Productos {
     if (imagen instanceof HTMLImageElement) {
       imagen.src = '/assets/Fotos/Cipolletti hoy/CipoHoy1.JPG';
     }
+  }
+
+  private nuevoBorrador(): Partial<Producto> {
+    return { nombre: '', descripcion: '', precio: 0, imagen: '' };
+  }
+
+  private reiniciarBorrador(): void {
+    this.archivoImagen = null;
+    this.vistaPreviaImagen = '';
+    this.borradorProducto = this.nuevoBorrador();
   }
 }
