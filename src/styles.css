@@ -67,7 +67,7 @@ html[data-theme="dark"] body {
 }
 
 html[data-theme="dark"] body app-root
-	:where(.pagina-carrito, .pagina-favoritos, .productos-page, .contacto-page, .nosotros-page, .pagina-registro, .pagina-inicio-sesion) {
+	:where(.pagina-carrito, .pagina-favoritos, .productos-page, .contacto-page, .nosotros-page, .pagina-registro, .pagina-inicio-sesion, .panel-admin) {
 	background: var(--theme-bg) !important;
 	color: var(--theme-text) !important;
 }
@@ -79,11 +79,45 @@ html[data-theme="dark"] body app-root
 }
 
 html[data-theme="dark"] body app-root
-	:where(.producto-card, .resumen-carrito, .carrito-vacio, .tarjeta-favorito, .estado-vacio, .contacto-card, .formulario-registro, .formulario-inicio-sesion, .historiadora, .familia-fideli, .mision, .equipo, .equipo-desarrollador, .tarjeta, .modal) {
+	:where(.producto-card, .resumen-carrito, .carrito-vacio, .estado-carrito, .tarjeta-favorito, .estado-vacio, .contacto-card, .formulario-registro, .formulario-inicio-sesion, .formulario-editor-evento, .admin-seccion, .historiadora, .familia-fideli, .mision, .equipo, .equipo-desarrollador, .tarjeta, .modal) {
 	border-color: var(--theme-border) !important;
 	background: var(--theme-surface) !important;
 	color: var(--theme-text) !important;
 	box-shadow: 0 0.65rem 1.8rem rgb(0 0 0 / 28%);
+}
+
+html[data-theme="dark"] body app-root .formulario-editor-evento {
+	border-color: var(--theme-accent) !important;
+}
+
+html[data-theme="dark"] body app-root .formulario-editor-evento :is(h2, p, label, fieldset, legend),
+html[data-theme="dark"] body app-root .admin-seccion :is(h2, h3, p, label, strong) {
+	color: var(--theme-text) !important;
+}
+
+html[data-theme="dark"] body app-root .formulario-editor-evento .aviso-edicion-temporal,
+html[data-theme="dark"] body app-root .panel-admin > .admin-header > span,
+html[data-theme="dark"] body app-root .panel-admin .fila-admin p {
+	color: var(--theme-muted) !important;
+}
+
+html[data-theme="dark"] body app-root .formulario-editor-evento .imagenes-editor-evento {
+	border-color: var(--theme-border) !important;
+	background: var(--theme-surface-raised);
+}
+
+html[data-theme="dark"] body app-root .formulario-editor-evento .acciones-editor-evento button:not([type="button"]),
+html[data-theme="dark"] body app-root .panel-admin .acciones-admin button:not(.boton-secundario):not(.boton-eliminar) {
+	border-color: #4a8198 !important;
+	background: #315d70 !important;
+	color: #ffffff !important;
+}
+
+html[data-theme="dark"] body app-root .formulario-editor-evento .acciones-editor-evento button[type="button"],
+html[data-theme="dark"] body app-root .panel-admin .acciones-admin .boton-secundario {
+	border: 1px solid var(--theme-border);
+	background: var(--theme-surface-raised);
+	color: var(--theme-text);
 }
 
 html[data-theme="dark"] body app-root
@@ -181,6 +215,18 @@ html[data-theme="dark"] body app-root .quitar-producto {
 	color: #ffd2c9;
 }
 
+html[data-theme="dark"] body app-root .control-cantidad button {
+	border-color: var(--theme-border);
+	background: var(--theme-surface-raised);
+	color: var(--theme-text);
+}
+
+html[data-theme="dark"] body app-root .vaciar-carrito {
+	border-color: #a85d53;
+	background: #4b2c2a;
+	color: #ffd2c9;
+}
+
 html[data-theme="dark"] body app-root .quitar-favorito,
 html[data-theme="dark"] body app-root .tarjeta .boton-favorito-hecho {
 	background: #493331;
@@ -189,6 +235,7 @@ html[data-theme="dark"] body app-root .tarjeta .boton-favorito-hecho {
 
 html[data-theme="dark"] body app-root .estado-vacio a,
 html[data-theme="dark"] body app-root .finalizar-compra,
+html[data-theme="dark"] body app-root .carrito-vacio a,
 html[data-theme="dark"] body app-root .tarjeta button:not(.cerrar):not(.boton-favorito-hecho) {
 	border-color: #4a8198 !important;
 	background: #315d70 !important;

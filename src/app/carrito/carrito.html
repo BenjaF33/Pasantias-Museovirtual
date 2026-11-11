@@ -6,9 +6,9 @@
 	</header>
 
 	@if (cargando) {
-		<p class="estado-carrito" role="status">Cargando carrito...</p>
+		<section class="estado-carrito" role="status">Cargando carrito...</section>
 	} @else if (error) {
-		<p class="estado-carrito" role="alert">{{ error }}</p>
+		<section class="estado-carrito" role="alert">{{ error }}</section>
 	} @else if (productos.length > 0) {
 		<div class="contenido-carrito">
 			<section class="lista-carrito" aria-label="Productos en el carrito">
