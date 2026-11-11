@@ -1,10 +1,12 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { afterNextRender, ChangeDetectorRef, Component, HostListener, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 
 import { type BorradorEvento, type Hecho } from '../models/hechos';
 import { AuthService } from '../servicios/auth-service';
-import { EventosService } from '../servicios/eventos';
+import { CampoImagenEvento, EventosService } from '../servicios/eventos';
 import { FavoritosService } from '../servicios/favoritos';
 import { NotificacionesService } from '../servicios/notificaciones';
 
@@ -37,8 +39,10 @@ export class Inicio {
   hechoAmpliado: Hecho | null = null;
   hechoEnEdicion: Hecho | null = null;
   creandoEvento = false;
+  eliminandoEventoId: number | null = null;
   borradorEdicion: BorradorEvento = { titulo: '', anio: '', descripcion: '', descripcion_larga: '', img: [] };
   imagenesCargando = 0;
+  guardandoEvento = false;
   imagenActiva = 0;
   imagenAgrandada = false;
   imagenesCarrusel: string[] = [];
@@ -47,6 +51,7 @@ export class Inicio {
 
   private cierreCardTimeout: ReturnType<typeof setTimeout> | undefined;
   private cierreInfoTimeout: ReturnType<typeof setTimeout> | undefined;
+  private imagenesPendientes: Array<File | null> = [];
 
   constructor(
     private readonly favoritosService: FavoritosService,
@@ -149,6 +154,7 @@ export class Inicio {
       descripcion_larga: hecho.descripcion_larga,
       img: [...hecho.img],
     };
+    this.imagenesPendientes = hecho.img.map(() => null);
   }
 
   iniciarCreacionEvento(): void {
@@ -159,10 +165,11 @@ export class Inicio {
     this.hechoEnEdicion = null;
     this.creandoEvento = true;
     this.borradorEdicion = { titulo: '', anio: '', descripcion: '', descripcion_larga: '', img: [] };
+    this.imagenesPendientes = [];
   }
 
   async agregarImagenes(event: Event): Promise<void> {
-    if ((!this.hechoEnEdicion && !this.creandoEvento) || !this.puedeEditarEventos) {
+    if ((!this.hechoEnEdicion && !this.creandoEvento) || !this.puedeEditarEventos || this.guardandoEvento) {
       return;
     }
 
@@ -178,23 +185,38 @@ export class Inicio {
       return;
     }
 
-    const imagenesValidas = archivos.filter(archivo => archivo.type.startsWith('image/'));
+    const imagenesValidas = archivos.filter(archivo =>
+      ['image/jpeg', 'image/png', 'image/webp'].includes(archivo.type),
+    );
     if (imagenesValidas.length === 0) {
-      this.notificaciones.mostrar('Solo se pueden añadir archivos de imagen.', 'warning');
+      this.notificaciones.mostrar('Solo se admiten imágenes JPG, PNG o WEBP.', 'warning');
       return;
     }
 
     if (imagenesValidas.length !== archivos.length) {
-      this.notificaciones.mostrar('Se ignoraron algunos archivos porque no eran imágenes.', 'warning');
+      this.notificaciones.mostrar('Se ignoraron archivos no compatibles; usa JPG, PNG o WEBP.', 'warning');
     }
 
     const borradorActual = this.borradorEdicion;
-    const imagenesLeidas: string[] = [];
+    const pendientesActuales = this.imagenesPendientes;
+    const espaciosDisponibles = 3 - borradorActual.img.length;
+    if (espaciosDisponibles <= 0) {
+      this.notificaciones.mostrar('Cada acontecimiento admite hasta 3 imágenes.', 'warning');
+      return;
+    }
 
-    for (const archivo of imagenesValidas) {
+    const imagenesParaAgregar = imagenesValidas.slice(0, espaciosDisponibles);
+    if (imagenesParaAgregar.length < imagenesValidas.length) {
+      this.notificaciones.mostrar('Solo se pueden guardar hasta 3 imágenes por acontecimiento.', 'warning');
+    }
+    const imagenesLeidas: string[] = [];
+    const archivosLeidos: File[] = [];
+
+    for (const archivo of imagenesParaAgregar) {
       this.imagenesCargando += 1;
       try {
         imagenesLeidas.push(await this.leerImagen(archivo));
+        archivosLeidos.push(archivo);
       } catch {
         this.notificaciones.mostrar(`No se pudo leer la imagen: ${archivo.name}`, 'error');
       } finally {
@@ -202,16 +224,22 @@ export class Inicio {
       }
     }
 
-    if (this.borradorEdicion !== borradorActual) {
+    if (this.borradorEdicion !== borradorActual || this.imagenesPendientes !== pendientesActuales) {
       return;
     }
 
     this.borradorEdicion.img = [...this.borradorEdicion.img, ...imagenesLeidas];
+    this.imagenesPendientes.push(...archivosLeidos);
     this.changeDetector.detectChanges();
   }
 
   quitarImagen(indice: number): void {
+    if (this.guardandoEvento) {
+      return;
+    }
+
     this.borradorEdicion.img = this.borradorEdicion.img.filter((_, i) => i !== indice);
+    this.imagenesPendientes = this.imagenesPendientes.filter((_, i) => i !== indice);
   }
 
   private leerImagen(archivo: File): Promise<string> {
@@ -232,16 +260,21 @@ export class Inicio {
   }
 
   cancelarEdicion(): void {
+    if (this.guardandoEvento) {
+      return;
+    }
+
     this.hechoEnEdicion = null;
     this.creandoEvento = false;
     this.imagenesCargando = 0;
+    this.imagenesPendientes = [];
   }
 
-  guardarEdicion(): void {
+  async guardarEdicion(): Promise<void> {
     const hecho = this.hechoEnEdicion;
     const formularioAbierto = hecho !== null || this.creandoEvento;
 
-    if (!formularioAbierto || !this.puedeEditarEventos || this.imagenesCargando > 0) {
+    if (!formularioAbierto || !this.puedeEditarEventos || this.imagenesCargando > 0 || this.guardandoEvento) {
       if (formularioAbierto && this.imagenesCargando > 0) {
         this.notificaciones.mostrar('Espera a que termine la carga de las imágenes.', 'info');
       }
@@ -257,49 +290,134 @@ export class Inicio {
       return;
     }
 
-    if (this.creandoEvento) {
-      const id_evento = this.hechos.reduce(
-        (mayorId, evento) => Math.max(mayorId, evento.id_evento),
-        0,
-      ) + 1;
-      const nuevoHecho: Hecho = {
-        id_evento,
+    this.guardandoEvento = true;
+    try {
+      const imagenes = await Promise.all(this.borradorEdicion.img.map(async (imagen, indice) => {
+        const archivo = this.imagenesPendientes[indice];
+        if (!archivo) {
+          return imagen;
+        }
+
+        const campo = `imagen_${indice + 1}` as CampoImagenEvento;
+        return firstValueFrom(this.eventosService.subirImagen(archivo, campo));
+      }));
+      const datosEvento = {
         titulo,
         anio,
         descripcion,
         descripcion_larga,
-        img: [...this.borradorEdicion.img],
+        img: imagenes,
       };
-      const indice = this.hechos.findIndex(evento => Number(evento.anio) > Number(anio));
-      if (indice === -1) {
-        this.hechos.push(nuevoHecho);
-      } else {
-        this.hechos.splice(indice, 0, nuevoHecho);
-      }
 
-      this.cancelarEdicion();
-      this.notificaciones.mostrar(
-        'Acontecimiento agregado en pantalla; todavía no se guardó en la base de datos.',
-        'info',
-      );
+      if (this.creandoEvento) {
+        const respuesta = await firstValueFrom(this.eventosService.crear(datosEvento));
+        const id_evento = Number(respuesta.id_evento);
+        if (!Number.isFinite(id_evento)) {
+          throw new Error('La API no devolvió el identificador del acontecimiento creado.');
+        }
+        this.hechos = [...this.hechos, { id_evento, ...datosEvento }]
+          .sort((a, b) => Number(a.anio) - Number(b.anio) || a.id_evento - b.id_evento);
+        this.guardandoEvento = false;
+        this.cancelarEdicion();
+        this.notificaciones.mostrar('Acontecimiento guardado en la base de datos.', 'success');
+      } else {
+        if (!hecho) {
+          return;
+        }
+
+        await firstValueFrom(this.eventosService.editar(hecho.id_evento, datosEvento));
+        Object.assign(hecho, datosEvento);
+        this.hechos = [...this.hechos]
+          .sort((a, b) => Number(a.anio) - Number(b.anio) || a.id_evento - b.id_evento);
+        this.guardandoEvento = false;
+        this.cancelarEdicion();
+        this.notificaciones.mostrar('Cambios guardados en la base de datos.', 'success');
+      }
+    } catch (error: unknown) {
+      this.notificaciones.mostrar(this.mensajeErrorAlGuardar(error), 'error');
+    } finally {
+      this.guardandoEvento = false;
+    }
+  }
+
+  async eliminarEvento(hecho: Hecho): Promise<void> {
+    if (!this.puedeEditarEventos || this.eliminandoEventoId !== null) {
       return;
     }
 
-    if (hecho) {
-      Object.assign(hecho, {
-        titulo,
-        anio,
-        descripcion,
-        descripcion_larga,
-        img: [...this.borradorEdicion.img],
-      });
-
-      this.cancelarEdicion();
-      this.notificaciones.mostrar(
-        'Cambios aplicados en pantalla; todavía no se guardaron en la base de datos.',
-        'info',
-      );
+    const confirmado = await this.notificaciones.confirmarEliminacion(
+      `¿Eliminar el acontecimiento «${hecho.titulo}»? Esta acción no se puede deshacer.`,
+    );
+    if (!confirmado) {
+      return;
     }
+
+    this.eliminandoEventoId = hecho.id_evento;
+    try {
+      await firstValueFrom(this.eventosService.eliminar(hecho.id_evento));
+      this.hechos = this.hechos.filter(evento => evento.id_evento !== hecho.id_evento);
+      this.favoritos = this.favoritos.filter(evento => evento.id_evento !== hecho.id_evento);
+      if (this.hechoSeleccionado?.id_evento === hecho.id_evento) {
+        this.hechoSeleccionado = null;
+      }
+      if (this.hechoAmpliado?.id_evento === hecho.id_evento) {
+        this.hechoAmpliado = null;
+      }
+      this.notificaciones.mostrar('Acontecimiento eliminado.', 'success');
+    } catch (error: unknown) {
+      this.notificaciones.mostrar(this.mensajeErrorAlEliminar(error), 'error');
+    } finally {
+      this.eliminandoEventoId = null;
+    }
+  }
+
+  private mensajeErrorAlEliminar(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      const mensaje = error.error?.error;
+      if (typeof mensaje === 'string') {
+        return `No se pudo eliminar el acontecimiento (HTTP ${error.status}): ${mensaje}`;
+      }
+      if (error.status === 0) {
+        return 'No se pudo conectar con la API para eliminar el acontecimiento.';
+      }
+      return `No se pudo eliminar el acontecimiento (HTTP ${error.status}).`;
+    }
+
+    if (error instanceof Error) {
+      return `No se pudo eliminar el acontecimiento: ${error.message}`;
+    }
+    return 'No se pudo eliminar el acontecimiento por un error inesperado.';
+  }
+
+  private mensajeErrorAlGuardar(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      const mensaje = error.error?.error;
+      if (typeof mensaje === 'string') {
+        return `No se pudo guardar el acontecimiento (HTTP ${error.status}): ${mensaje}`;
+      }
+
+      if (error.status === 0) {
+        return 'No se pudo conectar con la API (HTTP 0). Comprueba que Apache esté activo y que la app use http://localhost:4200.';
+      }
+
+      if (error.status >= 200 && error.status < 300) {
+        const respuesta = error.error?.text;
+        if (typeof respuesta === 'string' && respuesta.trim()) {
+          const detalle = respuesta.trim().replace(/\s+/g, ' ').slice(0, 180);
+          return `La API respondió HTTP ${error.status}, pero su respuesta no es JSON válido: ${detalle}`;
+        }
+
+        return `La API respondió HTTP ${error.status}, pero devolvió una respuesta vacía o JSON inválido.`;
+      }
+
+      return `No se pudo guardar el acontecimiento (HTTP ${error.status}). Revisa la respuesta de la API.`;
+    }
+
+    if (error instanceof Error) {
+      return `No se pudo guardar el acontecimiento: ${error.message}`;
+    }
+
+    return 'No se pudo guardar el acontecimiento por un error inesperado.';
   }
 
   esFavorito(hecho: Hecho): boolean {

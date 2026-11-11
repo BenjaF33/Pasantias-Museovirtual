@@ -59,6 +59,10 @@
                     @if (puedeEditarEventos) {
                     <button type="button" class="boton-editar-evento"
                         [attr.aria-label]="'Editar acontecimiento ' + h.titulo" (click)="iniciarEdicion(h)">Editar</button>
+                    <button type="button" class="boton-eliminar-evento"
+                        [attr.aria-label]="'Eliminar acontecimiento ' + h.titulo"
+                        [disabled]="eliminandoEventoId !== null"
+                        (click)="eliminarEvento(h)">Eliminar evento</button>
                     }
                 </div>
 
@@ -113,7 +117,7 @@
             <form class="formulario-editor-evento" role="dialog" aria-modal="true"
                 aria-labelledby="titulo-editor-evento" (ngSubmit)="guardarEdicion()" (click)="$event.stopPropagation()">
                 <h2 id="titulo-editor-evento">{{ creandoEvento ? 'Agregar acontecimiento' : 'Editar acontecimiento' }}</h2>
-                <p class="aviso-edicion-temporal">Los cambios solo se aplican en esta pantalla y se perderán al recargar.</p>
+                <p class="aviso-edicion-temporal">Los cambios se guardarán en la base de datos.</p>
 
 
                 <label for="evento-titulo">Título</label>
@@ -151,9 +155,9 @@
                 }
 
                 <div class="acciones-editor-evento">
-                    <button type="button" (click)="cancelarEdicion()">Cancelar</button>
-                    <button type="submit" [disabled]="imagenesCargando > 0">
-                        {{ imagenesCargando > 0 ? 'Leyendo imágenes...' : (creandoEvento ? 'Agregar evento' : 'Aplicar cambios') }}
+                    <button type="button" (click)="cancelarEdicion()" [disabled]="guardandoEvento">Cancelar</button>
+                    <button type="submit" [disabled]="imagenesCargando > 0 || guardandoEvento">
+                        {{ imagenesCargando > 0 ? 'Leyendo imágenes...' : (guardandoEvento ? 'Guardando...' : (creandoEvento ? 'Agregar evento' : 'Guardar cambios')) }}
                     </button>
                 </div>
             </form>

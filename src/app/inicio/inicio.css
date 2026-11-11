@@ -1467,7 +1467,8 @@ body app-root .site-footer {
     }
 }
 
-.info-hecho .boton-editar-evento {
+.info-hecho .boton-editar-evento,
+.info-hecho .boton-eliminar-evento {
     display: inline-flex;
     margin-top: 0.75rem;
     padding: 0.55rem 0.9rem;
@@ -1479,7 +1480,19 @@ body app-root .site-footer {
     font-weight: 700;
 }
 
-.info-hecho .boton-editar-evento:focus-visible {
+.info-hecho .boton-eliminar-evento {
+    margin-left: 0.5rem;
+    border-color: #b42318;
+    background: #b42318;
+}
+
+.info-hecho .boton-eliminar-evento:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.info-hecho .boton-editar-evento:focus-visible,
+.info-hecho .boton-eliminar-evento:focus-visible {
     outline: 3px solid #c96f42;
     outline-offset: 3px;
 }

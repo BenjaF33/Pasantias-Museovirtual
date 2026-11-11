@@ -5,6 +5,25 @@ import { map, Observable } from 'rxjs';
 import { Hecho } from '../models/hechos';
 import { API_BASE_URL, apiImageUrl } from './api';
 
+export type CampoImagenEvento = 'imagen_1' | 'imagen_2' | 'imagen_3';
+
+type DatosEvento = Omit<Hecho, 'id_evento'>;
+
+interface DatosEventoApi {
+  titulo: string;
+  anio: string;
+  imagen_1: string;
+  imagen_2: string;
+  imagen_3: string;
+  descripcion_corta: string;
+  descripcion_larga: string;
+}
+
+interface RespuestaCreacionEvento {
+  mensaje: string;
+  id_evento: number | string;
+}
+
 interface EventoApi {
   id_evento: number | string;
   anio: number | string;
@@ -50,9 +69,39 @@ export class EventosService {
     );
   }
 
+  crear(evento: DatosEvento): Observable<RespuestaCreacionEvento> {
+    return this.http.post<RespuestaCreacionEvento>(this.apiUrl, this.serializar(evento));
+  }
+
+  editar(id: number, evento: DatosEvento): Observable<{ mensaje: string }> {
+    return this.http.put<{ mensaje: string }>(`${this.apiUrl}/${id}`, this.serializar(evento));
+  }
+
+  eliminar(id: number): Observable<{ mensaje: string }> {
+    return this.http.delete<{ mensaje: string }>(`${this.apiUrl}/${id}`);
+  }
+
+  subirImagen(archivo: File, campo: CampoImagenEvento): Observable<string> {
+    const datos = new FormData();
+    datos.append('imagen', archivo);
+
+    return this.http.post<Partial<Record<CampoImagenEvento, string>>>(
+      `${this.apiUrl}/imagen/${campo}`,
+      datos,
+    ).pipe(
+      map(respuesta => {
+        const nombre = respuesta[campo];
+        if (!nombre) {
+          throw new Error('La API no devolvió la ruta de la imagen cargada.');
+        }
+        return apiImageUrl(nombre);
+      }),
+    );
+  }
+
   obtenerEventos(): Hecho[] {
-      return this.hechos;
-    }
+    return this.hechos;
+  }
 
   filtrarEventos(termino: string, eventos: Hecho[] = this.hechos): Hecho[] {
     // Normaliza la búsqueda para que no afecten los espacios externos, las mayúsculas ni las tildes.
@@ -87,5 +136,27 @@ export class EventosService {
       descripcion: evento.descripcion ?? evento.descripcion_corta ?? '',
       descripcion_larga: evento.descripcion_larga ?? '',
     };
+  }
+
+  private serializar(evento: DatosEvento): DatosEventoApi {
+    const imagenes = evento.img.slice(0, 3).map(imagen => this.rutaImagenGuardada(imagen));
+
+    return {
+      titulo: evento.titulo,
+      anio: evento.anio,
+      imagen_1: imagenes[0] ?? '',
+      imagen_2: imagenes[1] ?? '',
+      imagen_3: imagenes[2] ?? '',
+      descripcion_corta: evento.descripcion,
+      descripcion_larga: evento.descripcion_larga,
+    };
+  }
+
+  private rutaImagenGuardada(imagen: string): string {
+    if (imagen.startsWith(`${API_BASE_URL}/`)) {
+      return imagen.slice(API_BASE_URL.length + 1);
+    }
+
+    return imagen.startsWith('/assets/') ? imagen.slice(1) : imagen;
   }
 }
