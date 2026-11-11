@@ -61,6 +61,23 @@ describe('Inicio', () => {
     expect(component).toBeTruthy();
   });
 
+  it('only displays the back-to-top button after scrolling down', () => {
+    expect(component.mostrarBotonVolverArriba()).toBe(false);
+
+    vi.spyOn(window, 'scrollY', 'get').mockReturnValue(301);
+    component.actualizarBotonVolverArriba();
+
+    expect(component.mostrarBotonVolverArriba()).toBe(true);
+  });
+
+  it('scrolls smoothly to the top when the back-to-top button is activated', () => {
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
+
+    component.volverArriba();
+
+    expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
+  });
+
   it('redirects unauthenticated users to login without adding a favorite', async () => {
     auth.estaLogueado.mockReturnValue(false);
 

@@ -1,4 +1,4 @@
-import { afterNextRender, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Component, HostListener, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -19,6 +19,7 @@ export class Inicio {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly changeDetector = inject(ChangeDetectorRef);
+  readonly mostrarBotonVolverArriba = signal(false);
 
   private eventoSolicitadoIndex: number | null = null;
 
@@ -67,6 +68,15 @@ export class Inicio {
     if (this.authService.estaLogueado()) {
       this.cargarFavoritos();
     }
+  }
+
+  @HostListener('window:scroll')
+  actualizarBotonVolverArriba(): void {
+    this.mostrarBotonVolverArriba.set(window.scrollY > 300);
+  }
+
+  volverArriba(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   private cargarEventos(): void {
