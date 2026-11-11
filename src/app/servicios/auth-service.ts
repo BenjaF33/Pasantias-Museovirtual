@@ -44,9 +44,9 @@ export class AuthService {
   }
 
   esAdmin(): boolean {
-<<<<<<< HEAD
+  
   return this.usuarioActual()?.rol === 'admin';
->>>>>>> 8bac0a9 (Conecto toda la API)
+    
   }
 
   nombreUsuario(): string {
