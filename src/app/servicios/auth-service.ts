@@ -44,13 +44,9 @@ export class AuthService {
   }
 
   esAdmin(): boolean {
-<<<<<<< HEAD
   
   return this.usuarioActual()?.rol === 'admin';
-    
-=======
-    return this.usuarioActual()?.rol === 'admin';
->>>>>>> c1fe00a (modificacion de css)
+
   }
 
   nombreUsuario(): string {
