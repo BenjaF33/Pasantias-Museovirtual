@@ -88,6 +88,8 @@ html[data-theme="dark"] body app-root
 
 html[data-theme="dark"] body app-root .formulario-editor-evento {
 	border-color: var(--theme-accent) !important;
+	background: var(--theme-surface) !important;
+	color: var(--theme-text) !important;
 }
 
 html[data-theme="dark"] body app-root .formulario-editor-evento :is(h2, p, label, fieldset, legend),
@@ -103,7 +105,37 @@ html[data-theme="dark"] body app-root .panel-admin .fila-admin p {
 
 html[data-theme="dark"] body app-root .formulario-editor-evento .imagenes-editor-evento {
 	border-color: var(--theme-border) !important;
-	background: var(--theme-surface-raised);
+	background: var(--theme-surface-raised) !important;
+	color: var(--theme-text) !important;
+}
+
+html[data-theme="dark"] body app-root .formulario-editor-evento :is(input, textarea) {
+	border-color: var(--theme-border) !important;
+	background: var(--theme-surface-raised) !important;
+	color: var(--theme-text) !important;
+	color-scheme: dark;
+}
+
+html[data-theme="dark"] body app-root .formulario-editor-evento input::file-selector-button {
+	margin-right: 0.75rem;
+	padding: 0.45rem 0.7rem;
+	border: 1px solid var(--theme-accent);
+	border-radius: 0.2rem;
+	background: #315d70;
+	color: #ffffff;
+	cursor: pointer;
+	font: inherit;
+}
+
+html[data-theme="dark"] body app-root .formulario-editor-evento :is(input, textarea):focus-visible {
+	border-color: var(--theme-accent) !important;
+	outline-color: var(--theme-accent) !important;
+}
+
+html[data-theme="dark"] body app-root .formulario-editor-evento .imagen-editor-evento button {
+	border: 1px solid #a85d53;
+	background: #4b2c2a;
+	color: #ffd2c9;
 }
 
 html[data-theme="dark"] body app-root .formulario-editor-evento .acciones-editor-evento button:not([type="button"]),
@@ -118,6 +150,12 @@ html[data-theme="dark"] body app-root .panel-admin .acciones-admin .boton-secund
 	border: 1px solid var(--theme-border);
 	background: var(--theme-surface-raised);
 	color: var(--theme-text);
+}
+
+html[data-theme="dark"] body app-root .formulario-editor-evento input::file-selector-button:focus-visible,
+html[data-theme="dark"] body app-root .formulario-editor-evento button:focus-visible {
+	outline: 2px solid var(--theme-accent);
+	outline-offset: 2px;
 }
 
 html[data-theme="dark"] body app-root
