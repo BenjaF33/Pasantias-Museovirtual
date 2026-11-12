@@ -15,13 +15,13 @@ describe('AuthService', () => {
     TestBed.configureTestingModule({
       providers: [provideHttpClient(), provideHttpClientTesting()],
     });
-    service = TestBed.inject(AuthService);
     http = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => http.verify());
 
   it('stores the token and user after a successful login', () => {
+    service = TestBed.inject(AuthService);
     const respuesta: RespuestaAutenticacion = {
       token: 'jwt',
       usuario: { id_usuario: 3, nombre: 'Ana', rol: 'admin' },
@@ -36,7 +36,23 @@ describe('AuthService', () => {
     expect(service.getToken()).toBe('jwt');
   });
 
+  it('restores a session when the saved user id is a numeric string', () => {
+    localStorage.setItem('token', 'jwt');
+    localStorage.setItem('usuario', JSON.stringify({
+      id_usuario: '3',
+      nombre: 'Ana',
+      rol: 'user',
+    }));
+
+    service = TestBed.inject(AuthService);
+
+    expect(service.estaLogueado()).toBe(true);
+    expect(service.nombreUsuario()).toBe('Ana');
+    expect(service.getToken()).toBe('jwt');
+  });
+
   it('clears session data on logout', () => {
+    service = TestBed.inject(AuthService);
     localStorage.setItem('token', 'jwt');
     localStorage.setItem('usuario', JSON.stringify({
       id_usuario: 3,

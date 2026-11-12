@@ -20,7 +20,7 @@ describe('Inicio', () => {
     descripcion: '',
     descripcion_larga: '',
   };
-  const auth = { estaLogueado: vi.fn(), esAdmin: vi.fn() };
+  const auth = { estaLogueado: vi.fn(), esAdmin: vi.fn(), logout: vi.fn() };
   const eventos = {
     listar: vi.fn(),
     obtenerEventos: vi.fn(),
@@ -103,6 +103,20 @@ describe('Inicio', () => {
 
     expect(router.navigate).toHaveBeenCalledWith(['/inicio-sesion']);
     expect(favoritos.agregar).not.toHaveBeenCalled();
+    expect(notificaciones.mostrar).toHaveBeenCalledWith(
+      'Inicia sesión para agregar eventos a favoritos.',
+      'info',
+    );
+  });
+
+  it('does not show a notification when opening the page without a session', () => {
+    auth.estaLogueado.mockReturnValue(false);
+    vi.clearAllMocks();
+
+    component.ngOnInit();
+
+    expect(favoritos.listar).not.toHaveBeenCalled();
+    expect(notificaciones.mostrar).not.toHaveBeenCalled();
   });
 
   it('adds an event to the API-backed favorites list', async () => {
@@ -111,6 +125,23 @@ describe('Inicio', () => {
     expect(favoritos.agregar).toHaveBeenCalledWith(hecho.id_evento);
     expect(component.esFavorito(hecho)).toBe(true);
     expect(notificaciones.mostrar).toHaveBeenCalledWith('Agregado a favoritos', 'success');
+  });
+
+  it('shows the API error and returns to login when the session is rejected', async () => {
+    favoritos.agregar.mockReturnValue(throwError(() => new HttpErrorResponse({
+      status: 401,
+      error: { error: 'Token inválido o vencido' },
+    })));
+
+    await component.alternarFavorito(hecho);
+
+    expect(auth.logout).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/inicio-sesion']);
+    expect(component.esFavorito(hecho)).toBe(false);
+    expect(notificaciones.mostrar).toHaveBeenCalledWith(
+      'No se pudo actualizar favoritos (HTTP 401): Token inválido o vencido',
+      'error',
+    );
   });
 
   it('creates an event through the API and adds the returned identifier to the timeline', async () => {

@@ -61,18 +61,27 @@ export class AuthService {
 
     try {
       const usuario: unknown = JSON.parse(usuarioGuardado);
+      const idUsuario = typeof usuario === 'object' && usuario !== null && 'id_usuario' in usuario
+        ? usuario.id_usuario
+        : null;
+      const idUsuarioNormalizado = typeof idUsuario === 'number'
+        ? idUsuario
+        : typeof idUsuario === 'string' && /^\d+$/.test(idUsuario)
+          ? Number(idUsuario)
+          : null;
+
       if (
         typeof usuario === 'object' &&
         usuario !== null &&
-        'id_usuario' in usuario &&
         'nombre' in usuario &&
         'rol' in usuario &&
-        typeof usuario.id_usuario === 'number' &&
+        idUsuarioNormalizado !== null &&
+        Number.isSafeInteger(idUsuarioNormalizado) &&
         typeof usuario.nombre === 'string' &&
         (usuario.rol === 'admin' || usuario.rol === 'user')
       ) {
         return {
-          id_usuario: usuario.id_usuario,
+          id_usuario: idUsuarioNormalizado,
           nombre: usuario.nombre,
           rol: usuario.rol,
         };

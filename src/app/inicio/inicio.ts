@@ -428,6 +428,7 @@ export class Inicio {
     const yaEsFavorito = this.esFavorito(hecho);
 
     if (!yaEsFavorito && !this.authService.estaLogueado()) {
+      this.notificaciones.mostrar('Inicia sesión para agregar eventos a favoritos.', 'info');
       void this.router.navigate(['/inicio-sesion']);
       return;
     }
@@ -456,11 +457,33 @@ export class Inicio {
         );
         this.changeDetector.markForCheck();
       },
-      error: () => {
-        this.notificaciones.mostrar('No se pudo actualizar favoritos.', 'error');
+      error: (error: unknown) => {
+        if (error instanceof HttpErrorResponse && error.status === 401) {
+          this.authService.logout();
+          void this.router.navigate(['/inicio-sesion']);
+        }
+
+        this.notificaciones.mostrar(this.mensajeErrorAlActualizarFavoritos(error), 'error');
         this.changeDetector.markForCheck();
       },
     });
+  }
+
+  private mensajeErrorAlActualizarFavoritos(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      if (error.status === 0) {
+        return 'No se pudo conectar con la API para actualizar favoritos.';
+      }
+
+      const mensaje = error.error?.error;
+      if (typeof mensaje === 'string') {
+        return `No se pudo actualizar favoritos (HTTP ${error.status}): ${mensaje}`;
+      }
+
+      return `No se pudo actualizar favoritos (HTTP ${error.status}).`;
+    }
+
+    return 'No se pudo actualizar favoritos por un error inesperado.';
   }
 
   private cargarFavoritos(): void {
@@ -469,7 +492,12 @@ export class Inicio {
         this.favoritos = favoritos;
         this.changeDetector.markForCheck();
       },
-      error: () => {
+      error: (error: unknown) => {
+        if (error instanceof HttpErrorResponse && error.status === 401) {
+          this.authService.logout();
+          return;
+        }
+
         this.notificaciones.mostrar('No se pudieron cargar tus favoritos.', 'error');
         this.changeDetector.markForCheck();
       },
