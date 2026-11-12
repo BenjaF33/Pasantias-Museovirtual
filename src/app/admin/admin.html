@@ -12,8 +12,9 @@
     <p class="estado-admin" role="alert">{{ error }}</p>
   }
 
+  @if (formulario.id) {
   <section class="admin-seccion">
-    <h2>{{ formulario.id ? 'Editar producto' : 'Agregar producto' }}</h2>
+    <h2>Editar producto</h2>
     <form class="formulario-admin" (ngSubmit)="guardar()">
       <label for="admin-nombre">Nombre</label>
       <input id="admin-nombre" name="nombre" required [(ngModel)]="formulario.nombre">
@@ -35,14 +36,13 @@
 
       <div class="acciones-admin">
         <button type="submit" [disabled]="guardando">
-          {{ guardando ? 'Guardando...' : (formulario.id ? 'Guardar cambios' : 'Agregar producto') }}
+          {{ guardando ? 'Guardando...' : 'Guardar cambios' }}
         </button>
-        @if (formulario.id) {
-          <button type="button" class="boton-secundario" (click)="cancelarEdicion()">Cancelar</button>
-        }
+        <button type="button" class="boton-secundario" (click)="cancelarEdicion()">Cancelar</button>
       </div>
     </form>
   </section>
+  }
 
   <section class="admin-seccion">
     <h2>Productos</h2>
