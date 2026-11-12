@@ -206,10 +206,9 @@
 	white-space: nowrap;
 }
 
-.enlace-sesion {
-	padding: 0.55rem 0.35rem;
-	text-decoration: underline;
-	text-underline-offset: 0.2em;
+.enlace-icono.activo {
+	background: rgb(255 250 240 / 12%);
+	color: #f0d28b;
 }
 
 .boton-salir {

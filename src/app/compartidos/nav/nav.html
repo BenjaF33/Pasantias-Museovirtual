@@ -57,9 +57,27 @@
 
       @if (auth.estaLogueado()) {
         @if (auth.esAdmin()) {
-          <a class="enlace-sesion" routerLink="/panel-admin" (click)="cerrarMenu()">Panel admin</a>
+          <a
+            class="enlace-icono"
+            routerLink="/panel-admin"
+            routerLinkActive="activo"
+            ariaCurrentWhenActive="page"
+            [routerLinkActiveOptions]="{ exact: true }"
+            (click)="cerrarMenu()">
+            <span class="icono" aria-hidden="true">&#9881;</span>
+            <span class="texto-icono">Panel admin</span>
+          </a>
         }
-        <a class="enlace-sesion" routerLink="/mis-compras" (click)="cerrarMenu()">Mis compras</a>
+        <a
+          class="enlace-icono"
+          routerLink="/mis-compras"
+          routerLinkActive="activo"
+          ariaCurrentWhenActive="page"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="cerrarMenu()">
+          <span class="icono" aria-hidden="true">&#128196;</span>
+          <span class="texto-icono">Mis compras</span>
+        </a>
         <span class="nombre-usuario">Hola, {{ auth.nombreUsuario() }}</span>
         <button class="boton-salir" type="button" (click)="salir()">Salir</button>
       } @else {
