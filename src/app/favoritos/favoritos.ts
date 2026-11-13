@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
@@ -21,10 +22,10 @@ export class Favoritos implements OnInit {
   constructor(
     private readonly favoritosService: FavoritosService,
     private readonly notificaciones: NotificacionesService,
-    authService: AuthService,
+    private readonly authService: AuthService,
     private readonly changeDetector: ChangeDetectorRef,
   ) {
-    this.estaLogueado = authService.estaLogueado();
+    this.estaLogueado = this.authService.estaLogueado();
   }
 
   ngOnInit(): void {
@@ -42,13 +43,36 @@ export class Favoritos implements OnInit {
         this.cargando = false;
         this.changeDetector.markForCheck();
       },
-      error: () => {
-        this.error = 'No se pudieron cargar tus favoritos. Inténtalo nuevamente.';
+      error: (error: unknown) => {
+        this.error = this.mensajeErrorAlCargar(error);
+        if (error instanceof HttpErrorResponse && error.status === 401) {
+          this.authService.logout();
+          this.estaLogueado = false;
+        }
         this.cargando = false;
         this.notificaciones.mostrar(this.error, 'error');
         this.changeDetector.markForCheck();
       },
     });
+  }
+
+  private mensajeErrorAlCargar(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      const mensaje = error.error?.error;
+      if (error.status === 0) {
+        return 'No se pudo conectar con la API. Comprueba que Apache y la API PHP estén iniciados.';
+      }
+      if (error.status === 401) {
+        const detalle = typeof mensaje === 'string' ? `: ${mensaje}` : '';
+        return `Tu sesión fue rechazada (HTTP 401)${detalle}. Inicia sesión nuevamente.`;
+      }
+      if (typeof mensaje === 'string') {
+        return `No se pudieron cargar tus favoritos (HTTP ${error.status}): ${mensaje}`;
+      }
+      return `No se pudieron cargar tus favoritos (HTTP ${error.status}).`;
+    }
+
+    return 'No se pudieron cargar tus favoritos por un error inesperado.';
   }
 
   async quitarFavorito(hecho: Hecho): Promise<void> {

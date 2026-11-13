@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpErrorResponse } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { AuthService } from '../servicios/auth-service';
 import { FavoritosService } from '../servicios/favoritos';
@@ -10,7 +11,7 @@ import { Favoritos } from './favoritos';
 describe('Favoritos', () => {
   let component: Favoritos;
   let fixture: ComponentFixture<Favoritos>;
-  const auth = { estaLogueado: vi.fn() };
+  const auth = { estaLogueado: vi.fn(), logout: vi.fn() };
   const favoritos = { listar: vi.fn(), eliminar: vi.fn() };
   const notificaciones = { confirmarEliminacion: vi.fn(), mostrar: vi.fn() };
 
@@ -52,5 +53,29 @@ describe('Favoritos', () => {
 
     expect(favoritos.listar).not.toHaveBeenCalled();
     expect(fixture.nativeElement.textContent).toContain('Inicia sesión');
+  });
+
+  it('clears a rejected session and explains that the user must sign in again', () => {
+    favoritos.listar.mockReturnValue(throwError(() => new HttpErrorResponse({
+      status: 401,
+      error: { error: 'Token inválido o vencido' },
+    })));
+
+    component.cargarFavoritos();
+    fixture.detectChanges();
+
+    expect(auth.logout).toHaveBeenCalled();
+    expect(component.estaLogueado).toBe(false);
+    expect(component.error).toContain('HTTP 401');
+    expect(component.error).toContain('Token inválido o vencido');
+    expect(fixture.nativeElement.textContent).toContain('Inicia sesión nuevamente.');
+  });
+
+  it('explains when the API cannot be reached', () => {
+    favoritos.listar.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 0 })));
+
+    component.cargarFavoritos();
+
+    expect(component.error).toContain('No se pudo conectar con la API');
   });
 });

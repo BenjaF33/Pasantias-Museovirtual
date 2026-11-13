@@ -9,6 +9,9 @@
 		<section class="estado-vacio" aria-live="polite">
 			<span class="corazon-vacio" aria-hidden="true">&#9825;</span>
 			<h2>Inicia sesión</h2>
+			@if (error) {
+				<p role="alert">{{ error }}</p>
+			}
 			<p>Inicia sesión para poder agregar hechos a favoritos.</p>
 			<a routerLink="/inicio-sesion">Iniciar sesión</a>
 		</section>
