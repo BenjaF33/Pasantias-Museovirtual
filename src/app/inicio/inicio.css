@@ -1050,6 +1050,7 @@ body app-root .hecho {
 }
 
 body app-root .punto {
+  --color-punto: #704214 !important;
   border-color: var(--marble) !important;
   background: var(--color-punto, #8b6548) !important;
   box-shadow: 0 0 0 2px var(--color-punto, #8b6548), 0 0 0 7px color-mix(in srgb, var(--color-punto, #8b6548) 20%, transparent) !important;

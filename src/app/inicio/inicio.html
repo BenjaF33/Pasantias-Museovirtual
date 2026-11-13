@@ -46,7 +46,7 @@
             <div [id]="'evento-' + $index" class="hecho" [class.hecho-lado-izquierdo]="esIzquierda" [class.hecho-lado-derecho]="!esIzquierda">
 
                 <!-- PUNTO -->
-                <button class="punto" [style.--color-punto]="'color-mix(in hsl, #8b6548 ' + (100 - ((($any(h.anio) - 1830) / 196) * 100)) + '%, #176c91)'"
+                <button class="punto" [style.--color-punto]="coloresPuntos[$index]"
                     [attr.aria-label]="'Abrir acontecimiento ' + h.anio + ': ' + h.titulo"
                     [class.punto-activo]="hechoSeleccionado === h && !cerrandoCard"
                     [class.punto-cerrando]="hechoSeleccionado === h && cerrandoCard" (click)="mostrarHecho(h)">
