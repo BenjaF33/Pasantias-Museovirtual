@@ -1,5 +1,6 @@
 .site-footer {
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
 	gap: 1rem;
 	padding: 1.3rem max(7vw, 1.4rem);
@@ -9,6 +10,24 @@
 	font-size: 0.7rem;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
+}
+
+.site-footer a {
+	color: inherit;
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.footer-identidad {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.site-footer a:focus-visible {
+	border-radius: 0.15rem;
+	outline: 2px solid currentColor;
+	outline-offset: 0.2rem;
 }
 
 @media (max-width: 520px) {

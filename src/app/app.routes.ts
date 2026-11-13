@@ -11,6 +11,7 @@ import { Registro } from './Auth/registro/registro';
 import { Inicio } from './inicio/inicio';
 import { Carrito } from './carrito/carrito';
 import { Favoritos } from './favoritos/favoritos';
+import { Bibliografia } from './bibliografia/bibliografia';
 import { adminGuard } from './guard/admin-guard';
 import { authGuard } from './guard/auth-guard';
 
@@ -21,6 +22,7 @@ export const routes: Routes = [
     { path: 'inicio', component: Inicio },
     { path: 'nosotros', component: Nosotros },
     { path: 'contacto', component: Contacto },
+    { path: 'bibliografia', component: Bibliografia },
     { path: 'inicio-sesion', component: InicioSesion },
     { path: 'registro', component: Registro },
     { path: 'productos', loadComponent: () => import('./productos/productos').then(modulo => modulo.Productos) },
