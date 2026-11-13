@@ -1,6 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 
 import { Productos } from './productos';
 import { Producto } from '../models/productos';
@@ -104,5 +105,17 @@ describe('Productos', () => {
       precio: 250,
       imagen: '',
     });
+  });
+
+  it('explains when a product cannot be deleted because it is referenced by a cart', async () => {
+    const mensaje = 'No se puede eliminar el producto porque está asociado a un carrito o a una compra.';
+    notificaciones.confirmarEliminacion.mockResolvedValue(true);
+    productosService.eliminar.mockReturnValue(throwError(() => new HttpErrorResponse({
+      status: 409,
+      error: { error: mensaje },
+    })));
+
+    component.eliminarProducto(producto);
+    await vi.waitFor(() => expect(notificaciones.mostrar).toHaveBeenCalledWith(mensaje, 'error'));
   });
 });

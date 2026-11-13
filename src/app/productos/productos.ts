@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -201,8 +202,14 @@ export class Productos implements OnInit {
           this.cargarProductos();
           this.changeDetector.markForCheck();
         },
-        error: () => {
-          this.notificaciones.mostrar('No se pudo eliminar el producto.', 'error');
+        error: (error: unknown) => {
+          const mensajeApi = error instanceof HttpErrorResponse ? error.error?.error : null;
+          const mensaje = typeof mensajeApi === 'string'
+            ? mensajeApi
+            : error instanceof HttpErrorResponse && error.status > 0
+              ? `No se pudo eliminar el producto (HTTP ${error.status}).`
+              : 'No se pudo conectar con la API para eliminar el producto.';
+          this.notificaciones.mostrar(mensaje, 'error');
           this.changeDetector.markForCheck();
         },
       });

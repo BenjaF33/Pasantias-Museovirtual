@@ -8,7 +8,6 @@ import { API_BASE_URL } from './api';
 @Injectable({ providedIn: 'root' })
 export class TicketsService {
   private readonly apiUrl = `${API_BASE_URL}/tickets`;
-  readonly baseArchivos = `${API_BASE_URL}/`;
 
   constructor(private readonly http: HttpClient) {}
 
@@ -18,5 +17,9 @@ export class TicketsService {
 
   ver(idCompra: number): Observable<Ticket> {
     return this.http.get<Ticket>(`${this.apiUrl}/${idCompra}`);
+  }
+
+  descargar(idCompra: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/descargar/${idCompra}`, { responseType: 'blob' });
   }
 }

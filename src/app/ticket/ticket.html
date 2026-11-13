@@ -10,9 +10,12 @@
       <h1>Ticket {{ ticket.numero_ticket }}</h1>
       <p>Compra #{{ ticket.id_compra }}</p>
       <p>Fecha: {{ ticket.fecha }}</p>
-      <a class="descargar-ticket" [href]="urlPdf" target="_blank" rel="noopener" download>
-        Descargar ticket PDF
-      </a>
+      @if (errorDescarga) {
+        <p class="flujo-error" role="alert">{{ errorDescarga }}</p>
+      }
+      <button class="descargar-ticket" type="button" [disabled]="descargando" (click)="descargarPdf()">
+        {{ descargando ? 'Preparando PDF...' : 'Descargar ticket PDF' }}
+      </button>
     }
     <a class="volver-compras" routerLink="/mis-compras">Volver a mis compras</a>
   </section>
