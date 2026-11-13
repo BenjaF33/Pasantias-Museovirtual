@@ -172,7 +172,7 @@
 .producto-imagen img {
 	width: 100%;
 	height: 100%;
-	object-fit: cover;
+	object-fit: contain;
 	transition: transform 220ms ease;
 }
 
@@ -198,6 +198,7 @@
 
 .producto-contenido h2 {
 	margin: 0 0 0.75rem;
+	min-height: 3.45em;
 	color: #253342;
 	font-family: Georgia, "Times New Roman", serif;
 	font-size: clamp(1.6rem, 3vw, 2.1rem);
@@ -205,10 +206,25 @@
 }
 
 .producto-descripcion {
+	height: 9rem;
+	overflow-y: auto;
 	margin: 0;
+	padding-right: 0.4rem;
 	color: #3d4b59;
 	font-size: 1rem;
 	line-height: 1.65;
+	overscroll-behavior: contain;
+	scrollbar-color: #9ba4ac #f1e9dc;
+	scrollbar-width: thin;
+}
+
+.producto-descripcion::-webkit-scrollbar-button {
+	display: none;
+}
+
+.producto-descripcion:focus-visible {
+	outline: 2px solid #c96f42;
+	outline-offset: 2px;
 }
 
 .producto-precio {
