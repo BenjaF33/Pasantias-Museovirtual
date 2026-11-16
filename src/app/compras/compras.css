@@ -5,8 +5,8 @@
 .historial-compras {
   min-height: 70vh;
   padding: clamp(2rem, 6vw, 5rem) 1rem;
-  background: #f8f6ec;
-  color: #183c54;
+  background: var(--theme-bg, #f8f6ec);
+  color: var(--theme-text, #183c54);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .flujo-eyebrow {
-  color: #9b733d;
+  color: var(--theme-accent, #9b733d);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -36,9 +36,9 @@
   gap: 1rem;
   margin-top: 1rem;
   padding: 1.25rem;
-  border: 1px solid #e1d9c8;
+  border: 1px solid var(--theme-border, #e1d9c8);
   border-radius: 0.75rem;
-  background: #fffdfa;
+  background: var(--theme-surface, #fffdfa);
 }
 
 .compra-historial h2,
@@ -47,8 +47,13 @@
 }
 
 .compra-historial a {
-  color: #713b25;
+  color: var(--theme-accent, #713b25);
   font-weight: 700;
+}
+
+.compra-historial a:focus-visible {
+  outline: 2px solid var(--theme-accent, #9b733d);
+  outline-offset: 3px;
 }
 
 .sin-compras,
@@ -58,7 +63,7 @@
 }
 
 .flujo-error {
-  color: #8b3b2d;
+  color: var(--coral, #8b3b2d);
 }
 
 @media (max-width: 560px) {

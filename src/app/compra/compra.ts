@@ -6,7 +6,6 @@ import { AuthService } from '../servicios/auth-service';
 import { CarritoService } from '../servicios/carrito';
 import { ComprasService } from '../servicios/compras';
 import { NotificacionesService } from '../servicios/notificaciones';
-import { TicketsService } from '../servicios/tickets';
 
 @Component({
   selector: 'app-compra',
@@ -23,7 +22,6 @@ export class Compra implements OnInit {
   constructor(
     private readonly carritoService: CarritoService,
     private readonly comprasService: ComprasService,
-    private readonly ticketsService: TicketsService,
     private readonly authService: AuthService,
     private readonly router: Router,
     private readonly notificaciones: NotificacionesService,
@@ -66,17 +64,7 @@ export class Compra implements OnInit {
     this.finalizando = true;
     this.error = '';
     this.comprasService.finalizar().subscribe({
-      next: compra => {
-        this.ticketsService.generar(compra.id_compra).subscribe({
-          next: () => void this.router.navigate(['/paginas/ticket', compra.id_compra]),
-          error: () => {
-            this.finalizando = false;
-            this.error = 'La compra se registró, pero no se pudo generar el ticket. Revisa tu historial.';
-            this.notificaciones.mostrar(this.error, 'error');
-            this.changeDetector.markForCheck();
-          },
-        });
-      },
+      next: compra => void this.router.navigate(['/paginas/ticket', compra.id_compra]),
       error: () => {
         this.finalizando = false;
         this.error = 'No se pudo confirmar la compra. Revisa el carrito e inténtalo nuevamente.';

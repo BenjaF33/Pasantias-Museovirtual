@@ -1,5 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { catchError, switchMap, throwError } from 'rxjs';
 
 import { Ticket as TicketData } from '../models/api';
 import { NotificacionesService } from '../servicios/notificaciones';
@@ -33,14 +35,24 @@ export class Ticket implements OnInit {
     }
 
     this.cargando = true;
-    this.ticketsService.ver(idCompra).subscribe({
+    this.ticketsService.ver(idCompra).pipe(
+      catchError(error => {
+        if (!(error instanceof HttpErrorResponse) || error.status !== 404) {
+          return throwError(() => error);
+        }
+
+        return this.ticketsService.generar(idCompra).pipe(
+          switchMap(() => this.ticketsService.ver(idCompra)),
+        );
+      }),
+    ).subscribe({
       next: ticket => {
         this.ticket = ticket;
         this.cargando = false;
         this.changeDetector.markForCheck();
       },
       error: () => {
-        this.error = 'No se pudo encontrar el ticket de esta compra.';
+        this.error = 'No se pudo encontrar ni generar el ticket de esta compra.';
         this.cargando = false;
         this.notificaciones.mostrar(this.error, 'error');
         this.changeDetector.markForCheck();

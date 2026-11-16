@@ -67,7 +67,7 @@ html[data-theme="dark"] body {
 }
 
 html[data-theme="dark"] body app-root
-	:where(.pagina-carrito, .pagina-favoritos, .productos-page, .contacto-page, .nosotros-page, .pagina-registro, .pagina-inicio-sesion, .panel-admin) {
+	:where(.pagina-carrito, .pagina-favoritos, .pagina-ticket, .productos-page, .contacto-page, .nosotros-page, .pagina-registro, .pagina-inicio-sesion, .panel-admin) {
 	background: var(--theme-bg) !important;
 	color: var(--theme-text) !important;
 }
@@ -79,7 +79,7 @@ html[data-theme="dark"] body app-root
 }
 
 html[data-theme="dark"] body app-root
-	:where(.producto-card, .resumen-carrito, .carrito-vacio, .estado-carrito, .tarjeta-favorito, .estado-vacio, .contacto-card, .formulario-registro, .formulario-inicio-sesion, .formulario-editor-evento, .admin-seccion, .historiadora, .familia-fideli, .mision, .equipo, .equipo-desarrollador, .tarjeta, .modal) {
+	:where(.producto-card, .resumen-carrito, .carrito-vacio, .estado-carrito, .tarjeta-favorito, .tarjeta-ticket, .estado-vacio, .contacto-card, .formulario-registro, .formulario-inicio-sesion, .formulario-editor-evento, .admin-seccion, .historiadora, .familia-fideli, .mision, .equipo, .equipo-desarrollador, .tarjeta, .modal) {
 	border-color: var(--theme-border) !important;
 	background: var(--theme-surface) !important;
 	color: var(--theme-text) !important;

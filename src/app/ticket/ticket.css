@@ -7,8 +7,8 @@
   min-height: 70vh;
   place-items: center;
   padding: 2rem 1rem;
-  background: #f8f6ec;
-  color: #183c54;
+  background: var(--theme-bg, #f8f6ec);
+  color: var(--theme-text, #183c54);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -17,9 +17,9 @@
   gap: 0.9rem;
   width: min(100%, 36rem);
   padding: clamp(1.5rem, 5vw, 3rem);
-  border: 1px solid #e1d9c8;
+  border: 1px solid var(--theme-border, #e1d9c8);
   border-radius: 1rem;
-  background: #fffdfa;
+  background: var(--theme-surface, #fffdfa);
   box-shadow: 0 0.75rem 2rem rgb(37 51 66 / 10%);
   text-align: center;
 }
@@ -34,7 +34,7 @@
 }
 
 .flujo-eyebrow {
-  color: #9b733d;
+  color: var(--theme-accent, #9b733d);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -45,7 +45,7 @@
 .volver-compras {
   width: fit-content;
   justify-self: center;
-  color: #713b25;
+  color: var(--theme-accent, #713b25);
   font-weight: 700;
 }
 
@@ -53,11 +53,21 @@
   padding: 0.8rem 1.2rem;
   border: 0;
   border-radius: 0.5rem;
-  background: #253342;
+  background: var(--theme-surface-raised, #253342);
   color: #fffaf0;
   cursor: pointer;
   font: inherit;
   font-weight: 700;
+}
+
+.descargar-ticket:hover:not(:disabled) {
+  filter: brightness(1.12);
+}
+
+.descargar-ticket:focus-visible,
+.volver-compras:focus-visible {
+  outline: 2px solid var(--theme-accent, #9b733d);
+  outline-offset: 3px;
 }
 
 .descargar-ticket:disabled {
@@ -70,5 +80,5 @@
 }
 
 .flujo-error {
-  color: #8b3b2d;
+  color: var(--coral, #8b3b2d);
 }
